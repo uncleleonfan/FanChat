@@ -17,3 +17,10 @@
 运行出错：Didn't find class "com.hyphenate.chat.adapter.EMACallSession"，原因是hyphenatechat_3.2.0.jar包内没有该类。
 
 解决办法:导入demo里面的hyphenatechat_3.2.0.jar
+
+# Splash界面 #
+
+# 登录界面 #
+## IME ##
+android:imeOptions="actionNext"
+android:imeOptions="actionGo"
