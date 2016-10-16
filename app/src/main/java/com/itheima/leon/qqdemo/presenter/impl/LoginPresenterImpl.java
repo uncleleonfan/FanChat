@@ -1,7 +1,7 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
 import com.itheima.leon.qqdemo.presenter.LoginPresenter;
-import com.itheima.leon.qqdemo.utils.LoginUtils;
+import com.itheima.leon.qqdemo.utils.StringUtils;
 import com.itheima.leon.qqdemo.view.LoginView;
 
 /**
@@ -21,8 +21,8 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     @Override
     public void login(String userName, String pwd) {
-        if (LoginUtils.checkUserName(userName)) {
-            if (LoginUtils.checkPassword(pwd)) {
+        if (StringUtils.checkUserName(userName)) {
+            if (StringUtils.checkPassword(pwd)) {
                 mLoginView.onStartLogin();
                 startLogin();
             } else {

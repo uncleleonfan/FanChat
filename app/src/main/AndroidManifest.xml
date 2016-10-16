@@ -41,6 +41,8 @@
 
         <activity android:name=".ui.LoginActivity" />
 
+        <activity android:name=".ui.RegisterActivity"/>
+
         <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"

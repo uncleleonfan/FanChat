@@ -53,6 +53,7 @@ public class LoginActivity extends BaseActivity implements LoginView{
                 mLoginPresenter.login(userName, password);
                 break;
             case R.id.new_user:
+                startActivity(RegisterActivity.class);
                 break;
         }
     }

@@ -5,8 +5,8 @@ package com.itheima.leon.qqdemo.utils;
  * 创建时间:  2016/10/16 21:18
  * 描述：    TODO
  */
-public class LoginUtils {
-    public static final String TAG = "LoginUtils";
+public class StringUtils {
+    public static final String TAG = "StringUtils";
 
     private static final String USER_NAME_REGEX = "^[a-zA-Z]\\w{2,19}$";
 
