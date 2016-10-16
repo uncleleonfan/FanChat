@@ -4,4 +4,6 @@
     <string name="user_password">密码</string>
     <string name="login">登录</string>
     <string name="new_user">新用户</string>
+    <string name="user_name_error">用户名不合法，3到20位，首字母必须是字母</string>
+    <string name="user_password_error">密码不合法，3到20位数字</string>
 </resources>
