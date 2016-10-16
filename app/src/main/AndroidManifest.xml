@@ -38,6 +38,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.LoginActivity" />
+
         <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"

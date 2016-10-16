@@ -1,6 +1,8 @@
 package com.itheima.leon.qqdemo.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -12,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 public abstract class BaseActivity extends AppCompatActivity {
     public static final String TAG = "BaseActivity";
 
+    private Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,4 +26,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void init() {}
 
     public abstract int getLayoutRes();
+
+    protected void startActivity(Class activity) {
+        startActivity(activity, false);
+    }
+
+    protected void startActivity(Class activity, boolean finish) {
+        Intent intent = new Intent(this, activity);
+        startActivity(intent);
+        if (finish) {
+            finish();
+        }
+    }
+
+    protected void post(Runnable runnable) {
+        mHandler.post(runnable);
+    }
+
+    protected void postDelay(Runnable runnable, long millis) {
+        mHandler.postDelayed(runnable, millis);
+    }
+
 }
