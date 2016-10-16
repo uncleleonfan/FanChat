@@ -1,4 +1,4 @@
-package com.itheima.leon.qqdemo;
+package com.itheima.leon.qqdemo.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

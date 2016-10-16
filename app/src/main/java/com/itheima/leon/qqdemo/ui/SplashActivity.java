@@ -1,4 +1,6 @@
-package com.itheima.leon.qqdemo;
+package com.itheima.leon.qqdemo.ui;
+
+import com.itheima.leon.qqdemo.R;
 
 /**
  * 创建者:   Leon

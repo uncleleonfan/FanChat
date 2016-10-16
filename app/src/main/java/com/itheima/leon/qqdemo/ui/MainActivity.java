@@ -1,7 +1,8 @@
-package com.itheima.leon.qqdemo;
+package com.itheima.leon.qqdemo.ui;
 
 import android.content.Intent;
 
+import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.service.TestService;
 
 public class MainActivity extends BaseActivity {
