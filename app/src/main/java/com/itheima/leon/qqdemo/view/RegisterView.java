@@ -12,6 +12,8 @@ public interface RegisterView {
 
     void onRegisterError();
 
+    void onRegisterSuccess();
+
     void onUserNameError();
 
     void onPasswordError();
