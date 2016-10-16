@@ -1,12 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_bk"
+    android:orientation="vertical">
 
-    <TextView
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@mipmap/default_avatar"
+        android:layout_margin="20dp"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"/>
+
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="登录界面"/>
+        android:layout_margin="10dp"
+        android:textColor="@android:color/black"
+        android:hint="@string/user_name"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textColor="@android:color/black"
+        android:hint="@string/user_password"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_login_normal"
+        android:textSize="22sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:text="@string/login"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_user"
+        android:textColor="@color/qq_blue"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"/>
+
+
 
 </LinearLayout>
