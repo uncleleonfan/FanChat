@@ -12,6 +12,8 @@ import com.itheima.leon.qqdemo.BuildConfig;
 import java.util.Iterator;
 import java.util.List;
 
+import cn.bmob.v3.Bmob;
+
 /**
  * 创建者:   Leon
  * 创建时间:  2016/10/16 9:51
@@ -24,6 +26,15 @@ public class QQDemoApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: ");
+        initHuanXin();
+        initBmob();
+    }
+
+    private void initBmob() {
+        Bmob.initialize(this, "df5a02bd4c7875549784ceb033407cc4");
+    }
+
+    private void initHuanXin() {
         EMOptions options = new EMOptions();
 // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
