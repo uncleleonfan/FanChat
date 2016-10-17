@@ -22,6 +22,7 @@ import butterknife.OnClick;
  * 描述：    TODO
  */
 public class LoginActivity extends BaseActivity implements LoginView{
+
     public static final String TAG = "LoginActivity";
     @BindView(R.id.user_name)
     EditText mUserName;
@@ -80,16 +81,19 @@ public class LoginActivity extends BaseActivity implements LoginView{
 
     @Override
     public void onStartLogin() {
-
+        showProgress(getString(R.string.logining));
     }
 
     @Override
     public void onLoginSuccess() {
-
+        hideProgress();
+        toast(getString(R.string.login_success));
+        startActivity(MainActivity.class, true);
     }
 
     @Override
     public void onLoginFailed() {
-
+        hideProgress();
+        toast(getString(R.string.login_failed));
     }
 }

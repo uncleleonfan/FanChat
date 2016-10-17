@@ -9,14 +9,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public int getLayoutRes() {
-        return R.layout.activity_splash;
+        return R.layout.activity_main;
     }
 
 
     @Override
     protected void init() {
         super.init();
-        startTestService();
+//        startTestService();
     }
 
     private void startTestService() {

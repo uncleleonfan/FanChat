@@ -1,7 +1,10 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
+import com.hyphenate.chat.EMClient;
+import com.itheima.leon.qqdemo.adpater.EMCallBackAdapter;
 import com.itheima.leon.qqdemo.presenter.LoginPresenter;
 import com.itheima.leon.qqdemo.utils.StringUtils;
+import com.itheima.leon.qqdemo.utils.ThreadUtils;
 import com.itheima.leon.qqdemo.view.LoginView;
 
 /**
@@ -24,7 +27,7 @@ public class LoginPresenterImpl implements LoginPresenter {
         if (StringUtils.checkUserName(userName)) {
             if (StringUtils.checkPassword(pwd)) {
                 mLoginView.onStartLogin();
-                startLogin();
+                startLogin(userName, pwd);
             } else {
                 mLoginView.onPasswordError();
             }
@@ -33,7 +36,30 @@ public class LoginPresenterImpl implements LoginPresenter {
         }
     }
 
-    private void startLogin() {
-
+    private void startLogin(String userName, String pwd) {
+        EMClient.getInstance().login(userName, pwd, mEMCallBack);
     }
+
+    private EMCallBackAdapter mEMCallBack = new EMCallBackAdapter() {
+
+        @Override
+        public void onSuccess() {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLoginView.onLoginSuccess();
+                }
+            });
+        }
+
+        @Override
+        public void onError(int i, String s) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLoginView.onLoginFailed();
+                }
+            });
+        }
+    };
 }

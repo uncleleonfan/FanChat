@@ -13,4 +13,7 @@
     <string name="register_failed">注册失败</string>
     <string name="register_failed_user_exist">用户已存在</string>
     <string name="register_success">注册成功</string>
+    <string name="logining">登录中...</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_failed">登录失败</string>
 </resources>
