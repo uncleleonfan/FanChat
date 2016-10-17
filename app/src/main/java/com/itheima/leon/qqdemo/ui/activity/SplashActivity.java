@@ -1,4 +1,4 @@
-package com.itheima.leon.qqdemo.ui;
+package com.itheima.leon.qqdemo.ui.activity;
 
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.presenter.SplashPresenter;

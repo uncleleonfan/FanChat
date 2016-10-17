@@ -1,4 +1,4 @@
-package com.itheima.leon.qqdemo.ui;
+package com.itheima.leon.qqdemo.ui.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

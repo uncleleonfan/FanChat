@@ -9,5 +9,6 @@
     <item name="messages" type="id"/>
     <item name="contacts" type="id"/>
     <item name="dynamic" type="id"/>
+    <item name="fragment_container" type="id"/>
 
 </resources>

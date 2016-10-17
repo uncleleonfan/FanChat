@@ -1,4 +1,4 @@
-package com.itheima.leon.qqdemo.ui;
+package com.itheima.leon.qqdemo.ui.activity;
 
 import android.widget.Button;
 import android.widget.EditText;

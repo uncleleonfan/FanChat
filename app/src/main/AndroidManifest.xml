@@ -27,10 +27,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".app.QQDemoApplication">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.activity.MainActivity">
         </activity>
 
-        <activity android:name=".ui.SplashActivity"
+        <activity android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -39,10 +39,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.LoginActivity"
+        <activity android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".ui.RegisterActivity"/>
+        <activity android:name=".ui.activity.RegisterActivity"/>
 
         <!-- 设置环信应用的AppKey -->
         <meta-data

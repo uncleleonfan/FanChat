@@ -1,4 +1,4 @@
-package com.itheima.leon.qqdemo.ui;
+package com.itheima.leon.qqdemo.ui.activity;
 
 import android.Manifest;
 import android.support.annotation.NonNull;
