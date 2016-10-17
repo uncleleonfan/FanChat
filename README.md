@@ -33,3 +33,10 @@ android:imeOptions="actionGo"
 
 # Android6.0动态权限管理 #
 [介绍](http://www.jianshu.com/p/a37f4827079a)
+
+# 底部导航条 #
+RadioGroup, TabHost, FragmentTabHost, 自定义
+## 第三方底部条 ##
+[BottomBar](https://github.com/roughike/BottomBar)
+[AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
+[BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)

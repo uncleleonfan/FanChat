@@ -6,4 +6,8 @@
     <item name="new_user" type="id"/>
     <item name="register" type="id"/>
     <item name="confirm_password" type="id"/>
+    <item name="messages" type="id"/>
+    <item name="contacts" type="id"/>
+    <item name="dynamic" type="id"/>
+
 </resources>

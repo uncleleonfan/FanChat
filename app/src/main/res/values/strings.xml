@@ -17,4 +17,7 @@
     <string name="login_success">登录成功</string>
     <string name="login_failed">登录失败</string>
     <string name="not_get_permission">未获取到权限</string>
+    <string name="messages">消息</string>
+    <string name="contacts">联系人</string>
+    <string name="dynamic">动态</string>
 </resources>
