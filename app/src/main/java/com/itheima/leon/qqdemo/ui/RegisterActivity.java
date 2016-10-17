@@ -66,6 +66,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
         SpUtils.saveStrings(this, new String[]{Constant.SpKey.USER_NAME, Constant.SpKey.USER_PASSWORD},
                 new String[]{user.getUsername(), user.getPassword()});
         toast(getString(R.string.register_success));
+        startActivity(LoginActivity.class);
     }
 
     @Override

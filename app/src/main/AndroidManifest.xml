@@ -39,7 +39,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.LoginActivity"
+            android:launchMode="singleTask"/>
 
         <activity android:name=".ui.RegisterActivity"/>
 

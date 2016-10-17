@@ -19,6 +19,11 @@ public class SpUtils {
         sharedPreferences.edit().putString(key, value).apply();
     }
 
+    public static String getString(Context context, String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key, "");
+    }
+
     public static void saveStrings(Context context, String keys[], String values[]) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPreferences.edit();
