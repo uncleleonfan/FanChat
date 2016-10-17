@@ -9,4 +9,6 @@
     <string name="register">注册</string>
     <string name="user_password_confirm">确认密码</string>
     <string name="user_password_confirm_error">密码不一致</string>
+    <string name="registering">注册中...</string>
+    <string name="register_failed">注册失败</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.itheima.leon.qqdemo.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final String TAG = "BaseActivity";
 
     private Handler mHandler = new Handler();
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +51,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void postDelay(Runnable runnable, long millis) {
         mHandler.postDelayed(runnable, millis);
+    }
+
+    protected void showProgress(String msg) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setCancelable(true);
+        }
+        mProgressDialog.setMessage(msg);
+    }
+
+    protected void hideProgress() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
     }
 
 }

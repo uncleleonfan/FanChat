@@ -1,5 +1,7 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
+import android.util.Log;
+
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.itheima.leon.qqdemo.model.User;
@@ -49,10 +51,11 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         user.signUp(new SaveListener<User>() {
             @Override
             public void done(User user, BmobException e) {
+                Log.d(TAG, "done: " + Thread.currentThread().getName());
                 if (e == null) {
                     mRegisterView.onRegisterError();
                 } else {
-                    ThreadUtils.runOnBackgroundThread(new RegisterEMTask(userName, pwd));
+                    ThreadUtils.runOnBackgroundThread(new RegisterEMTask(user, userName, pwd));
                 }
             }
         });
@@ -63,7 +66,10 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         private String mUserName;
         private String mPassword;
 
-        public RegisterEMTask(String userName, String pwd) {
+        private User mUser;
+
+        public RegisterEMTask(User user, String userName, String pwd) {
+            mUser = user;
             mUserName = userName;
             mPassword = pwd;
         }
@@ -72,10 +78,21 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         public void run() {
             try {
                 EMClient.getInstance().createAccount(mUserName, mPassword);
-                mRegisterView.onRegisterSuccess();
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRegisterView.onRegisterSuccess();
+                    }
+                });
             } catch (HyphenateException e) {
                 e.printStackTrace();
-                mRegisterView.onRegisterError();
+                mUser.delete();
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRegisterView.onRegisterError();
+                    }
+                });
             }
         }
     }

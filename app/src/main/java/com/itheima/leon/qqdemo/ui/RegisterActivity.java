@@ -2,6 +2,7 @@ package com.itheima.leon.qqdemo.ui;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.presenter.RegisterPresenter;
@@ -42,12 +43,18 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
     @Override
     public void onStartRegister() {
-
+        showProgress(getString(R.string.registering));
     }
 
     @Override
     public void onRegisterError() {
+        hideProgress();
+        Toast.makeText(RegisterActivity.this, getString(R.string.register_failed), Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onRegisterSuccess() {
+        hideProgress();
     }
 
     @Override
