@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+import com.itheima.leon.qqdemo.app.Constant;
 import com.itheima.leon.qqdemo.model.User;
 import com.itheima.leon.qqdemo.presenter.RegisterPresenter;
 import com.itheima.leon.qqdemo.utils.StringUtils;
@@ -53,9 +54,13 @@ public class RegisterPresenterImpl implements RegisterPresenter {
             public void done(User user, BmobException e) {
                 Log.d(TAG, "done: " + Thread.currentThread().getName());
                 if (e == null) {
-                    mRegisterView.onRegisterError();
-                } else {
                     ThreadUtils.runOnBackgroundThread(new RegisterEMTask(user, userName, pwd));
+                } else {
+                    if (e.getErrorCode() == Constant.ErrorCode.USER_ALREADY_EXIST) {
+                        mRegisterView.onResisterUserExist();
+                    } else {
+                        mRegisterView.onRegisterError();
+                    }
                 }
             }
         });

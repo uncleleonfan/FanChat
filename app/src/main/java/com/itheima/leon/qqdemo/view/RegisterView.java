@@ -12,6 +12,8 @@ public interface RegisterView {
 
     void onRegisterError();
 
+    void onResisterUserExist();
+
     void onRegisterSuccess();
 
     void onUserNameError();

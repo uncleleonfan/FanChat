@@ -11,4 +11,5 @@
     <string name="user_password_confirm_error">密码不一致</string>
     <string name="registering">注册中...</string>
     <string name="register_failed">注册失败</string>
+    <string name="register_failed_user_exist">用户已存在</string>
 </resources>

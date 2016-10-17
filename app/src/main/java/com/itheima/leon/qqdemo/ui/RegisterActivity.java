@@ -53,6 +53,12 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     }
 
     @Override
+    public void onResisterUserExist() {
+        hideProgress();
+        Toast.makeText(RegisterActivity.this, getString(R.string.register_failed_user_exist), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onRegisterSuccess() {
         hideProgress();
     }
