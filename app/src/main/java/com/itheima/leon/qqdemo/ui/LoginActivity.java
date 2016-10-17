@@ -1,6 +1,10 @@
 package com.itheima.leon.qqdemo.ui;
 
-import android.util.Log;
+import android.Manifest;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +28,7 @@ import butterknife.OnClick;
 public class LoginActivity extends BaseActivity implements LoginView{
 
     public static final String TAG = "LoginActivity";
+    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 0;
     @BindView(R.id.user_name)
     EditText mUserName;
     @BindView(R.id.password)
@@ -34,6 +39,7 @@ public class LoginActivity extends BaseActivity implements LoginView{
     TextView mNewUser;
 
     private LoginPresenter mLoginPresenter;
+
 
     @Override
     public int getLayoutRes() {
@@ -58,15 +64,30 @@ public class LoginActivity extends BaseActivity implements LoginView{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login:
-                String userName = mUserName.getText().toString().trim();
-                String password = mPassword.getText().toString().trim();
-                Log.d(TAG, "onClick: " + userName + " " + password);
-                mLoginPresenter.login(userName, password);
+                if (hasWriteExternalStoragePermission()) {
+                    login();
+                } else {
+                    applyPermission();
+                }
                 break;
             case R.id.new_user:
                 startActivity(RegisterActivity.class);
                 break;
         }
+    }
+
+    private boolean hasWriteExternalStoragePermission() {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED;
+    }
+
+    private void applyPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE);
+    }
+
+    private void login() {
+        String userName = mUserName.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        mLoginPresenter.login(userName, password);
     }
 
     @Override
@@ -95,5 +116,18 @@ public class LoginActivity extends BaseActivity implements LoginView{
     public void onLoginFailed() {
         hideProgress();
         toast(getString(R.string.login_failed));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+                    login();
+                } else {
+                    toast(getString(R.string.not_get_permission));
+                }
+                break;
+        }
     }
 }

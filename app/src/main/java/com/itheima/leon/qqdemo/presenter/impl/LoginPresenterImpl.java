@@ -26,6 +26,7 @@ public class LoginPresenterImpl implements LoginPresenter {
     public void login(String userName, String pwd) {
         if (StringUtils.checkUserName(userName)) {
             if (StringUtils.checkPassword(pwd)) {
+                //动态权限管理
                 mLoginView.onStartLogin();
                 startLogin(userName, pwd);
             } else {

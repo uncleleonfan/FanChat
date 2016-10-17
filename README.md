@@ -30,3 +30,6 @@ android:imeOptions="actionGo"
 # 云数据库 #
 [LeanCloud](https://leancloud.cn/)
 [Bmob](http://www.bmob.cn/)
+
+# Android6.0动态权限管理 #
+[介绍](http://www.jianshu.com/p/a37f4827079a)
