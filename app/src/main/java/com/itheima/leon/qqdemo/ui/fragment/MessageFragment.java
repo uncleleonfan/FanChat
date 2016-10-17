@@ -14,8 +14,11 @@ import butterknife.BindView;
 public class MessageFragment extends BaseFragment {
 
     public static final String TAG = "MessageFragment";
+
     @BindView(R.id.test)
     TextView mTest;
+    @BindView(R.id.title)
+    TextView mTitle;
 
     @Override
     protected int getLayoutRes() {
@@ -26,5 +29,7 @@ public class MessageFragment extends BaseFragment {
     protected void init() {
         super.init();
         mTest.setText("message");
+        mTitle.setText(getString(R.string.messages));
     }
+
 }

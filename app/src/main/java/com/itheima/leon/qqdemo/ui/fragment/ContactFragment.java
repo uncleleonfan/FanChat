@@ -1,5 +1,7 @@
 package com.itheima.leon.qqdemo.ui.fragment;
 
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
@@ -15,6 +17,10 @@ public class ContactFragment extends BaseFragment {
     public static final String TAG = "ContactFragment";
     @BindView(R.id.test)
     TextView mTest;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.add)
+    ImageView mAdd;
 
     @Override
     protected int getLayoutRes() {
@@ -25,5 +31,8 @@ public class ContactFragment extends BaseFragment {
     protected void init() {
         super.init();
         mTest.setText("联系人");
+        mTitle.setText(getString(R.string.contacts));
+        mAdd.setVisibility(View.VISIBLE);
     }
+
 }

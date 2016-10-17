@@ -10,5 +10,8 @@
     <item name="contacts" type="id"/>
     <item name="dynamic" type="id"/>
     <item name="fragment_container" type="id"/>
+    <item name="back" type="id"/>
+    <item name="add" type="id"/>
+    <item name="title" type="id"/>
 
 </resources>
