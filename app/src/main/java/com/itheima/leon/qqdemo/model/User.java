@@ -10,8 +10,21 @@ import cn.bmob.v3.BmobUser;
 public class User extends BmobUser {
     public static final String TAG = "User";
 
+    private String pwd;
+
     public User(String userName, String password) {
         setUsername(userName);
         setPassword(password);
     }
+
+    @Override
+    public void setPassword(String password) {
+        super.setPassword(password);
+        pwd = password;
+    }
+
+    public String getPassword() {
+        return pwd;
+    }
+
 }

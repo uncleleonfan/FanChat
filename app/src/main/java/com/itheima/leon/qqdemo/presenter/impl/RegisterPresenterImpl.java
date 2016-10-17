@@ -54,7 +54,7 @@ public class RegisterPresenterImpl implements RegisterPresenter {
             public void done(User user, BmobException e) {
                 Log.d(TAG, "done: " + Thread.currentThread().getName());
                 if (e == null) {
-                    ThreadUtils.runOnBackgroundThread(new RegisterEMTask(user, userName, pwd));
+                    ThreadUtils.runOnBackgroundThread(new RegisterEMTask(user));
                 } else {
                     if (e.getErrorCode() == Constant.ErrorCode.USER_ALREADY_EXIST) {
                         mRegisterView.onResisterUserExist();
@@ -68,25 +68,20 @@ public class RegisterPresenterImpl implements RegisterPresenter {
 
     private class RegisterEMTask implements Runnable {
 
-        private String mUserName;
-        private String mPassword;
-
         private User mUser;
 
-        public RegisterEMTask(User user, String userName, String pwd) {
+        public RegisterEMTask(User user) {
             mUser = user;
-            mUserName = userName;
-            mPassword = pwd;
         }
 
         @Override
         public void run() {
             try {
-                EMClient.getInstance().createAccount(mUserName, mPassword);
+                EMClient.getInstance().createAccount(mUser.getUsername(), mUser.getPassword());
                 ThreadUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mRegisterView.onRegisterSuccess();
+                        mRegisterView.onRegisterSuccess(mUser);
                     }
                 });
             } catch (HyphenateException e) {

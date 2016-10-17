@@ -2,11 +2,13 @@ package com.itheima.leon.qqdemo.ui;
 
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.itheima.leon.qqdemo.R;
+import com.itheima.leon.qqdemo.app.Constant;
+import com.itheima.leon.qqdemo.model.User;
 import com.itheima.leon.qqdemo.presenter.RegisterPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.RegisterPresenterImpl;
+import com.itheima.leon.qqdemo.utils.SpUtils;
 import com.itheima.leon.qqdemo.view.RegisterView;
 
 import butterknife.BindView;
@@ -49,18 +51,21 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @Override
     public void onRegisterError() {
         hideProgress();
-        Toast.makeText(RegisterActivity.this, getString(R.string.register_failed), Toast.LENGTH_SHORT).show();
+        toast(getString(R.string.register_failed));
     }
 
     @Override
     public void onResisterUserExist() {
         hideProgress();
-        Toast.makeText(RegisterActivity.this, getString(R.string.register_failed_user_exist), Toast.LENGTH_SHORT).show();
+        toast(getString(R.string.register_failed_user_exist));
     }
 
     @Override
-    public void onRegisterSuccess() {
+    public void onRegisterSuccess(User user) {
         hideProgress();
+        SpUtils.saveStrings(this, new String[]{Constant.SpKey.USER_NAME, Constant.SpKey.USER_PASSWORD},
+                new String[]{user.getUsername(), user.getPassword()});
+        toast(getString(R.string.register_success));
     }
 
     @Override

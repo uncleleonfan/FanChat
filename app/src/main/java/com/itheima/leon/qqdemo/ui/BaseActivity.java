@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 
@@ -59,12 +60,17 @@ public abstract class BaseActivity extends AppCompatActivity {
             mProgressDialog.setCancelable(true);
         }
         mProgressDialog.setMessage(msg);
+        mProgressDialog.show();
     }
 
     protected void hideProgress() {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
+    }
+
+    protected void toast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
 }
