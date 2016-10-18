@@ -9,4 +9,5 @@ public interface ContactPresenter {
 
     void getContactList();
 
+    void refreshContactList();
 }

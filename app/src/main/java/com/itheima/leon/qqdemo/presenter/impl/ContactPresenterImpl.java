@@ -1,5 +1,7 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
+import android.util.Log;
+
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.itheima.leon.qqdemo.model.ContactItem;
@@ -16,6 +18,7 @@ import java.util.List;
  * 描述：    TODO
  */
 public class ContactPresenterImpl implements ContactPresenter {
+    private static final String TAG = "ContactPresenterImpl";
 
     private ContactView mContactView;
 
@@ -35,7 +38,14 @@ public class ContactPresenterImpl implements ContactPresenter {
         getContactItemFromServer();
     }
 
+    @Override
+    public void refreshContactList() {
+        mContactItems = null;
+        getContactList();
+    }
+
     private void getContactItemFromServer() {
+        Log.d(TAG, "getContactItemFromServer: ");
         ThreadUtils.runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {

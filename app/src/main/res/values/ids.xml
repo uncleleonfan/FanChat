@@ -16,5 +16,6 @@
     <item name="logout" type="id"/>
     <item name="recycler_view" type="id"/>
     <item name="section" type="id"/>
+    <item name="swipe_refresh_layout" type="id"/>
 
 </resources>

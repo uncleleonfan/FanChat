@@ -1,7 +1,9 @@
 package com.itheima.leon.qqdemo.ui.fragment;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +24,7 @@ import butterknife.BindView;
  * 创建时间:  2016/10/17 22:37
  * 描述：    TODO
  */
-public class ContactFragment extends BaseFragment implements ContactView{
+public class ContactFragment extends BaseFragment implements ContactView {
     public static final String TAG = "ContactFragment";
 
     @BindView(R.id.title)
@@ -31,6 +33,8 @@ public class ContactFragment extends BaseFragment implements ContactView{
     ImageView mAdd;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private ContactListAdapter mContactListAdapter;
 
@@ -45,25 +49,37 @@ public class ContactFragment extends BaseFragment implements ContactView{
     @Override
     protected void init() {
         super.init();
-        mTitle.setText(getString(R.string.contacts));
-        mAdd.setVisibility(View.VISIBLE);
-        initRecyclerView();
+        initView();
         mContactPresenter = new ContactPresenterImpl(this);
         mContactPresenter.getContactList();
     }
 
-    private void initRecyclerView() {
+    private void initView() {
+        mTitle.setText(getString(R.string.contacts));
+        mAdd.setVisibility(View.VISIBLE);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
+        mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
     }
 
     @Override
     public void onGetContactList(List<ContactItem> list) {
+        Log.d(TAG, "onGetContactList: " + list.size());
         mContactListAdapter = new ContactListAdapter(getContext(), list);
         mRecyclerView.setAdapter(mContactListAdapter);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onGetContactListFailed() {
         toast(getString(R.string.get_contacts_error));
+        mSwipeRefreshLayout.setRefreshing(false);
     }
+
+    private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            mContactPresenter.refreshContactList();
+        }
+    };
 }
