@@ -66,9 +66,16 @@ public class ContactPresenterImpl implements ContactPresenter {
             for (int i = 0; i < contacts.size(); i++) {
                 ContactItem item = new ContactItem();
                 item.userName = contacts.get(i);
+                if (itemInSameGroup(i, item)) {
+                    item.showSection = false;
+                }
                 mContactItems.add(item);
             }
         }
+    }
+
+    private boolean itemInSameGroup(int i, ContactItem item) {
+        return i > 0 && (item.getFirstLetter() == mContactItems.get(i - 1).getFirstLetter());
     }
 
     private void notifyGetContactList() {

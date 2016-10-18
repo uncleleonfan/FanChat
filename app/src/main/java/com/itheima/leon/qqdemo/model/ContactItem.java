@@ -13,4 +13,10 @@ public class ContactItem {
     public int avatar = R.mipmap.avatar6;
 
     public String userName;
+
+    public boolean showSection = true;
+
+    public char getFirstLetter() {
+        return userName.charAt(0);
+    }
 }

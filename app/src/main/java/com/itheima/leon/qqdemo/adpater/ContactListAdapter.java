@@ -14,7 +14,7 @@ import java.util.List;
  * 创建时间:  2016/10/18 12:06
  * 描述：    TODO
  */
-public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ContactItemViewHolder> {
     public static final String TAG = "ContactListAdapter";
 
     private Context mContext;
@@ -26,14 +26,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ContactItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ContactItemView itemView = new ContactItemView(mContext);
         return new ContactItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(ContactItemViewHolder holder, int position) {
+        holder.mItemView.bindView(mContactItems.get(position));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mContactItems.size();
     }
 
-    private class ContactItemViewHolder extends RecyclerView.ViewHolder {
+    public class ContactItemViewHolder extends RecyclerView.ViewHolder {
 
         public ContactItemView mItemView;
 
