@@ -14,6 +14,7 @@ import com.itheima.leon.qqdemo.model.ContactItem;
 import com.itheima.leon.qqdemo.presenter.ContactPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.ContactPresenterImpl;
 import com.itheima.leon.qqdemo.view.ContactView;
+import com.itheima.leon.qqdemo.widget.SlideBar;
 
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class ContactFragment extends BaseFragment implements ContactView {
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.slide_bar)
+    SlideBar mSlideBar;
+    @BindView(R.id.section)
+    TextView mSection;
 
     private ContactListAdapter mContactListAdapter;
 
@@ -60,6 +65,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        mSlideBar.setOnSlidingBarChangeListener(mOnSlideBarChangeListener);
     }
 
     @Override
@@ -80,6 +86,19 @@ public class ContactFragment extends BaseFragment implements ContactView {
         @Override
         public void onRefresh() {
             mContactPresenter.refreshContactList();
+        }
+    };
+
+    private SlideBar.OnSlideBarChangeListener mOnSlideBarChangeListener = new SlideBar.OnSlideBarChangeListener() {
+        @Override
+        public void onSectionChange(int index, String section) {
+            mSection.setVisibility(View.VISIBLE);
+            mSection.setText(section);
+        }
+
+        @Override
+        public void onSlidingFinish() {
+            mSection.setVisibility(View.GONE);
         }
     };
 }

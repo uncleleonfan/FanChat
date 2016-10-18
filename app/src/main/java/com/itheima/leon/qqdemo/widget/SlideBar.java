@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.hyphenate.util.DensityUtil;
@@ -24,6 +25,12 @@ public class SlideBar extends View {
             , "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     private Paint mPaint;
 
+    private int mCurrentIndex = - 1;
+
+    private float mTextBaseline = 0;
+
+    private OnSlideBarChangeListener mOnSlideBarChangeListener;
+
     public SlideBar(Context context) {
         this(context, null);
     }
@@ -43,15 +50,48 @@ public class SlideBar extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         mTextSize = h / SECTIONS.length;
+        Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
+        float mTextHeight = fontMetrics.descent - fontMetrics.ascent;
+        mTextBaseline = mTextSize / 2 + mTextHeight/2 - fontMetrics.descent;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         int x = getWidth() / 2;
-        int y = mTextSize;
         for(int i = 0; i < SECTIONS.length; i++) {
-            canvas.drawText(SECTIONS[i], x, y, mPaint);
-            y += mTextSize;
+            canvas.drawText(SECTIONS[i], x, mTextBaseline, mPaint);
+            mTextBaseline += mTextSize;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                int index = (int) (event.getY() / mTextSize);
+                if (mOnSlideBarChangeListener != null) {
+                    mOnSlideBarChangeListener.onSectionChange(index, SECTIONS[index]);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (mOnSlideBarChangeListener != null) {
+                    mOnSlideBarChangeListener.onSlidingFinish();
+                }
+                break;
+        }
+        return true;
+    }
+
+    public interface OnSlideBarChangeListener{
+
+        void onSectionChange(int index, String section);
+
+        void onSlidingFinish();
+
+    }
+
+    public void setOnSlidingBarChangeListener(OnSlideBarChangeListener l) {
+        mOnSlideBarChangeListener = l;
     }
 }

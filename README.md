@@ -42,3 +42,8 @@ RadioGroup, TabHost, FragmentTabHost, 自定义
 [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
 
 ## Fragment的切换 ##
+
+## SlideBar ##
+
+### 绘制居中文本 ###
+http://www.cnblogs.com/tianzhijiexian/p/4297664.html
