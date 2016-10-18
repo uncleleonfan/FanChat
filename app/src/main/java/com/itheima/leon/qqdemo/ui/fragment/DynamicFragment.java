@@ -13,20 +13,18 @@ import butterknife.BindView;
  */
 public class DynamicFragment extends BaseFragment {
     public static final String TAG = "DynamicFragment";
-    @BindView(R.id.test)
-    TextView mTest;
+
     @BindView(R.id.title)
     TextView mTitle;
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_base;
+        return R.layout.fragment_dynamic;
     }
 
     @Override
     protected void init() {
         super.init();
-        mTest.setText("动态");
         mTitle.setText(getString(R.string.dynamic));
 
     }

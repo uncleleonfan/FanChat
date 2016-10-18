@@ -6,5 +6,7 @@
 
     <color name="qq_blue">#00acff</color>
     <color name="qq_blue_pressed">#00a1db</color>
+    <color name="qq_red">#ff0000</color>
+    <color name="qq_red_dark">#aa0000</color>
 
 </resources>
