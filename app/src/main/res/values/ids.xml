@@ -14,5 +14,7 @@
     <item name="add" type="id"/>
     <item name="title" type="id"/>
     <item name="logout" type="id"/>
+    <item name="recycler_view" type="id"/>
+    <item name="section" type="id"/>
 
 </resources>
