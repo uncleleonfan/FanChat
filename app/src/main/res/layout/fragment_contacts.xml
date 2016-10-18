@@ -7,18 +7,30 @@
 
     <include layout="@layout/header"/>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@id/swipe_refresh_layout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@id/recycler_view"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
+        <com.itheima.leon.qqdemo.widget.SlideBar
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"/>
 
+    </FrameLayout>
 </LinearLayout>
+
+
+
+
