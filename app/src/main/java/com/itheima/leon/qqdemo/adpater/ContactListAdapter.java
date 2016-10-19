@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseIntArray;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SectionIndexer;
 
@@ -25,6 +26,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private List<ContactItem> mContactItems;
 
     private SparseIntArray mSectionFirstPositionBySectionIndex = new SparseIntArray();
+    private OnItemClickListener mOnItemClickListener;
 
     public ContactListAdapter(Context context, List<ContactItem> items) {
         mContext = context;
@@ -34,6 +36,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     @Override
     public ContactItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ContactItemView itemView = new ContactItemView(mContext);
+        itemView.setOnClickListener(mOnClickListener);
+        itemView.setOnLongClickListener(mOnLongClickListener);
         return new ContactItemViewHolder(itemView);
     }
 
@@ -103,5 +107,34 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     public List<ContactItem> getContactItems() {
         return mContactItems;
+    }
+
+    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemClick();
+            }
+        }
+    };
+
+    private View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View v) {
+            if (mOnItemClickListener != null) {
+                mOnItemClickListener.onItemLongClick();
+                return true;
+            }
+            return false;
+        }
+    };
+
+    public interface OnItemClickListener {
+        void onItemClick();
+        void onItemLongClick();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener l) {
+        mOnItemClickListener = l;
     }
 }

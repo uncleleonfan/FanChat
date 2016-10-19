@@ -78,6 +78,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
     public void onGetContactList(List<ContactItem> list) {
         Log.d(TAG, "onGetContactList: " + list.size());
         mContactListAdapter = new ContactListAdapter(getContext(), list);
+        mContactListAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mContactListAdapter);
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -192,6 +193,18 @@ public class ContactFragment extends BaseFragment implements ContactView {
         @Override
         public void onContactRefused(String s) {
 
+        }
+    };
+
+    private ContactListAdapter.OnItemClickListener mOnItemClickListener = new ContactListAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick() {
+            toast("onItemClick");
+        }
+
+        @Override
+        public void onItemLongClick() {
+            toast("onItemLongClick");
         }
     };
 }
