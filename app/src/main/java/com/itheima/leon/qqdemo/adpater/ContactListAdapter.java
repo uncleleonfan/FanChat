@@ -36,14 +36,31 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     @Override
     public ContactItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ContactItemView itemView = new ContactItemView(mContext);
-        itemView.setOnClickListener(mOnClickListener);
-        itemView.setOnLongClickListener(mOnLongClickListener);
         return new ContactItemViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ContactItemViewHolder holder, int position) {
-        holder.mItemView.bindView(mContactItems.get(position));
+    public void onBindViewHolder(ContactItemViewHolder holder, final int position) {
+        final ContactItem item = mContactItems.get(position);
+        holder.mItemView.bindView(item);
+        holder.mItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(position, item.userName);
+                }
+            }
+        });
+        holder.mItemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemLongClick(position, item.userName);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -109,29 +126,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         return mContactItems;
     }
 
-    private View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemClick();
-            }
-        }
-    };
-
-    private View.OnLongClickListener mOnLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            if (mOnItemClickListener != null) {
-                mOnItemClickListener.onItemLongClick();
-                return true;
-            }
-            return false;
-        }
-    };
 
     public interface OnItemClickListener {
-        void onItemClick();
-        void onItemLongClick();
+        void onItemClick(int index, String name);
+        void onItemLongClick(int index, String name);
     }
 
     public void setOnItemClickListener(OnItemClickListener l) {

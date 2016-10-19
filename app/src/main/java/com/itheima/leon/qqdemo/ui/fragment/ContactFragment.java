@@ -1,6 +1,8 @@
 package com.itheima.leon.qqdemo.ui.fragment;
 
+import android.content.DialogInterface;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -89,6 +91,19 @@ public class ContactFragment extends BaseFragment implements ContactView {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void onDeleteFriendSuccess() {
+        hideProgress();
+        toast(getString(R.string.delete_friend_success));
+        mContactPresenter.refreshContactList();
+    }
+
+    @Override
+    public void onDeleteFriendFailed() {
+        hideProgress();
+        toast(getString(R.string.delete_friend_failed));
+    }
+
     private SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -162,7 +177,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
          */
         @Override
         public void onContactDeleted(String s) {
-
+            mContactPresenter.refreshContactList();
         }
 
         /**
@@ -197,14 +212,34 @@ public class ContactFragment extends BaseFragment implements ContactView {
     };
 
     private ContactListAdapter.OnItemClickListener mOnItemClickListener = new ContactListAdapter.OnItemClickListener() {
+
         @Override
-        public void onItemClick() {
-            toast("onItemClick");
+        public void onItemClick(int index, String name) {
+
         }
 
         @Override
-        public void onItemLongClick() {
-            toast("onItemLongClick");
+        public void onItemLongClick(int index, final String name) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            String message = String.format(getString(R.string.delete_friend_message), name);
+            builder.setTitle(getString(R.string.delete_friend))
+                    .setMessage(message)
+                    .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            showProgress(getString(R.string.deleting_friend));
+                            mContactPresenter.deleteFriend(name);
+
+                        }
+                    });
+            builder.show();
         }
     };
 }

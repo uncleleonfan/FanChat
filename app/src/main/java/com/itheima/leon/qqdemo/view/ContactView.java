@@ -15,4 +15,7 @@ public interface ContactView {
 
     void onGetContactListFailed();
 
+    void onDeleteFriendSuccess();
+
+    void onDeleteFriendFailed();
 }

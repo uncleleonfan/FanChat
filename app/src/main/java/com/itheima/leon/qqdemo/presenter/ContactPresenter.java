@@ -10,4 +10,7 @@ public interface ContactPresenter {
     void getContactList();
 
     void refreshContactList();
+
+    void deleteFriend(String name);
+
 }

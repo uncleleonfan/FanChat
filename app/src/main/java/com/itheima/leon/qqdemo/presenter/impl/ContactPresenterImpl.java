@@ -44,6 +44,32 @@ public class ContactPresenterImpl implements ContactPresenter {
         getContactList();
     }
 
+    @Override
+    public void deleteFriend(final String name) {
+        ThreadUtils.runOnBackgroundThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EMClient.getInstance().contactManager().deleteContact(name);
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mContactView.onDeleteFriendSuccess();
+                        }
+                    });
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mContactView.onDeleteFriendFailed();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     private void getContactItemFromServer() {
         Log.d(TAG, "getContactItemFromServer: ");
         ThreadUtils.runOnBackgroundThread(new Runnable() {
