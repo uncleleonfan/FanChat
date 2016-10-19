@@ -29,4 +29,7 @@
     <string name="searching">拼命搜索中...</string>
     <string name="friend_not_found">未搜索到好友</string>
     <string name="add">添加</string>
+    <string name="add_friend_reason">我是刘德华，请加我</string>
+    <string name="add_friend_success">添加好友成功</string>
+    <string name="add_friend_failed">添加好友失败</string>
 </resources>

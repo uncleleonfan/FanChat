@@ -50,5 +50,7 @@ RadioGroup, TabHost, FragmentTabHost, 自定义
 ### 绘制居中文本 ###
 http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 
-## 添加联系人 ##
+## 添加好友 ##
+注意：使用环信添加好友存在延时
+
 ### 隐藏软键盘 ###

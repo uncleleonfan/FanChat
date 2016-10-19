@@ -9,4 +9,6 @@ public interface AddFriendPresenter {
     public static final String TAG = "AddFriendPresenter";
 
     void searchFriend(String keyword);
+
+    void onDestroy();
 }

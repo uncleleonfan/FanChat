@@ -7,7 +7,6 @@
 
     <include layout="@layout/header"/>
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -16,18 +15,18 @@
             android:id="@id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:layout_margin="8dp"
             android:imeOptions="actionSearch"
-            android:layout_margin="8dp"/>
+            android:textSize="18sp"/>
 
         <ImageView
             android:id="@id/search"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/search_friend_selector"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:src="@drawable/search_friend_selector"/>
 
 
     </RelativeLayout>
@@ -50,11 +49,5 @@
             android:layout_gravity="center"
             android:text="@string/friend_not_found"
             android:visibility="gone"/>
-
     </FrameLayout>
-
-
-
-
-
 </LinearLayout>

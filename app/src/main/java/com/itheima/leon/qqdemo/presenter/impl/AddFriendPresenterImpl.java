@@ -3,10 +3,17 @@ package com.itheima.leon.qqdemo.presenter.impl;
 import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
+import com.itheima.leon.qqdemo.event.AddFriendEvent;
 import com.itheima.leon.qqdemo.model.AddFriendItem;
 import com.itheima.leon.qqdemo.model.User;
 import com.itheima.leon.qqdemo.presenter.AddFriendPresenter;
+import com.itheima.leon.qqdemo.utils.ThreadUtils;
 import com.itheima.leon.qqdemo.view.AddFriendView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,7 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
 
     public AddFriendPresenterImpl(AddFriendView addFriendView) {
         mAddFriendView = addFriendView;
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -55,4 +63,34 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
             }
         });
     }
+
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void addFriend(AddFriendEvent event){
+        try {
+            Log.d(TAG, "addFriend: " + event.getFriendName());
+            EMClient.getInstance().contactManager().addContact(event.getFriendName(), event.getReason());
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAddFriendView.onAddFriendSuccess();
+                }
+            });
+        } catch (HyphenateException e) {
+            e.printStackTrace();
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAddFriendView.onAddFriendFailed();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
+
+
 }

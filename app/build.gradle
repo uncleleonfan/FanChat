@@ -28,4 +28,5 @@ dependencies {
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.roughike:bottom-bar:2.0.2'
     compile 'com.android.support:cardview-v7:24.2.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

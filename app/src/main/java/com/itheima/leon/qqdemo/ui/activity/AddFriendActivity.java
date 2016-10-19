@@ -99,4 +99,20 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
         mFriendNotFound.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
     }
+
+    @Override
+    public void onAddFriendSuccess() {
+        toast(getString(R.string.add_friend_success));
+    }
+
+    @Override
+    public void onAddFriendFailed() {
+        toast(getString(R.string.add_friend_failed));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAddFriendPresenter.onDestroy();
+    }
 }

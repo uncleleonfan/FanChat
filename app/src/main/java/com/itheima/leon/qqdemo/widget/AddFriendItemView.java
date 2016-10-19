@@ -3,14 +3,19 @@ package com.itheima.leon.qqdemo.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
+import com.itheima.leon.qqdemo.event.AddFriendEvent;
 import com.itheima.leon.qqdemo.model.AddFriendItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 创建者:   Leon
@@ -23,6 +28,8 @@ public class AddFriendItemView extends RelativeLayout {
     TextView mUserName;
     @BindView(R.id.timestamp)
     TextView mTimestamp;
+    @BindView(R.id.add)
+    Button mAdd;
 
 
     public AddFriendItemView(Context context) {
@@ -43,4 +50,13 @@ public class AddFriendItemView extends RelativeLayout {
         mUserName.setText(addFriendItem.userName);
         mTimestamp.setText(addFriendItem.timestamp);
     }
+
+    @OnClick(R.id.add)
+    public void onClick() {
+        String friendName = mUserName.getText().toString().trim();
+        String addFriendReason = getContext().getString(R.string.add_friend_reason);
+        AddFriendEvent event = new AddFriendEvent(friendName, addFriendReason);
+        EventBus.getDefault().post(event);
+    }
+
 }
