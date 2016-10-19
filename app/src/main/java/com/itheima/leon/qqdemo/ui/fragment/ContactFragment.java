@@ -13,6 +13,7 @@ import com.itheima.leon.qqdemo.adpater.ContactListAdapter;
 import com.itheima.leon.qqdemo.model.ContactItem;
 import com.itheima.leon.qqdemo.presenter.ContactPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.ContactPresenterImpl;
+import com.itheima.leon.qqdemo.ui.activity.AddFriendActivity;
 import com.itheima.leon.qqdemo.view.ContactView;
 import com.itheima.leon.qqdemo.widget.SlideBar;
 
@@ -63,6 +64,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
     private void initView() {
         mTitle.setText(getString(R.string.contacts));
         mAdd.setVisibility(View.VISIBLE);
+        mAdd.setOnClickListener(mOnAddFriendListener);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
@@ -130,4 +132,11 @@ public class ContactFragment extends BaseFragment implements ContactView {
         }
         return -1;
     }
+
+    private View.OnClickListener mOnAddFriendListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            startActivity(AddFriendActivity.class);
+        }
+    };
 }

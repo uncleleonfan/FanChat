@@ -44,6 +44,8 @@
 
         <activity android:name=".ui.activity.RegisterActivity"/>
 
+        <activity android:name=".ui.activity.AddFriendActivity"/>
+
         <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"

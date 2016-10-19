@@ -18,5 +18,6 @@
     <item name="section" type="id"/>
     <item name="swipe_refresh_layout" type="id"/>
     <item name="slide_bar" type="id"/>
+    <item name="search" type="id"/>
 
 </resources>

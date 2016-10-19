@@ -25,4 +25,5 @@
     <string name="logout_success">退出登录成功</string>
     <string name="logout_failed">退出登录失败</string>
     <string name="get_contacts_error">获取最新联系人失败</string>
+    <string name="add_friend">添加好友</string>
 </resources>
