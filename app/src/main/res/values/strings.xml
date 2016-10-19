@@ -26,4 +26,6 @@
     <string name="logout_failed">退出登录失败</string>
     <string name="get_contacts_error">获取最新联系人失败</string>
     <string name="add_friend">添加好友</string>
+    <string name="searching">拼命搜索中...</string>
+    <string name="friend_not_found">未搜索到好友</string>
 </resources>
