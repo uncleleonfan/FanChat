@@ -16,6 +16,7 @@ import com.itheima.leon.qqdemo.presenter.impl.ContactPresenterImpl;
 import com.itheima.leon.qqdemo.view.ContactView;
 import com.itheima.leon.qqdemo.widget.SlideBar;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -104,13 +105,21 @@ public class ContactFragment extends BaseFragment implements ContactView {
     };
 
     private void scrollToSection(String section) {
-        int sectionPosition = getSectionPosition(section);
-        Log.d(TAG, "scrollToSection: " + sectionPosition);
+//        int sectionPosition = getSectionPosition(section);
+//        Log.d(TAG, "scrollToSection: " + sectionPosition);
 //        mRecyclerView.scrollToPosition(sectionPosition);
-        if (sectionPosition != -1) {
-            mRecyclerView.smoothScrollToPosition(sectionPosition);
-        }
+//        if (sectionPosition != -1) {
+//            mRecyclerView.smoothScrollToPosition(sectionPosition);
+//        }
+        //获取section在分区集合中索引
+        String[] sections = mContactListAdapter.getSections();
+        Log.d(TAG, "scrollToSection: sections size " + sections.length);
+        int sectionIndex = Arrays.binarySearch(sections, section);
+        //获取分区索引对应分区中第一个元素在列表中的位置
+        int position = mContactListAdapter.getPositionForSection(sectionIndex);
+        mRecyclerView.scrollToPosition(position);
     }
+
 
     private int getSectionPosition(String section) {
         List<ContactItem> contactItems = mContactListAdapter.getContactItems();

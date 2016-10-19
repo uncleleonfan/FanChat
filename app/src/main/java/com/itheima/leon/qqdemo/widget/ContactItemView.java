@@ -42,6 +42,7 @@ public class ContactItemView extends RelativeLayout {
     public void bindView(ContactItem contactItem) {
         mUserName.setText(contactItem.userName);
         if (contactItem.showSection) {
+            mSection.setVisibility(VISIBLE);
             mSection.setText(String.valueOf(contactItem.getFirstLetter()));
         } else {
             mSection.setVisibility(GONE);
