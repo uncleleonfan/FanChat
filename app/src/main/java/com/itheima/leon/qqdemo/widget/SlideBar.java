@@ -70,7 +70,8 @@ public class SlideBar extends View {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
                 int index = (int) (event.getY() / mTextSize);
-                if (mOnSlideBarChangeListener != null) {
+                if (mOnSlideBarChangeListener != null && mCurrentIndex != index) {
+                    mCurrentIndex = index;
                     mOnSlideBarChangeListener.onSectionChange(index, SECTIONS[index]);
                 }
                 break;
