@@ -69,7 +69,7 @@ public class SlideBar extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                int index = (int) (event.getY() / mTextSize);
+                int index = getTouchIndex(event);
                 if (mOnSlideBarChangeListener != null && mCurrentIndex != index) {
                     mCurrentIndex = index;
                     mOnSlideBarChangeListener.onSectionChange(index, SECTIONS[index]);
@@ -82,6 +82,16 @@ public class SlideBar extends View {
                 break;
         }
         return true;
+    }
+
+    private int getTouchIndex(MotionEvent event) {
+        int index = (int) (event.getY() / mTextSize);
+        if (index < 0) {
+            index = 0;
+        } else if (index > SECTIONS.length - 1) {
+            index = SECTIONS.length - 1;
+        }
+        return index;
     }
 
     public interface OnSlideBarChangeListener{

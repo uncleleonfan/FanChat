@@ -53,4 +53,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             mItemView = itemView;
         }
     }
+
+    public List<ContactItem> getContactItems() {
+        return mContactItems;
+    }
 }

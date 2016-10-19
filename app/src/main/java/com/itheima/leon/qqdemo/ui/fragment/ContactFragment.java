@@ -94,6 +94,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
         public void onSectionChange(int index, String section) {
             mSection.setVisibility(View.VISIBLE);
             mSection.setText(section);
+            scrollToSection(section);
         }
 
         @Override
@@ -101,4 +102,23 @@ public class ContactFragment extends BaseFragment implements ContactView {
             mSection.setVisibility(View.GONE);
         }
     };
+
+    private void scrollToSection(String section) {
+        int sectionPosition = getSectionPosition(section);
+        Log.d(TAG, "scrollToSection: " + sectionPosition);
+//        mRecyclerView.scrollToPosition(sectionPosition);
+        if (sectionPosition != -1) {
+            mRecyclerView.smoothScrollToPosition(sectionPosition);
+        }
+    }
+
+    private int getSectionPosition(String section) {
+        List<ContactItem> contactItems = mContactListAdapter.getContactItems();
+        for (int i = 0; i < contactItems.size(); i++) {
+            if (section.equals(contactItems.get(i).getFirstLetterString())) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }

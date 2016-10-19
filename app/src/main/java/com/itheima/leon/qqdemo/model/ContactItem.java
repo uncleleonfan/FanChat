@@ -19,4 +19,8 @@ public class ContactItem {
     public char getFirstLetter() {
         return userName.charAt(0);
     }
+
+    public String getFirstLetterString() {
+        return String.valueOf(getFirstLetter()).toUpperCase();
+    }
 }
