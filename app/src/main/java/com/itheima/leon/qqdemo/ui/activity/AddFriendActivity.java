@@ -72,6 +72,7 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
     @OnClick(R.id.search)
     public void onClick() {
         searchFriend(mUserName.getText().toString().trim());
+        hideKeyBoard();
     }
 
     private void searchFriend(String keyword) {

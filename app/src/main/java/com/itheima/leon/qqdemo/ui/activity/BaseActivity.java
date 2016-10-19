@@ -1,11 +1,13 @@
 package com.itheima.leon.qqdemo.ui.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -21,6 +23,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Handler mHandler = new Handler();
 
     private ProgressDialog mProgressDialog;
+
+    private InputMethodManager mInputMethodManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +75,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void toast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    protected void hideKeyBoard() {
+        if (mInputMethodManager == null) {
+            mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        }
+        mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
 }

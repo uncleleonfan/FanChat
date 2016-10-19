@@ -26,24 +26,29 @@ android:imeOptions="actionNext"
 android:imeOptions="actionGo"
 
 # 注册界面 #
-
-# 云数据库 #
+## 云数据库 ##
 [LeanCloud](https://leancloud.cn/)
 [Bmob](http://www.bmob.cn/)
 
-# Android6.0动态权限管理 #
+## Android6.0动态权限管理 ##
 [介绍](http://www.jianshu.com/p/a37f4827079a)
 
-# 底部导航条 #
+# 主界面 #
+
+## 底部导航条 ##
 RadioGroup, TabHost, FragmentTabHost, 自定义
 ## 第三方底部条 ##
 [BottomBar](https://github.com/roughike/BottomBar)
 [AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
 [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
-
 ## Fragment的切换 ##
 
-## SlideBar ##
 
+# 联系人 #
+
+## SlideBar ##
 ### 绘制居中文本 ###
 http://www.cnblogs.com/tianzhijiexian/p/4297664.html
+
+## 添加联系人 ##
+### 隐藏软键盘 ###
