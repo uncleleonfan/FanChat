@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hyphenate.EMContactListener;
+import com.hyphenate.chat.EMClient;
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.ContactListAdapter;
 import com.itheima.leon.qqdemo.model.ContactItem;
@@ -59,6 +61,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
         initView();
         mContactPresenter = new ContactPresenterImpl(this);
         mContactPresenter.getContactList();
+        EMClient.getInstance().contactManager().setContactListener(mEMContactListener);
     }
 
     private void initView() {
@@ -137,6 +140,58 @@ public class ContactFragment extends BaseFragment implements ContactView {
         @Override
         public void onClick(View v) {
             startActivity(AddFriendActivity.class);
+        }
+    };
+
+    private EMContactListener mEMContactListener = new EMContactListener() {
+
+        /**
+         * 增加联系人的回调
+         * @param s
+         */
+        @Override
+        public void onContactAdded(String s) {
+            Log.d(TAG, "onContactAdded: " + s);
+            mContactPresenter.refreshContactList();
+        }
+
+        /**
+         * 被删除回调
+         * @param s
+         */
+        @Override
+        public void onContactDeleted(String s) {
+
+        }
+
+        /**
+         * 被邀请的回调
+         * @param s 好友名字
+         * @param s1 申请理由
+         */
+        @Override
+        public void onContactInvited(String s, String s1) {
+//            EMClient.getInstance().contactManager().acceptInvitation(username);
+//            EMClient.getInstance().contactManager().declineInvitation(username);
+        }
+
+        /**
+         * 我的请求被同意 好友的客户端调用了EMClient.getInstance().contactManager().acceptInvitation(username);
+         * @param s
+         */
+        @Override
+        public void onContactAgreed(String s) {
+            Log.d(TAG, "onContactAgreed: " + s);
+        }
+
+        /**
+         * 我的请求被拒绝 好友的客户端调用了EMClient.getInstance().contactManager().declineInvitation(username);
+         *
+         * @param s
+         */
+        @Override
+        public void onContactRefused(String s) {
+
         }
     };
 }

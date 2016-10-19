@@ -51,6 +51,6 @@ RadioGroup, TabHost, FragmentTabHost, 自定义
 http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 
 ## 添加好友 ##
-注意：使用环信添加好友存在延时
+发送好友申请-->好友同意或者拒绝-->好友同意则写入数据库
 
 ### 隐藏软键盘 ###

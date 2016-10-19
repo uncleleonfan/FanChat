@@ -92,5 +92,4 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
         EventBus.getDefault().unregister(this);
     }
 
-
 }
