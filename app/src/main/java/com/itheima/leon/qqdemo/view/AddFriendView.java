@@ -1,5 +1,6 @@
 package com.itheima.leon.qqdemo.view;
 
+import com.itheima.leon.qqdemo.model.AddFriendItem;
 import com.itheima.leon.qqdemo.model.User;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface AddFriendView {
 
     void onStartSearch();
 
-    void onSearchSuccess(List<User> list);
+    void onSearchSuccess(List<AddFriendItem> list);
 
     void onSearchFailed();
 }

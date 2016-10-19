@@ -1,7 +1,7 @@
 package com.itheima.leon.qqdemo.ui.activity;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
-import com.itheima.leon.qqdemo.model.User;
+import com.itheima.leon.qqdemo.adpater.AddFriendListAdapter;
+import com.itheima.leon.qqdemo.model.AddFriendItem;
 import com.itheima.leon.qqdemo.presenter.AddFriendPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.AddFriendPresenterImpl;
 import com.itheima.leon.qqdemo.view.AddFriendView;
@@ -40,6 +41,8 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
 
     private AddFriendPresenter mAddFriendPresenter;
 
+    private AddFriendListAdapter mAddFriendListAdapter;
+
     @Override
     public int getLayoutRes() {
         return R.layout.activity_add_friend;
@@ -51,6 +54,7 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
         mAddFriendPresenter = new AddFriendPresenterImpl(this);
         mTitle.setText(getString(R.string.add_friend));
         mUserName.setOnEditorActionListener(mOnEditorActionListener);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
@@ -80,14 +84,12 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
     }
 
     @Override
-    public void onSearchSuccess(List<User> list) {
+    public void onSearchSuccess(List<AddFriendItem> list) {
         hideProgress();
         mFriendNotFound.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        for (int i = 0; i < list.size(); i++) {
-            User user = list.get(i);
-            Log.d(TAG, "onSearchSuccess: " + user.getUsername());
-        }
+        mAddFriendListAdapter = new AddFriendListAdapter(this, list);
+        mRecyclerView.setAdapter(mAddFriendListAdapter);
     }
 
     @Override

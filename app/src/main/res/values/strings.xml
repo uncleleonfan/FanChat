@@ -28,4 +28,5 @@
     <string name="add_friend">添加好友</string>
     <string name="searching">拼命搜索中...</string>
     <string name="friend_not_found">未搜索到好友</string>
+    <string name="add">添加</string>
 </resources>

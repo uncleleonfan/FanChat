@@ -20,5 +20,7 @@
     <item name="slide_bar" type="id"/>
     <item name="search" type="id"/>
     <item name="friend_not_found" type="id"/>
+    <item name="avatar" type="id"/>
+    <item name="timestamp" type="id"/>
 
 </resources>
