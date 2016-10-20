@@ -56,6 +56,7 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 ### 隐藏软键盘 ###
 
 # 聊天界面 #
+[通信过程及聊天记录保存](http://docs.easemob.com/im/000quickstart/25communicationandmessagestorage)
 ## 发送一条消息 ##
 
 ### 动画文件 ###

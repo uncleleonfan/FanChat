@@ -3,6 +3,7 @@ package com.itheima.leon.qqdemo.ui.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -11,13 +12,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.ChatAdapter;
+import com.itheima.leon.qqdemo.adpater.EMMessageListenerAdapter;
 import com.itheima.leon.qqdemo.adpater.TextWatcherAdapter;
 import com.itheima.leon.qqdemo.app.Constant;
 import com.itheima.leon.qqdemo.presenter.ChatPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.ChatPresenterImpl;
+import com.itheima.leon.qqdemo.utils.ThreadUtils;
 import com.itheima.leon.qqdemo.view.ChatView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -64,6 +71,8 @@ public class ChatActivity extends BaseActivity implements ChatView{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mChatAdapter = new ChatAdapter(this, mChatPresenter.getMessages());
         mRecyclerView.setAdapter(mChatAdapter);
+        EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
+
     }
 
     @OnClick({R.id.back, R.id.send})
@@ -126,4 +135,20 @@ public class ChatActivity extends BaseActivity implements ChatView{
         hideProgress();
         toast(getString(R.string.send_failed));
     }
+
+
+    private EMMessageListenerAdapter mEMMessageListener = new EMMessageListenerAdapter() {
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast(getString(R.string.get_new_message));
+                }
+            });
+            final EMMessage emMessage = list.get(0);
+            Log.d(TAG, "onMessageReceived: " + mUserName + " " + emMessage.getUserName() + emMessage.getBody().toString());
+
+        }
+    };
 }
