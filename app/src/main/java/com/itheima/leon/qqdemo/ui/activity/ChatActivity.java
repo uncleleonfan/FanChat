@@ -3,7 +3,6 @@ package com.itheima.leon.qqdemo.ui.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -120,14 +119,19 @@ public class ChatActivity extends BaseActivity implements ChatView{
     @Override
     public void onStartSendMessage() {
 //        showProgress(getString(R.string.sending));
+        updateList();
+    }
+
+    private void updateList() {
         mChatAdapter.notifyDataSetChanged();
+        scrollToBottom();
     }
 
     @Override
     public void onSendMessageSuccess() {
         hideProgress();
         toast(getString(R.string.send_success));
-        mChatAdapter.notifyDataSetChanged();
+        updateList();
     }
 
     @Override
@@ -139,16 +143,22 @@ public class ChatActivity extends BaseActivity implements ChatView{
 
     private EMMessageListenerAdapter mEMMessageListener = new EMMessageListenerAdapter() {
         @Override
-        public void onMessageReceived(List<EMMessage> list) {
+        public void onMessageReceived(final List<EMMessage> list) {
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    toast(getString(R.string.get_new_message));
+//                    toast(getString(R.string.get_new_message));
+                    final EMMessage emMessage = list.get(0);
+//            Log.d(TAG, "onMessageReceived: " + mUserName + " " + emMessage.getUserName() + emMessage.getBody().toString());
+                    mChatAdapter.addNewMessage(emMessage);
+                    scrollToBottom();
                 }
             });
-            final EMMessage emMessage = list.get(0);
-            Log.d(TAG, "onMessageReceived: " + mUserName + " " + emMessage.getUserName() + emMessage.getBody().toString());
 
         }
     };
+
+    private void scrollToBottom() {
+        mRecyclerView.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
+    }
 }

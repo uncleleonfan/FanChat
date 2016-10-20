@@ -50,7 +50,7 @@ public class SendMessageItemView extends RelativeLayout {
     public void bindView(EMMessage emMessage, boolean showTimestamp) {
         updateTimestamp(emMessage, showTimestamp);
         updateMessageBody(emMessage);
-        UpdateSendingStatus(emMessage);
+        updateSendingStatus(emMessage);
     }
 
     private void updateTimestamp(EMMessage emMessage, boolean showTimestamp) {
@@ -72,7 +72,7 @@ public class SendMessageItemView extends RelativeLayout {
         }
     }
 
-    private void UpdateSendingStatus(EMMessage emMessage) {
+    private void updateSendingStatus(EMMessage emMessage) {
         switch (emMessage.status()) {
             case INPROGRESS:
                 mSendMessageProgress.setVisibility(VISIBLE);

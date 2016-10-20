@@ -26,5 +26,6 @@
     <item name="edit" type="id"/>
     <item name="send_message" type="id"/>
     <item name="send_message_progress" type="id"/>
+    <item name="receive_message" type="id"/>
 
 </resources>

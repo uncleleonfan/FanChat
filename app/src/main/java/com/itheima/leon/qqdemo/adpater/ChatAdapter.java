@@ -77,6 +77,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mMessages.size();
     }
 
+    public void addNewMessage(EMMessage emMessage) {
+        mMessages.add(emMessage);
+        notifyDataSetChanged();
+    }
+
     public class ReceiveItemViewHolder extends RecyclerView.ViewHolder {
 
         public ReceiveMessageItemView mReceiveMessageItemView;
