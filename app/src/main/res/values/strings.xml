@@ -44,4 +44,5 @@
     <string name="sending">正在发送...</string>
     <string name="send_success">发送成功</string>
     <string name="send_failed">发送失败</string>
+    <string name="no_text_message">非文本消息</string>
 </resources>

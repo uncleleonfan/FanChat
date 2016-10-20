@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.util.DateUtils;
 import com.itheima.leon.qqdemo.widget.ReceiveMessageItemView;
 import com.itheima.leon.qqdemo.widget.SendMessageItemView;
 
@@ -41,11 +42,28 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof SendItemViewHolder) {
-            ((SendItemViewHolder) holder).mSendMessageItemView.bindView(mMessages.get(position));
-        } else {
-            ((ReceiveItemViewHolder) holder).mReceiveMessageItemView.bindView(mMessages.get(position));
+        boolean showTimestamp = false;
+        if (position == 0 || shouldShowTimeStamp(position)) {
+            showTimestamp = true;
         }
+        if (holder instanceof SendItemViewHolder) {
+            ((SendItemViewHolder) holder).mSendMessageItemView.bindView(mMessages.get(position), showTimestamp);
+        } else {
+            ((ReceiveItemViewHolder) holder).mReceiveMessageItemView.bindView(mMessages.get(position), showTimestamp);
+        }
+    }
+
+    /**
+     * 如果两个消息之间的时间太近，就不显示时间戳
+     *
+     * @param position
+     * @return
+     */
+    private boolean shouldShowTimeStamp(int position) {
+        long currentItemTimestamp = mMessages.get(position).getMsgTime();
+        long preItemTimestamp = mMessages.get(position - 1).getMsgTime();
+        boolean closeEnough = DateUtils.isCloseEnough(currentItemTimestamp, preItemTimestamp);
+        return !closeEnough;
     }
 
     @Override
@@ -59,7 +77,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return mMessages.size();
     }
 
-    public class ReceiveItemViewHolder extends RecyclerView.ViewHolder{
+    public class ReceiveItemViewHolder extends RecyclerView.ViewHolder {
 
         public ReceiveMessageItemView mReceiveMessageItemView;
 

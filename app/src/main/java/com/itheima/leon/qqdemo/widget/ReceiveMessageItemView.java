@@ -28,7 +28,7 @@ public class ReceiveMessageItemView extends RelativeLayout {
         LayoutInflater.from(getContext()).inflate(R.layout.view_receive_message_item, this);
     }
 
-    public void bindView(EMMessage emMessage) {
+    public void bindView(EMMessage emMessage, boolean showTimestamp) {
 
     }
 }

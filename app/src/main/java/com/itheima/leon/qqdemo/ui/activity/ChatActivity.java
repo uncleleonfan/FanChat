@@ -80,6 +80,8 @@ public class ChatActivity extends BaseActivity implements ChatView{
 
     private void sendMessage() {
         mChatPresenter.sendMessage(mUserName, mEdit.getText().toString().trim());
+        hideKeyBoard();
+        mEdit.getText().clear();
     }
 
     private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
@@ -108,7 +110,8 @@ public class ChatActivity extends BaseActivity implements ChatView{
 
     @Override
     public void onStartSendMessage() {
-        showProgress(getString(R.string.sending));
+//        showProgress(getString(R.string.sending));
+        mChatAdapter.notifyDataSetChanged();
     }
 
     @Override

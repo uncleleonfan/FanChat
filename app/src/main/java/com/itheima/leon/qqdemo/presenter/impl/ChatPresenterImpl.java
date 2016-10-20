@@ -30,7 +30,6 @@ public class ChatPresenterImpl implements ChatPresenter {
 
     @Override
     public void sendMessage(final String userName, final String message) {
-        mChatView.onStartSendMessage();
         ThreadUtils.runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
@@ -39,6 +38,12 @@ public class ChatPresenterImpl implements ChatPresenter {
                 emMessage.setMessageStatusCallback(mEMCallBackAdapter);
                 mEMMessageList.add(emMessage);
                 EMClient.getInstance().chatManager().sendMessage(emMessage);
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mChatView.onStartSendMessage();
+                    }
+                });
             }
         });
     }
