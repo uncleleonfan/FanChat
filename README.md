@@ -81,3 +81,6 @@ drawable文件夹：帧动画
 ### .9文件制作 ###
 
 ## 接收一条消息 ##
+
+## 初始化聊天数据 ##
+[官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)

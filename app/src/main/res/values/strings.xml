@@ -46,4 +46,7 @@
     <string name="send_failed">发送失败</string>
     <string name="no_text_message">非文本消息</string>
     <string name="get_new_message">获取到新消息</string>
+    <string name="load_data_success">加载数据成功</string>
+    <string name="load_more_data_success">加载更多数据成功</string>
+    <string name="no_more_data">没有更多数据</string>
 </resources>

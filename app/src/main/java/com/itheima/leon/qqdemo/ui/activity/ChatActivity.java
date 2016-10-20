@@ -3,6 +3,7 @@ package com.itheima.leon.qqdemo.ui.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -51,6 +52,8 @@ public class ChatActivity extends BaseActivity implements ChatView{
 
     private ChatAdapter mChatAdapter;
 
+    private LinearLayoutManager mLinearLayoutManager;
+
     @Override
     public int getLayoutRes() {
         return R.layout.activity_chat;
@@ -67,11 +70,19 @@ public class ChatActivity extends BaseActivity implements ChatView{
         mEdit.setOnEditorActionListener(mOnEditorActionListener);
         mEdit.addTextChangedListener(mTextWatcher);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        initRecyclerView();
+
+        EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
+        mChatPresenter.loadDataFromLocal(mUserName);
+
+    }
+
+    private void initRecyclerView() {
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mChatAdapter = new ChatAdapter(this, mChatPresenter.getMessages());
         mRecyclerView.setAdapter(mChatAdapter);
-        EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
-
+        mRecyclerView.addOnScrollListener(mOnScrollListener);
     }
 
     @OnClick({R.id.back, R.id.send})
@@ -124,7 +135,7 @@ public class ChatActivity extends BaseActivity implements ChatView{
 
     private void updateList() {
         mChatAdapter.notifyDataSetChanged();
-        scrollToBottom();
+        smoothScrollToBottom();
     }
 
     @Override
@@ -140,6 +151,24 @@ public class ChatActivity extends BaseActivity implements ChatView{
         toast(getString(R.string.send_failed));
     }
 
+    @Override
+    public void onDataLoadedFromLocal() {
+        toast(getString(R.string.load_data_success));
+        mChatAdapter.notifyDataSetChanged();
+        scrollToBottom();
+    }
+
+    @Override
+    public void onMoreDataLoadedFromLocal() {
+        toast(getString(R.string.load_more_data_success));
+        mChatAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onNoMoreData() {
+        toast(getString(R.string.no_more_data));
+    }
+
 
     private EMMessageListenerAdapter mEMMessageListener = new EMMessageListenerAdapter() {
         @Override
@@ -151,14 +180,38 @@ public class ChatActivity extends BaseActivity implements ChatView{
                     final EMMessage emMessage = list.get(0);
 //            Log.d(TAG, "onMessageReceived: " + mUserName + " " + emMessage.getUserName() + emMessage.getBody().toString());
                     mChatAdapter.addNewMessage(emMessage);
-                    scrollToBottom();
+                    smoothScrollToBottom();
                 }
             });
 
         }
     };
 
-    private void scrollToBottom() {
+    private void smoothScrollToBottom() {
         mRecyclerView.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
     }
+
+    private void scrollToBottom() {
+        mRecyclerView.scrollToPosition(mChatAdapter.getItemCount() - 1);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListener);
+    }
+
+    private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+                Log.d(TAG, "onScrollStateChanged: " + firstVisibleItemPosition);
+                if (firstVisibleItemPosition == 0) {
+                    mChatPresenter.loadMoreDataFromServer(mUserName);
+                }
+            }
+        }
+    };
 }

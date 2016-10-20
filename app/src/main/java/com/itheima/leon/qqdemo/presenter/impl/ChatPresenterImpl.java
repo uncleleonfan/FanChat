@@ -1,6 +1,9 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
+import android.util.Log;
+
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.itheima.leon.qqdemo.adpater.EMCallBackAdapter;
 import com.itheima.leon.qqdemo.presenter.ChatPresenter;
@@ -17,10 +20,13 @@ import java.util.List;
  */
 public class ChatPresenterImpl implements ChatPresenter {
     public static final String TAG = "ChatPresenterImpl";
+    public static final int DEFAULT_PAGE_SIZE = 20;
 
     private ChatView mChatView;
 
     private List<EMMessage> mEMMessageList;
+
+    private boolean hasMoreData = true;
 
 
     public ChatPresenterImpl(ChatView chatView) {
@@ -51,6 +57,54 @@ public class ChatPresenterImpl implements ChatPresenter {
     @Override
     public List<EMMessage> getMessages() {
         return mEMMessageList;
+    }
+
+    @Override
+    public void loadDataFromLocal(final String userName) {
+        ThreadUtils.runOnBackgroundThread(new Runnable() {
+            @Override
+            public void run() {
+                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
+                //获取此会话的所有消息
+                List<EMMessage> messages = conversation.getAllMessages();
+                mEMMessageList.addAll(messages);
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mChatView.onDataLoadedFromLocal();
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void loadMoreDataFromServer(final String userName) {
+        if (hasMoreData) {
+            ThreadUtils.runOnBackgroundThread(new Runnable() {
+                @Override
+                public void run() {
+                    EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
+                    EMMessage firstMessage = mEMMessageList.get(0);
+                    //SDK初始化加载的聊天记录为20条，到顶时需要去DB里获取更多
+                    //获取startMsgId之前的pagesize条消息，此方法获取的messages SDK会自动存入到此会话中，APP中无需再次把获取到的messages添加到会话中
+                    List<EMMessage> messages = conversation.loadMoreMsgFromDB(firstMessage.getMsgId(), DEFAULT_PAGE_SIZE);
+                    Log.d(TAG, "loadMoreDataFromServer: " + messages.size());
+                    hasMoreData = (messages.size() == DEFAULT_PAGE_SIZE);
+                    mEMMessageList.addAll(0, messages);
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mChatView.onMoreDataLoadedFromLocal();
+                        }
+                    });
+                }
+            });
+        } else {
+            mChatView.onNoMoreData();
+        }
+
+
     }
 
     private EMCallBackAdapter mEMCallBackAdapter = new EMCallBackAdapter() {
