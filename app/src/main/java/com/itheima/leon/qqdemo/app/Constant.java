@@ -17,4 +17,8 @@ public class Constant {
         public static final String USER_NAME = "user_name";
         public static final String USER_PASSWORD = "user_password";
     }
+
+    public static class ExtraKey {
+        public static final String USER_NAME = "user_name";
+    }
 }

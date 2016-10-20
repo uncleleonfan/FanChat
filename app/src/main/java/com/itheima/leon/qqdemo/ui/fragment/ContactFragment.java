@@ -14,10 +14,12 @@ import com.hyphenate.EMContactListener;
 import com.hyphenate.chat.EMClient;
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.ContactListAdapter;
+import com.itheima.leon.qqdemo.app.Constant;
 import com.itheima.leon.qqdemo.model.ContactItem;
 import com.itheima.leon.qqdemo.presenter.ContactPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.ContactPresenterImpl;
 import com.itheima.leon.qqdemo.ui.activity.AddFriendActivity;
+import com.itheima.leon.qqdemo.ui.activity.ChatActivity;
 import com.itheima.leon.qqdemo.view.ContactView;
 import com.itheima.leon.qqdemo.widget.SlideBar;
 
@@ -215,7 +217,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
 
         @Override
         public void onItemClick(int index, String name) {
-
+            startActivity(ChatActivity.class, Constant.ExtraKey.USER_NAME, name);
         }
 
         @Override
@@ -242,4 +244,10 @@ public class ContactFragment extends BaseFragment implements ContactView {
             builder.show();
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EMClient.getInstance().contactManager().removeContactListener(mEMContactListener);
+    }
 }

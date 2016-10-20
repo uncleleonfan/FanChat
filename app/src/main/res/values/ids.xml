@@ -22,5 +22,7 @@
     <item name="friend_not_found" type="id"/>
     <item name="avatar" type="id"/>
     <item name="timestamp" type="id"/>
+    <item name="send" type="id"/>
+    <item name="edit" type="id"/>
 
 </resources>

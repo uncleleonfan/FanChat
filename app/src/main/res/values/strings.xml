@@ -39,4 +39,6 @@
     <string name="deleting_friend">正在删除好友...</string>
     <string name="delete_friend_failed">删除好友失败，请重试</string>
     <string name="delete_friend_success">删除好友成功</string>
+    <string name="send">发送</string>
+    <string name="chat_with">与%s聊天中</string>
 </resources>
