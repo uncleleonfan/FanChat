@@ -1,6 +1,7 @@
 package com.itheima.leon.qqdemo.ui.activity;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -10,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
+import com.itheima.leon.qqdemo.adpater.TextWatcherAdapter;
 import com.itheima.leon.qqdemo.app.Constant;
+import com.itheima.leon.qqdemo.presenter.ChatPresenter;
+import com.itheima.leon.qqdemo.presenter.impl.ChatPresenterImpl;
+import com.itheima.leon.qqdemo.view.ChatView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,7 +25,7 @@ import butterknife.OnClick;
  * 创建时间:  2016/10/20 10:18
  * 描述：    TODO
  */
-public class ChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity implements ChatView{
     public static final String TAG = "ChatActivity";
     @BindView(R.id.back)
     ImageView mBack;
@@ -33,6 +38,9 @@ public class ChatActivity extends BaseActivity {
     @BindView(R.id.send)
     Button mSend;
 
+    private ChatPresenter mChatPresenter;
+    private String mUserName;
+
     @Override
     public int getLayoutRes() {
         return R.layout.activity_chat;
@@ -41,12 +49,13 @@ public class ChatActivity extends BaseActivity {
     @Override
     protected void init() {
         super.init();
+        mChatPresenter = new ChatPresenterImpl(this);
         mBack.setVisibility(View.VISIBLE);
-        String userName = getIntent().getStringExtra(Constant.ExtraKey.USER_NAME);
-        String title = String.format(getString(R.string.chat_with), userName);
+        mUserName = getIntent().getStringExtra(Constant.ExtraKey.USER_NAME);
+        String title = String.format(getString(R.string.chat_with), mUserName);
         mTitle.setText(title);
-
         mEdit.setOnEditorActionListener(mOnEditorActionListener);
+        mEdit.addTextChangedListener(mTextWatcher);
     }
 
     @OnClick({R.id.back, R.id.send})
@@ -56,21 +65,53 @@ public class ChatActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.send:
-
+                sendMessage();
                 break;
         }
+    }
+
+    private void sendMessage() {
+        mChatPresenter.sendMessage(mUserName, mEdit.getText().toString().trim());
     }
 
     private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (actionId == EditorInfo.IME_ACTION_SEND) {
-
+                sendMessage();
                 return true;
             }
             return false;
         }
     };
 
+    private TextWatcherAdapter mTextWatcher = new TextWatcherAdapter() {
+        @Override
+        public void afterTextChanged(Editable s) {
+/*            if (s.length() == 0) {
+                mSend.setEnabled(false);
+            } else {
+                mSend.setEnabled(true);
+            }*/
+            mSend.setEnabled(s.length() != 0);
+        }
+    };
 
+
+    @Override
+    public void onStartSendMessage() {
+        showProgress(getString(R.string.sending));
+    }
+
+    @Override
+    public void onSendMessageSuccess() {
+        hideProgress();
+        toast(getString(R.string.send_success));
+    }
+
+    @Override
+    public void onSendMessageFailed() {
+        hideProgress();
+        toast(getString(R.string.send_failed));
+    }
 }
