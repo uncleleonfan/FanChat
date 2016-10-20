@@ -24,5 +24,7 @@
     <item name="timestamp" type="id"/>
     <item name="send" type="id"/>
     <item name="edit" type="id"/>
+    <item name="send_message" type="id"/>
+    <item name="send_message_progress" type="id"/>
 
 </resources>

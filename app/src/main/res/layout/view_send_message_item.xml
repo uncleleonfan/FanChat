@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="@color/qq_gray_dark"
+        android:layout_gravity="center_horizontal"
+        android:textSize="14sp"
+        android:text="上午9:30"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@id/avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/avatar6"
+            android:layout_margin="8dp"
+            android:layout_alignParentRight="true"/>
+
+        <TextView
+            android:id="@id/send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/avatar"
+            android:text="Hello"
+            android:gravity="center"
+            android:background="@drawable/send_msg_normal"
+            android:padding="5dp"/>
+
+        <ImageView
+            android:id="@id/send_message_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/send_message_progress"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_toLeftOf="@id/send_message"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

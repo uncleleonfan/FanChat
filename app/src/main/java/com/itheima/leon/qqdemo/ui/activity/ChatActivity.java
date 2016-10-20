@@ -1,5 +1,6 @@
 package com.itheima.leon.qqdemo.ui.activity;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.view.KeyEvent;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
+import com.itheima.leon.qqdemo.adpater.ChatAdapter;
 import com.itheima.leon.qqdemo.adpater.TextWatcherAdapter;
 import com.itheima.leon.qqdemo.app.Constant;
 import com.itheima.leon.qqdemo.presenter.ChatPresenter;
@@ -41,6 +43,8 @@ public class ChatActivity extends BaseActivity implements ChatView{
     private ChatPresenter mChatPresenter;
     private String mUserName;
 
+    private ChatAdapter mChatAdapter;
+
     @Override
     public int getLayoutRes() {
         return R.layout.activity_chat;
@@ -56,6 +60,10 @@ public class ChatActivity extends BaseActivity implements ChatView{
         mTitle.setText(title);
         mEdit.setOnEditorActionListener(mOnEditorActionListener);
         mEdit.addTextChangedListener(mTextWatcher);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mChatAdapter = new ChatAdapter(this, mChatPresenter.getMessages());
+        mRecyclerView.setAdapter(mChatAdapter);
     }
 
     @OnClick({R.id.back, R.id.send})
@@ -107,6 +115,7 @@ public class ChatActivity extends BaseActivity implements ChatView{
     public void onSendMessageSuccess() {
         hideProgress();
         toast(getString(R.string.send_success));
+        mChatAdapter.notifyDataSetChanged();
     }
 
     @Override

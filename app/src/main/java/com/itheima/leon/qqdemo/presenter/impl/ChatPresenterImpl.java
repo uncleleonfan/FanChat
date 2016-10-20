@@ -7,6 +7,9 @@ import com.itheima.leon.qqdemo.presenter.ChatPresenter;
 import com.itheima.leon.qqdemo.utils.ThreadUtils;
 import com.itheima.leon.qqdemo.view.ChatView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 创建者:   Leon
  * 创建时间:  2016/10/20 11:24
@@ -17,9 +20,12 @@ public class ChatPresenterImpl implements ChatPresenter {
 
     private ChatView mChatView;
 
+    private List<EMMessage> mEMMessageList;
+
+
     public ChatPresenterImpl(ChatView chatView) {
         mChatView = chatView;
-
+        mEMMessageList = new ArrayList<EMMessage>();
     }
 
     @Override
@@ -29,10 +35,17 @@ public class ChatPresenterImpl implements ChatPresenter {
             @Override
             public void run() {
                 EMMessage emMessage = EMMessage.createTxtSendMessage(message, userName);
+                emMessage.setStatus(EMMessage.Status.INPROGRESS);
                 emMessage.setMessageStatusCallback(mEMCallBackAdapter);
+                mEMMessageList.add(emMessage);
                 EMClient.getInstance().chatManager().sendMessage(emMessage);
             }
         });
+    }
+
+    @Override
+    public List<EMMessage> getMessages() {
+        return mEMMessageList;
     }
 
     private EMCallBackAdapter mEMCallBackAdapter = new EMCallBackAdapter() {
@@ -42,7 +55,6 @@ public class ChatPresenterImpl implements ChatPresenter {
                 @Override
                 public void run() {
                     mChatView.onSendMessageSuccess();
-
                 }
             });
         }

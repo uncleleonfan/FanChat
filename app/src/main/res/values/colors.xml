@@ -10,6 +10,7 @@
     <color name="qq_red">#ff0000</color>
     <color name="qq_red_dark">#aa0000</color>
     <color name="qq_gray">#e8e8e8</color>
+    <color name="qq_gray_dark">#9c9c9c</color>
     <color name="qq_section_text_color">#8c8c8c</color>
 
 </resources>

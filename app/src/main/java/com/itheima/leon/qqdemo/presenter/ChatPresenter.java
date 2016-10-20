@@ -1,5 +1,9 @@
 package com.itheima.leon.qqdemo.presenter;
 
+import com.hyphenate.chat.EMMessage;
+
+import java.util.List;
+
 /**
  * 创建者:   Leon
  * 创建时间:  2016/10/20 11:23
@@ -8,4 +12,6 @@ package com.itheima.leon.qqdemo.presenter;
 public interface ChatPresenter {
 
     void sendMessage(String userName, String message);
+
+    List<EMMessage> getMessages();
 }

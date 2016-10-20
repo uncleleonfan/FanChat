@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/loading1" android:duration="100"/>
+    <item android:drawable="@mipmap/loading2" android:duration="100"/>
+    <item android:drawable="@mipmap/loading3" android:duration="100"/>
+    <item android:drawable="@mipmap/loading4" android:duration="100"/>
+    <item android:drawable="@mipmap/loading5" android:duration="100"/>
+    <item android:drawable="@mipmap/loading6" android:duration="100"/>
+    <item android:drawable="@mipmap/loading7" android:duration="100"/>
+    <item android:drawable="@mipmap/loading8" android:duration="100"/>
+</animation-list>

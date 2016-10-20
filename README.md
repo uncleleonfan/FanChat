@@ -54,3 +54,29 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 发送好友申请-->好友同意或者拒绝-->好友同意则写入数据库
 
 ### 隐藏软键盘 ###
+
+# 聊天界面 #
+## 发送一条消息 ##
+
+### 动画文件 ###
+anim文件夹：补间动画
+
+animator文件夹：属性动画
+
+drawable文件夹：帧动画
+
+	<?xml version="1.0" encoding="utf-8"?>
+	<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+	    <item android:drawable="@mipmap/loading1" android:duration="100"/>
+	    <item android:drawable="@mipmap/loading2" android:duration="100"/>
+	    <item android:drawable="@mipmap/loading3" android:duration="100"/>
+	    <item android:drawable="@mipmap/loading4" android:duration="100"/>
+	    <item android:drawable="@mipmap/loading5" android:duration="100"/>
+	    <item android:drawable="@mipmap/loading6" android:duration="100"/>
+	    <item android:drawable="@mipmap/loading7" android:duration="100"/>
+	    <item android:drawable="@mipmap/loading8" android:duration="100"/>
+	</animation-list>
+
+### .9文件制作 ###
+
+## 接收一条消息 ##
