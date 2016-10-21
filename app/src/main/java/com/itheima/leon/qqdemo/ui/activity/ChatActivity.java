@@ -179,6 +179,7 @@ public class ChatActivity extends BaseActivity implements ChatView{
 //                    toast(getString(R.string.get_new_message));
                     final EMMessage emMessage = list.get(0);
 //            Log.d(TAG, "onMessageReceived: " + mUserName + " " + emMessage.getUserName() + emMessage.getBody().toString());
+                   mChatPresenter.makeMessageRead(mUserName);
                     mChatAdapter.addNewMessage(emMessage);
                     smoothScrollToBottom();
                 }

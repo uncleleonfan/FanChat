@@ -110,6 +110,17 @@ public class ChatPresenterImpl implements ChatPresenter {
 
     }
 
+    @Override
+    public void makeMessageRead(final String userName) {
+        ThreadUtils.runOnBackgroundThread(new Runnable() {
+            @Override
+            public void run() {
+                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
+                conversation.markAllMessagesAsRead();
+            }
+        });
+    }
+
     private EMCallBackAdapter mEMCallBackAdapter = new EMCallBackAdapter() {
         @Override
         public void onSuccess() {

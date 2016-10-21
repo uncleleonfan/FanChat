@@ -18,4 +18,6 @@ public interface ChatPresenter {
     void loadDataFromLocal(String userName);
 
     void loadMoreDataFromServer(String userName);
+
+    void makeMessageRead(String userName);
 }
