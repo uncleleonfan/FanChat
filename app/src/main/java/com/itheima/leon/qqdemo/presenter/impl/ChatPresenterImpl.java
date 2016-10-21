@@ -74,6 +74,9 @@ public class ChatPresenterImpl implements ChatPresenter {
                         mChatView.onDataLoadedFromLocal();
                     }
                 });
+
+                //指定会话消息未读数清零
+                conversation.markAllMessagesAsRead();
             }
         });
     }
