@@ -20,6 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:bb_tabXmlResource="@xml/bottombar_tabs"
-        app:bb_activeTabColor="@android:color/white"/>
+        app:bb_activeTabColor="@color/qq_blue"/>
 
 </LinearLayout>

@@ -3,16 +3,13 @@
     <tab
         id="@id/messages"
         icon="@mipmap/ic_conversation_selected_2"
-        title="@string/messages"
-        barColorWhenSelected="@color/qq_blue"/>
+        title="@string/messages"/>
     <tab
         id="@id/contacts"
         icon="@mipmap/ic_contact_selected_2"
-        title="@string/contacts"
-        barColorWhenSelected="@color/colorPrimary"/>
+        title="@string/contacts"/>
     <tab
         id="@id/dynamic"
         icon="@mipmap/ic_plugin_selected_2"
-        title="@string/dynamic"
-        barColorWhenSelected="@color/colorAccent"/>
+        title="@string/dynamic"/>
 </tabs>
