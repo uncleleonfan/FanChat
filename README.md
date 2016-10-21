@@ -93,6 +93,8 @@ drawable文件夹：帧动画
 ## ConversationAdapter的实现 ##
 ## ConverstationItemView的实现 ##
 ## 点击会话跳转到聊天界面 ##
-## 未读消息的更新 ##
+## 会话列表未读消息的更新 ##
 [官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
 ## 聊天界面标记消息已读 ##
+## 底部导航条未读消息更新 ##
+

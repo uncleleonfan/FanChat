@@ -3,11 +3,16 @@ package com.itheima.leon.qqdemo.app;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.itheima.leon.qqdemo.BuildConfig;
+import com.itheima.leon.qqdemo.R;
+import com.itheima.leon.qqdemo.adpater.EMMessageListenerAdapter;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,6 +26,9 @@ import cn.bmob.v3.Bmob;
  */
 public class QQDemoApplication extends Application {
     public static final String TAG = "QQDemoApplication";
+    private int mDuanSound;
+    private int mYuluSound;
+    private SoundPool mSoundPool;
 
     @Override
     public void onCreate() {
@@ -28,6 +36,14 @@ public class QQDemoApplication extends Application {
         Log.d(TAG, "onCreate: ");
         initHuanXin();
         initBmob();
+        initSoundPool();
+        EMClient.getInstance().chatManager().addMessageListener(mEMMessageListenerAdapter);
+    }
+
+    private void initSoundPool() {
+        mSoundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        mDuanSound = mSoundPool.load(this, R.raw.duan, 1);
+        mYuluSound = mSoundPool.load(this, R.raw.yulu, 1);
     }
 
     private void initBmob() {
@@ -76,5 +92,31 @@ public class QQDemoApplication extends Application {
             }
         }
         return processName;
+    }
+
+    private EMMessageListenerAdapter mEMMessageListenerAdapter = new EMMessageListenerAdapter() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            if (isForeground()) {
+                mSoundPool.play(mDuanSound, 1, 1, 0, 0, 1);
+            } else {
+                mSoundPool.play(mYuluSound, 1, 1, 0, 0, 1);
+            }
+        }
+    };
+
+    public boolean isForeground() {
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+        if (runningAppProcesses == null) {
+            return false;
+        }
+        for (ActivityManager.RunningAppProcessInfo info :runningAppProcesses) {
+            if (info.processName.equals(getPackageName()) && info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+        return false;
     }
 }
