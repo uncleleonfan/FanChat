@@ -5,10 +5,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.FrameLayout;
 
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
 import com.itheima.leon.qqdemo.R;
+import com.itheima.leon.qqdemo.adpater.EMMessageListenerAdapter;
 import com.itheima.leon.qqdemo.factory.FragmentFactory;
+import com.itheima.leon.qqdemo.utils.ThreadUtils;
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarTab;
 import com.roughike.bottombar.OnTabSelectListener;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -31,6 +38,7 @@ public class MainActivity extends BaseActivity {
         super.init();
         mFragmentManager = getSupportFragmentManager();
         mBottomBar.setOnTabSelectListener(mOnTabSelectListener);
+        EMClient.getInstance().chatManager().addMessageListener(mEMMessageListenerAdapter);
     }
 
     private OnTabSelectListener mOnTabSelectListener = new OnTabSelectListener() {
@@ -51,4 +59,35 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    private EMMessageListenerAdapter mEMMessageListenerAdapter = new EMMessageListenerAdapter() {
+
+        //该回调在子线程中调用
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            updateUnreadCount();
+        }
+    };
+
+    private void updateUnreadCount() {
+        ThreadUtils.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                BottomBarTab bottomBar = mBottomBar.getTabWithId(R.id.messages);
+                int count = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+                bottomBar.setBadgeCount(count);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUnreadCount();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }
