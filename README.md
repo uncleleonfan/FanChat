@@ -89,4 +89,8 @@ drawable文件夹：帧动画
 
 ![icon](img/消息界面.jpg)
 
+## 会话界面的MVP实现 ##
+## ConversationAdapter的实现 ##
+## ConverstationItemView的实现 ##
+## 点击会话跳转到聊天界面 ##
 ## 未读消息的更新 ##

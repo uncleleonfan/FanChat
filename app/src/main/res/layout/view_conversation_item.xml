@@ -6,8 +6,11 @@
     android:layout_marginBottom="2dp">
     
     <RelativeLayout
+        android:id="@id/conversation_item_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true">
         
         <ImageView
             android:id="@id/avatar"

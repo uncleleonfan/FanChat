@@ -29,5 +29,6 @@
     <item name="receive_message" type="id"/>
     <item name="last_message" type="id"/>
     <item name="unread_count" type="id"/>
+    <item name="conversation_item_container" type="id"/>
 
 </resources>

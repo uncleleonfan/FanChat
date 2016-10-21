@@ -1,8 +1,10 @@
 package com.itheima.leon.qqdemo.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -11,11 +13,14 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.util.DateUtils;
 import com.itheima.leon.qqdemo.R;
+import com.itheima.leon.qqdemo.app.Constant;
+import com.itheima.leon.qqdemo.ui.activity.ChatActivity;
 
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * 创建者:   Leon
@@ -32,6 +37,8 @@ public class ConversationItemView extends RelativeLayout {
     TextView mTimestamp;
     @BindView(R.id.unread_count)
     TextView mUnreadCount;
+    @BindView(R.id.conversation_item_container)
+    RelativeLayout mConversationItemContainer;
 
     public ConversationItemView(Context context) {
         this(context, null);
@@ -47,7 +54,7 @@ public class ConversationItemView extends RelativeLayout {
         ButterKnife.bind(this, this);
     }
 
-    public void bindView(EMConversation emConversation) {
+    public void bindView(final EMConversation emConversation) {
         mUserName.setText(emConversation.getUserName());
         EMMessage emMessage = emConversation.getLastMessage();
         if (emMessage.getBody() instanceof EMTextMessageBody) {
@@ -57,6 +64,14 @@ public class ConversationItemView extends RelativeLayout {
         }
         mTimestamp.setText(DateUtils.getTimestampString(new Date(emMessage.getMsgTime())));
         updateUnreadCount(emConversation);
+        mConversationItemContainer.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChatActivity.class);
+                intent.putExtra(Constant.ExtraKey.USER_NAME, emConversation.getUserName());
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     private void updateUnreadCount(EMConversation emConversation) {
