@@ -27,5 +27,7 @@
     <item name="send_message" type="id"/>
     <item name="send_message_progress" type="id"/>
     <item name="receive_message" type="id"/>
+    <item name="last_message" type="id"/>
+    <item name="unread_count" type="id"/>
 
 </resources>

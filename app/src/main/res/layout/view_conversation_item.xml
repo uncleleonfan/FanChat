@@ -17,6 +17,7 @@
             android:src="@mipmap/avatar7"/>
 
         <TextView
+            android:id="@id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18dp"
@@ -26,6 +27,7 @@
             android:text="test"/>
 
         <TextView
+            android:id="@id/last_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -36,6 +38,7 @@
             android:text="Hello"/>
 
         <TextView
+            android:id="@id/timestamp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -45,6 +48,7 @@
             android:layout_margin="10dp"/>
 
         <TextView
+            android:id="@id/unread_count"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:gravity="center"

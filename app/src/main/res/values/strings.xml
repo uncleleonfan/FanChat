@@ -50,4 +50,5 @@
     <string name="load_more_data_success">加载更多数据成功</string>
     <string name="no_more_data">没有更多数据</string>
     <string name="load_conversations_success">加载会话成功</string>
+    <string name="max_unread_count">99+</string>
 </resources>
