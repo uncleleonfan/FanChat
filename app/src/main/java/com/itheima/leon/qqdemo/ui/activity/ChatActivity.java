@@ -159,9 +159,10 @@ public class ChatActivity extends BaseActivity implements ChatView{
     }
 
     @Override
-    public void onMoreDataLoadedFromLocal() {
+    public void onMoreDataLoadedFromLocal(int size) {
         toast(getString(R.string.load_more_data_success));
         mChatAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(size);
     }
 
     @Override

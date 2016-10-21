@@ -1,10 +1,13 @@
 package com.itheima.leon.qqdemo.ui.activity;
 
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.FrameLayout;
 
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.itheima.leon.qqdemo.R;
@@ -39,6 +42,7 @@ public class MainActivity extends BaseActivity {
         mFragmentManager = getSupportFragmentManager();
         mBottomBar.setOnTabSelectListener(mOnTabSelectListener);
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListenerAdapter);
+        EMClient.getInstance().addConnectionListener(mEMConnectionListener);
     }
 
     private OnTabSelectListener mOnTabSelectListener = new OnTabSelectListener() {
@@ -88,6 +92,29 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        EMClient.getInstance().removeConnectionListener(mEMConnectionListener);
+        EMClient.getInstance().chatManager().removeMessageListener(mEMMessageListenerAdapter);
     }
+
+    private EMConnectionListener mEMConnectionListener = new EMConnectionListener() {
+        @Override
+        public void onConnected() {
+
+        }
+
+        @Override
+        public void onDisconnected(int i) {
+            if (i == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        toast(getString(R.string.user_login_another_device));
+                    }
+                });
+            }
+        }
+    };
 }

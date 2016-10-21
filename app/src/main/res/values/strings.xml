@@ -52,4 +52,5 @@
     <string name="load_conversations_success">加载会话成功</string>
     <string name="max_unread_count">99+</string>
     <string name="receive_new_message">收到新消息</string>
+    <string name="user_login_another_device">用户在其他设备登录</string>
 </resources>

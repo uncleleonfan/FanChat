@@ -98,3 +98,11 @@ drawable文件夹：帧动画
 ## 聊天界面标记消息已读 ##
 ## 底部导航条未读消息更新 ##
 
+
+# 消息通知 #
+## 声音  ##
+
+## 通知 ##
+
+# 多设备登录 #
+[官方文档](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)

@@ -91,14 +91,14 @@ public class ChatPresenterImpl implements ChatPresenter {
                     EMMessage firstMessage = mEMMessageList.get(0);
                     //SDK初始化加载的聊天记录为20条，到顶时需要去DB里获取更多
                     //获取startMsgId之前的pagesize条消息，此方法获取的messages SDK会自动存入到此会话中，APP中无需再次把获取到的messages添加到会话中
-                    List<EMMessage> messages = conversation.loadMoreMsgFromDB(firstMessage.getMsgId(), DEFAULT_PAGE_SIZE);
+                    final List<EMMessage> messages = conversation.loadMoreMsgFromDB(firstMessage.getMsgId(), DEFAULT_PAGE_SIZE);
                     Log.d(TAG, "loadMoreDataFromServer: " + messages.size());
                     hasMoreData = (messages.size() == DEFAULT_PAGE_SIZE);
                     mEMMessageList.addAll(0, messages);
                     ThreadUtils.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mChatView.onMoreDataLoadedFromLocal();
+                            mChatView.onMoreDataLoadedFromLocal(messages.size());
                         }
                     });
                 }

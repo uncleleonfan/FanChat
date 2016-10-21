@@ -2,7 +2,12 @@ package com.itheima.leon.qqdemo.app;
 
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.Log;
@@ -10,9 +15,11 @@ import android.util.Log;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
+import com.hyphenate.chat.EMTextMessageBody;
 import com.itheima.leon.qqdemo.BuildConfig;
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.EMMessageListenerAdapter;
+import com.itheima.leon.qqdemo.ui.activity.ChatActivity;
 
 import java.util.Iterator;
 import java.util.List;
@@ -37,6 +44,7 @@ public class QQDemoApplication extends Application {
         initHuanXin();
         initBmob();
         initSoundPool();
+
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListenerAdapter);
     }
 
@@ -102,9 +110,33 @@ public class QQDemoApplication extends Application {
                 mSoundPool.play(mDuanSound, 1, 1, 0, 0, 1);
             } else {
                 mSoundPool.play(mYuluSound, 1, 1, 0, 0, 1);
+                showNotification(list.get(0));
             }
         }
     };
+
+    private void showNotification(EMMessage emMessage) {
+        String contentText = "";
+        if (emMessage.getBody() instanceof EMTextMessageBody) {
+            contentText = ((EMTextMessageBody) emMessage.getBody()).getMessage();
+        }
+
+        Intent chat = new Intent(this, ChatActivity.class);
+        chat.putExtra(Constant.ExtraKey.USER_NAME, emMessage.getUserName());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, chat, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new Notification.Builder(this)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.avatar1))
+                .setSmallIcon(R.mipmap.ic_contact_selected_2)
+                .setContentTitle(getString(R.string.receive_new_message))
+                .setContentText(contentText)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build();
+        notificationManager.notify(1, notification);
+    }
 
     public boolean isForeground() {
         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);

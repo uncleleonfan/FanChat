@@ -15,7 +15,7 @@ public interface ChatView {
 
     void onDataLoadedFromLocal();
 
-    void onMoreDataLoadedFromLocal();
+    void onMoreDataLoadedFromLocal(int size);
 
     void onNoMoreData();
 }
