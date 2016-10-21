@@ -84,3 +84,7 @@ drawable文件夹：帧动画
 
 ## 初始化聊天数据 ##
 [官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
+
+# 会话界面 #
+
+## 未读消息的更新 ##

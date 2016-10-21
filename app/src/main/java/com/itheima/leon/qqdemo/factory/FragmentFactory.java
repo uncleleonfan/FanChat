@@ -3,7 +3,7 @@ package com.itheima.leon.qqdemo.factory;
 import com.itheima.leon.qqdemo.ui.fragment.BaseFragment;
 import com.itheima.leon.qqdemo.ui.fragment.ContactFragment;
 import com.itheima.leon.qqdemo.ui.fragment.DynamicFragment;
-import com.itheima.leon.qqdemo.ui.fragment.MessageFragment;
+import com.itheima.leon.qqdemo.ui.fragment.ConversationFragment;
 
 /**
  * 创建者:   Leon
@@ -17,9 +17,6 @@ public class FragmentFactory {
 
     private BaseFragment mMessageFragment;
     private BaseFragment mContactFragment;
-
-
-
     private BaseFragment mDynamicFragment;
 
     public static FragmentFactory getInstance() {
@@ -35,7 +32,7 @@ public class FragmentFactory {
 
     public BaseFragment getMessageFragment() {
         if (mMessageFragment == null) {
-            mMessageFragment = new MessageFragment();
+            mMessageFragment = new ConversationFragment();
         }
         return mMessageFragment;
     }
