@@ -19,6 +19,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.itheima.leon.qqdemo.BuildConfig;
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.EMMessageListenerAdapter;
+import com.itheima.leon.qqdemo.database.DatabaseManager;
 import com.itheima.leon.qqdemo.ui.activity.ChatActivity;
 
 import java.util.Iterator;
@@ -44,9 +45,11 @@ public class QQDemoApplication extends Application {
         initHuanXin();
         initBmob();
         initSoundPool();
-
+        DatabaseManager.getInstance().init(this);
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListenerAdapter);
     }
+
+
 
     private void initSoundPool() {
         mSoundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);

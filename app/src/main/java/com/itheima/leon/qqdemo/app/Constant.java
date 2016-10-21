@@ -21,4 +21,8 @@ public class Constant {
     public static class ExtraKey {
         public static final String USER_NAME = "user_name";
     }
+
+    public static class Database {
+        public static final String DATABASE_NAME = "qq-db";
+    }
 }

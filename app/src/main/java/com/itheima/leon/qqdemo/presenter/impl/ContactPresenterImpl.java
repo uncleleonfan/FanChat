@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+import com.itheima.leon.qqdemo.database.DatabaseManager;
 import com.itheima.leon.qqdemo.model.ContactItem;
 import com.itheima.leon.qqdemo.presenter.ContactPresenter;
 import com.itheima.leon.qqdemo.utils.ThreadUtils;
@@ -98,6 +99,7 @@ public class ContactPresenterImpl implements ContactPresenter {
     private void startGetContactList() throws HyphenateException {
         mContactItems = new ArrayList<ContactItem>();
         List<String> contacts = EMClient.getInstance().contactManager().getAllContactsFromServer();
+        DatabaseManager.getInstance().deleteAllContacts();
         if (!contacts.isEmpty()) {
             for (int i = 0; i < contacts.size(); i++) {
                 ContactItem item = new ContactItem();
@@ -106,8 +108,13 @@ public class ContactPresenterImpl implements ContactPresenter {
                     item.showSection = false;
                 }
                 mContactItems.add(item);
+                saveContactToDatabase(item.userName);
             }
         }
+    }
+
+    private void saveContactToDatabase(String userName) {
+        DatabaseManager.getInstance().saveContact(userName);
     }
 
     private boolean itemInSameGroup(int i, ContactItem item) {

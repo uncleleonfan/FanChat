@@ -53,6 +53,21 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 ## 添加好友 ##
 发送好友申请-->好友同意或者拒绝-->好友同意则写入数据库
 
+### GreenDAO ###
+[Github](https://github.com/greenrobot/greenDAO)
+
+[官网](http://greenrobot.org/greendao/)
+
+[AppBrain](http://www.appbrain.com/stats/libraries/details/greendao/greendao)
+
+[使用文档](http://greenrobot.org/greendao/documentation/)
+
+[中文使用文档](http://www.jianshu.com/p/2f7f48563141)
+
+1. 保存联系人
+2. 查询联系人
+3. 删除联系人
+ 
 ### 隐藏软键盘 ###
 
 # 聊天界面 #

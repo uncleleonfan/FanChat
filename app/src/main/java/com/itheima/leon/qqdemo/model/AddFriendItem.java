@@ -12,7 +12,7 @@ public class AddFriendItem {
 
     public String timestamp;
 
-    public String isAdded;
+    public boolean isAdded;
 
 
 }

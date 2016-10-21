@@ -49,6 +49,13 @@ public class AddFriendItemView extends RelativeLayout {
     public void bindView(AddFriendItem addFriendItem) {
         mUserName.setText(addFriendItem.userName);
         mTimestamp.setText(addFriendItem.timestamp);
+        if (addFriendItem.isAdded) {
+            mAdd.setText(getContext().getString(R.string.added));
+            mAdd.setEnabled(false);
+        } else {
+            mAdd.setText(getContext().getString(R.string.add));
+            mAdd.setEnabled(true);
+        }
     }
 
     @OnClick(R.id.add)
