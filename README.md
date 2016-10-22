@@ -1,7 +1,41 @@
+# 项目简介 #
+本项目是即时通讯的示例项目，使用了MVP模式，集成了环信SDK和Bmob，展示了即时通讯基本的功能的实现，包括注册登录，退出登录，联系人列表，添加好友，删除好友，收发消息，消息提醒等功能。
+## 使用的开源项目 ##
+* [BottomBar](https://github.com/roughike/BottomBar)
+* [EventBus](https://github.com/greenrobot/EventBus)
+* [greenDAO](https://github.com/greenrobot/greenDAO)
+* [butterknife](https://github.com/JakeWharton/butterknife)
+
+## 学习目标 ##
+* 环信SDK的集成与使用
+* MVP模式的运用
+* ORM数据库的集成与使用
+* 模块化思想的运用
+
+# 即时通讯 IM(Instant Messaging)#
+>允许两人或多人使用网路即时的传递文字讯息、档案、语音与视频交流。
+
+## 相关产品 ##
+* 鼻祖 ICQ
+* 国内主流 QQ 微信 陌陌 YY等
+* 国外主流 Facebook Messenger WhatsApp Skype Instagram Line
+
+## 第三方服务平台 ##
+* [环信](http://www.easemob.com/product/cs?utm_source=baidu-pp)
+* [融云](http://www.rongcloud.cn/)
+* [网易云信](http://netease.im/)
+* [极光IM](https://www.jiguang.cn/im)
+* [腾讯云通信IM](https://www.qcloud.com/product/im.html)
+* [爱萌](http://www.imsdk.im/)
+* [阿里悟空(2016年10月31号正式下线)](http://www.imwukong.com/)
+* [阿里百川云旺](http://im.taobao.com/)
+
 # 环信 #
 [官网](http://www.easemob.com/product/cs?utm_source=baidu-pp)
 
 [即时通信云3.x文档](http://docs.easemob.com/im/start)
+
+![环信业务逻辑](img/easemob_business.png)
 
 ## Demo使用 ##
 测试账号：itheima31(123456) uncleleonfan(123456)
@@ -18,9 +52,82 @@
 
 解决办法:导入demo里面的hyphenatechat_3.2.0.jar
 
+# 软件架构 #
+
+## MVC ##
+
+MVC应用于Ruby on Rails, Spring Framework, iOS开发和 ASP.NET等。
+
+* Model: 获取数据的业务逻辑，网络操作，数据库操作
+* View: UI
+* Controller: 操作Model层获取数据传递给UI
+
+![MVC依赖关系](img/mvc.png)
+
+### 服务器端的MVC ###
+
+![服务器端MVC](img/mvcpattern.png)
+
+### Android中MVC ###
+Android中并没有清晰的MVC框架，如果把Activity当做Controller,根据我们实际开发经验，里面会有大量的UI操作，所以V和C就傻傻分不清了。
+
+* Model:Java Bean, NetworkManager, DataBaseHelper
+* View: xml res
+* Controller: Activity Fragment
+* ArrayList-ListView-Adapter(MVC)
+
+## MVP ##
+MVP主要应用于ASP.NET等。**MVP与MVC主要区别是View和Model不再耦合。**
+
+* Model: 获取数据的业务逻辑，网络操作，数据库操作
+* View: UI
+* Presenter: 操作Model层获取数据传递给UI
+![MVP依赖关系](img/mvp.png)
+
+## MVVM ##
+MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
+
+* Model: 获取数据的业务逻辑，网络操作，数据库操作
+* View: UI
+* ViewModel: 将View和Model绑定
+
+![MVVM依赖关系](img/mvvm.png)
+
+### Android中MVVM ###
+[Data Binding Library](https://developer.android.com/topic/libraries/data-binding/index.html)
+[中文翻译](http://www.jianshu.com/p/b1df61a4df77)
+
+## 软件架构的核心思想 ##
+>分层分模块
+
+![架构](img/architecture.png)
+
+## 参考 ##
+[MVC,MVP和MVVM模式如何选择](http://www.jianshu.com/p/6a86f7fdc0cb)
+
+[Understanding MVC, MVP and MVVM Design Patterns](http://www.dotnettricks.com/learn/designpatterns/understanding-mvc-mvp-and-mvvm-design-patterns)
+
+[教你认清MVC，MVP和MVVM](http://zjutkz.net/2016/04/13/%E9%80%89%E6%8B%A9%E6%81%90%E6%83%A7%E7%97%87%E7%9A%84%E7%A6%8F%E9%9F%B3%EF%BC%81%E6%95%99%E4%BD%A0%E8%AE%A4%E6%B8%85MVC%EF%BC%8CMVP%E5%92%8CMVVM/)
+
+[Android Data Binding](https://github.com/LyndonChin/MasteringAndroidDataBinding)
+
+[Clean Architecture](http://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/)
+
+# 准备好了么？ 开车啦！！！ #
+## 包的创建 ##
+## 基类的创建 ##
+
+
+
 # Splash界面 #
+![Splash界面](img/splash.png)
+## 功能需求 ##
+1. 如果没有登录，就跳转到登录界面
+2. 如果已经登录，则跳转到主界面
 
 # 登录界面 #
+![登录界面](img/login.jpg)
+
 ## IME ##
 android:imeOptions="actionNext"
 android:imeOptions="actionGo"
