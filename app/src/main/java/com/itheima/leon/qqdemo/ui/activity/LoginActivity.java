@@ -118,6 +118,9 @@ public class LoginActivity extends BaseActivity implements LoginView{
         toast(getString(R.string.login_failed));
     }
 
+    /**
+     * 申请权限回调
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {

@@ -37,20 +37,30 @@
 
 ![环信业务逻辑](img/easemob_business.png)
 
-## Demo使用 ##
-测试账号：itheima31(123456) uncleleonfan(123456)
+## 环信集成 ##
+1. [注册并创建应用](http://docs.easemob.com/im/000quickstart/10register)
+2. [下载SDK](http://www.easemob.com/download/im)
+3. [SDK的导入](http://docs.easemob.com/im/200androidclientintegration/10androidsdkimport)
+4. [SDK的基础功能](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
 
-## Demo导入Android Studio ##
 
-## Android SDK的介绍及导入 ##
-[官网](http://docs.easemob.com/im/200androidclientintegration/10androidsdkimport)
+### .so文件夹 ###
+1. 放在jniLibs
+2. 也可以放在libs目录下，不过需要在模块下的配置文件中配置
+	
+		android {
+			sourceSets {
+		        main {
+		            jniLibs.srcDirs = ['libs']
+		        }
+		    }
+		}
 
-## Android SDK的基础功能 ##
-[官网](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
 ### 巨坑 ###
 运行出错：Didn't find class "com.hyphenate.chat.adapter.EMACallSession"，原因是hyphenatechat_3.2.0.jar包内没有该类。
 
-解决办法:导入demo里面的hyphenatechat_3.2.0.jar
+解决办法:导入Demo源码中EaseUI库里面的hyphenatechat_3.2.0.jar替换。
+
 
 # 软件架构 #
 
@@ -103,6 +113,8 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 ![架构](img/architecture.png)
 
 ## 参考 ##
+[android architecture](https://github.com/googlesamples/android-architecture)
+
 [MVC,MVP和MVVM模式如何选择](http://www.jianshu.com/p/6a86f7fdc0cb)
 
 [Understanding MVC, MVP and MVVM Design Patterns](http://www.dotnettricks.com/learn/designpatterns/understanding-mvc-mvp-and-mvvm-design-patterns)
@@ -116,51 +128,218 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 # 准备好了么？ 开车啦！！！ #
 ## 包的创建 ##
 ## 基类的创建 ##
-
-
+## Git初始化 ##
 
 # Splash界面 #
 ![Splash界面](img/splash.png)
 ## 功能需求 ##
-1. 如果没有登录，就跳转到登录界面
+1. 如果没有登录，延时2s, 跳转到登录界面
 2. 如果已经登录，则跳转到主界面
+
+## MVP实现 ##
+* SplashView
+* SplashPresenter
 
 # 登录界面 #
 ![登录界面](img/login.jpg)
 
-## IME ##
-android:imeOptions="actionNext"
-android:imeOptions="actionGo"
+## 功能需求 ##
+1. 有两种情况都可以发起登录操作，一是点击登录按钮，而是点击虚拟键盘上的Action键。
+2. 点击新用户，跳转到注册界面。
 
-# 注册界面 #
-## 云数据库 ##
-[LeanCloud](https://leancloud.cn/)
-[Bmob](http://www.bmob.cn/)
+## IME Options##
+**注意配置EditText的imeOptions属性时，需要配合inputType才能起作用。**
+
+	android:imeOptions="actionNext"//下一个
+	android:imeOptions="actionGo"//启动
+	android:imeOptions="actionDone"//完成
+	android:imeOptions="actionPrevious"//上一个
+	android:imeOptions="actionSearch"//搜索
+	android:imeOptions="actionSend"//发送
+	
+## MVP实现 ##
+* LoginView
+* LoginPresenter
+
+## EMCallBack的适配器 ##
+
+	public class EMCallBackAdapter implements EMCallBack{
+	
+	    @Override
+	    public void onSuccess() {
+	
+	    }
+	
+	    @Override
+	    public void onError(int i, String s) {
+	
+	    }
+	
+	    @Override
+	    public void onProgress(int i, String s) {
+	
+	    }
+	}
+
+
 
 ## Android6.0动态权限管理 ##
 [介绍](http://www.jianshu.com/p/a37f4827079a)
 
+举个栗子：高德地图 百度地图等
+
+    /**
+     * 是否有写磁盘权限
+     */
+    private boolean hasWriteExternalStoragePermission() {
+        int result = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    /**
+     * 申请权限
+     */
+    private void applyPermission() {
+        String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_WRITE_EXTERNAL_STORAGE);
+    }
+
+    /**
+     * 申请权限回调
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_WRITE_EXTERNAL_STORAGE:
+                if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
+                    login();
+                } else {
+                    toast(getString(R.string.not_get_permission));
+                }
+                break;
+        }
+    }
+
+# 注册界面 #
+
+![注册界面](img/register.jpg)
+
+## 功能需求 ##
+1. 用户名的长度必须是3-20位，首字母必须为英文字符，其他字符则除了英文外还可以是数字或者下划线。
+2. 密码必须是3-20位的数字。
+
+## 正则表达式 ##
+[正则表达式-元字符](http://www.runoob.com/regexp/regexp-metachar.html)
+
+* \w 匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'。
+
+
+## MVP实现 ##
+* RegisterView
+* RegisterPresenter
+
+
+## 注册流程 ##
+1. 实际项目中，注册会将用户名和密码注册到APP的服务器，然后APP的服务器再通过REST API方式注册到环信服务器。
+2. 由于本项目没有APP服务器，会将用户数据注册到第三方云数据库Bmob，注册成功后，在客户端发送请求注册到环信服务器。
+
+![注册流程](img/register_logic.png)
+
+## 云数据库 ##
+* [LeanCloud](https://leancloud.cn/)
+* [Bmob](http://www.bmob.cn/)
+* [Parse](https://parse.com/)(2017年1月28日关闭)
+
+## Bmob集成 ##
+[开发文档](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html)
+
+1. 注册创建应用
+2. 下载SDK
+3. 导入SDK
+
+## 隐藏软键盘 ##
+
+	protected void hideSoftKeyboard() {
+        if (mInputMethodManager == null) {
+            mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        }
+        mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
+## 软键盘Action处理 ##
+
+    private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                reigister();//注册
+                hideSoftKeyboard();//隐藏软键盘
+                return true;
+            }
+            return false;
+        }
+    };
+
+
+## 用户名已注册的处理 ##
+[Bmob错误码](http://docs.bmob.cn/data/Android/g_errorcode/doc/index.html)
+
 # 主界面 #
+![主界面](img/main.jpg)
 
 ## 底部导航条 ##
 RadioGroup, TabHost, FragmentTabHost, 自定义
 ## 第三方底部条 ##
 [BottomBar](https://github.com/roughike/BottomBar)
+
 [AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
 [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
 ## Fragment的切换 ##
 
+# 动态界面 #
+![退出登录](img/logout.jpg)
 
-# 联系人 #
 
-## SlideBar ##
+# 联系人界面 #
+![联系人1](img/contact1.jpg)
+![联系人2](img/contact2.jpg)
+
+# MVP实现 #
+* ContactView
+* ContactPresenter
+
+## RecyclerView的使用 ##
+[Creating Lists and Cards](https://developer.android.com/training/material/lists-cards.html#RecyclerView)
+
+## ContactListItem的创建 ##
+	public class ContactListItem {
+	
+	    public String firstLetter;
+	    public String userName;
+	    public String image;
+	}
+
+## ContactListItemView的创建 ##
+
+## 联系人是否在同一个组 ##
+
+    private boolean itemInSameGroup(int i, ContactItem item) {
+        return i > 0 && (item.getFirstLetter() == mContactItems.get(i - 1).getFirstLetter());
+    }
+## CardView的使用 ##
+
+## SwipeRefreshLayout的使用 ##
+
+
+
+## 自定义控件SlideBar ##
 ### 绘制居中文本 ###
 http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 
-## 添加好友 ##
+# 添加好友界面 #
 发送好友申请-->好友同意或者拒绝-->好友同意则写入数据库
 
-### GreenDAO ###
+## GreenDAO ##
 [Github](https://github.com/greenrobot/greenDAO)
 
 [官网](http://greenrobot.org/greendao/)
@@ -174,8 +353,6 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 1. 保存联系人
 2. 查询联系人
 3. 删除联系人
- 
-### 隐藏软键盘 ###
 
 # 聊天界面 #
 [通信过程及聊天记录保存](http://docs.easemob.com/im/000quickstart/25communicationandmessagestorage)
