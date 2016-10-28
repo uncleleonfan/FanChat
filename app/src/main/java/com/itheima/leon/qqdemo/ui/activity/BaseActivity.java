@@ -51,7 +51,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected void post(Runnable runnable) {
-        mHandler.post(runnable);
+        postDelay(runnable, 0);
     }
 
     protected void postDelay(Runnable runnable, long millis) {

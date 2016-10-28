@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity implements SplashView {
     }
 
     @Override
-    public void onLogined() {
+    public void onLoggedIn() {
         startActivity(MainActivity.class, true);
     }
 }

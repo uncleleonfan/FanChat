@@ -21,7 +21,7 @@ public class SplashPresenterImpl implements SplashPresenter {
     @Override
     public void checkLoginStatus() {
         if (EMClient.getInstance().isLoggedInBefore() && EMClient.getInstance().isConnected()) {
-            mSplashView.onLogined();
+            mSplashView.onLoggedIn();
         } else {
             mSplashView.onNotLogin();
         }

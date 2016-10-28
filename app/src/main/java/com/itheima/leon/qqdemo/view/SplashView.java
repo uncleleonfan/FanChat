@@ -6,10 +6,9 @@ package com.itheima.leon.qqdemo.view;
  * 描述：    TODO
  */
 public interface SplashView {
-    public static final String TAG = "SplashView";
 
     void onNotLogin();
 
-    void onLogined();
+    void onLoggedIn();
 
 }
