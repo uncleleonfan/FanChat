@@ -6,7 +6,6 @@ package com.itheima.leon.qqdemo.utils;
  * 描述：    TODO
  */
 public class StringUtils {
-    public static final String TAG = "StringUtils";
 
     private static final String USER_NAME_REGEX = "^[a-zA-Z]\\w{2,19}$";
 

@@ -1,7 +1,10 @@
 package com.itheima.leon.qqdemo.ui.activity;
 
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.model.User;
@@ -39,6 +42,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     protected void init() {
         super.init();
         mRegisterPresenter = new RegisterPresenterImpl(this);
+        mConfirmPassword.setOnEditorActionListener(mOnEditorActionListener);
     }
 
     @Override
@@ -82,6 +86,22 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
 
     @OnClick(R.id.register)
     public void onClick() {
+        register();
+    }
+
+    private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                register();
+                return true;
+            }
+            return false;
+        }
+    };
+
+    private void register() {
+        hideKeyBoard();
         String userName = mUserName.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
         String confirmPassword = mConfirmPassword.getText().toString().trim();

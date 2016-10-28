@@ -208,7 +208,7 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
      */
     private boolean hasWriteExternalStoragePermission() {
         int result = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return result == PackageManager.PERMISSION_GRANTED;
+        return result == PermissionChecker.PERMISSION_GRANTED;
     }
 
     /**

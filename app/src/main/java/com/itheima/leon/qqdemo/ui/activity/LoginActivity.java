@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,6 +50,7 @@ public class LoginActivity extends BaseActivity implements LoginView{
     protected void init() {
         super.init();
         mLoginPresenter = new LoginPresenterImpl(this);
+        mPassword.setOnEditorActionListener(mOnEditorActionListener);
     }
 
     @OnClick({R.id.login, R.id.new_user})
@@ -75,6 +78,7 @@ public class LoginActivity extends BaseActivity implements LoginView{
     }
 
     private void login() {
+        hideKeyBoard();
         String userName = mUserName.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
         mLoginPresenter.login(userName, password);
@@ -123,4 +127,16 @@ public class LoginActivity extends BaseActivity implements LoginView{
                 break;
         }
     }
+
+    private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
+
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                login();
+                return true;
+            }
+            return false;
+        }
+    };
 }
