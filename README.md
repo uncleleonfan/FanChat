@@ -242,9 +242,14 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 ## 功能需求 ##
 1. 用户名的长度必须是3-20位，首字母必须为英文字符，其他字符则除了英文外还可以是数字或者下划线。
 2. 密码必须是3-20位的数字。
+3. 密码和确认密码一致
 
 ## 正则表达式 ##
 [正则表达式-元字符](http://www.runoob.com/regexp/regexp-metachar.html)
+
+
+	private static final String USER_NAME_REGEX = "^[a-zA-Z]\\w{2,19}$";
+    private static final String PASSWORD_REGEX = "^[0-9]{3,20}$";
 
 * \w 匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'。
 
@@ -271,6 +276,7 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 1. 注册创建应用
 2. 下载SDK
 3. 导入SDK
+4. 初始化SDk
 
 ## 隐藏软键盘 ##
 
