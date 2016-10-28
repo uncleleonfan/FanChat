@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@drawable/btn_login_normal"
+        android:background="@drawable/btn_login"
         android:textSize="22sp"
         android:textColor="@android:color/white"
         android:gravity="center"

@@ -11,10 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
-import com.itheima.leon.qqdemo.app.Constant;
 import com.itheima.leon.qqdemo.presenter.LoginPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.LoginPresenterImpl;
-import com.itheima.leon.qqdemo.utils.SpUtils;
 import com.itheima.leon.qqdemo.view.LoginView;
 
 import butterknife.BindView;
@@ -50,14 +48,6 @@ public class LoginActivity extends BaseActivity implements LoginView{
     protected void init() {
         super.init();
         mLoginPresenter = new LoginPresenterImpl(this);
-        initData();
-    }
-
-    private void initData() {
-        String userName = SpUtils.getString(this, Constant.SpKey.USER_NAME);
-        String password = SpUtils.getString(this, Constant.SpKey.USER_PASSWORD);
-        mUserName.setText(userName);
-        mPassword.setText(password);
     }
 
     @OnClick({R.id.login, R.id.new_user})

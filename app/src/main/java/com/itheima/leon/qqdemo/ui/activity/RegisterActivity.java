@@ -4,11 +4,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.itheima.leon.qqdemo.R;
-import com.itheima.leon.qqdemo.app.Constant;
 import com.itheima.leon.qqdemo.model.User;
 import com.itheima.leon.qqdemo.presenter.RegisterPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.RegisterPresenterImpl;
-import com.itheima.leon.qqdemo.utils.SpUtils;
 import com.itheima.leon.qqdemo.view.RegisterView;
 
 import butterknife.BindView;
@@ -63,8 +61,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     @Override
     public void onRegisterSuccess(User user) {
         hideProgress();
-        SpUtils.saveStrings(this, new String[]{Constant.SpKey.USER_NAME, Constant.SpKey.USER_PASSWORD},
-                new String[]{user.getUsername(), user.getPassword()});
         toast(getString(R.string.register_success));
         startActivity(LoginActivity.class);
     }
