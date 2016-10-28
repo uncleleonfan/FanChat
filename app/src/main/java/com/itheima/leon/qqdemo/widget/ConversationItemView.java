@@ -68,7 +68,7 @@ public class ConversationItemView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra(Constant.ExtraKey.USER_NAME, emConversation.getUserName());
+                intent.putExtra(Constant.Extra.USER_NAME, emConversation.getUserName());
                 getContext().startActivity(intent);
             }
         });

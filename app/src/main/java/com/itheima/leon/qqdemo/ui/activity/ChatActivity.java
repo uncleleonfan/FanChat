@@ -64,7 +64,7 @@ public class ChatActivity extends BaseActivity implements ChatView{
         super.init();
         mChatPresenter = new ChatPresenterImpl(this);
         mBack.setVisibility(View.VISIBLE);
-        mUserName = getIntent().getStringExtra(Constant.ExtraKey.USER_NAME);
+        mUserName = getIntent().getStringExtra(Constant.Extra.USER_NAME);
         String title = String.format(getString(R.string.chat_with), mUserName);
         mTitle.setText(title);
         mEdit.setOnEditorActionListener(mOnEditorActionListener);

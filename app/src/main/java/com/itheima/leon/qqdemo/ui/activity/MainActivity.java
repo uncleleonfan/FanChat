@@ -49,17 +49,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onTabSelected(@IdRes int tabId) {
             FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-            switch (tabId) {
-                case R.id.messages:
-                    fragmentTransaction.replace(R.id.fragment_container, FragmentFactory.getInstance().getMessageFragment()).commit();
-                    break;
-                case R.id.contacts:
-                    fragmentTransaction.replace(R.id.fragment_container, FragmentFactory.getInstance().getContactFragment()).commit();
-                    break;
-                case R.id.dynamic:
-                    fragmentTransaction.replace(R.id.fragment_container, FragmentFactory.getInstance().getDynamicFragment()).commit();
-                    break;
-            }
+            fragmentTransaction.replace(R.id.fragment_container, FragmentFactory.getInstance().getFragment(tabId)).commit();
         }
     };
 
@@ -76,7 +66,7 @@ public class MainActivity extends BaseActivity {
         ThreadUtils.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                BottomBarTab bottomBar = mBottomBar.getTabWithId(R.id.messages);
+                BottomBarTab bottomBar = mBottomBar.getTabWithId(R.id.conversations);
                 int count = EMClient.getInstance().chatManager().getUnreadMsgsCount();
                 bottomBar.setBadgeCount(count);
             }

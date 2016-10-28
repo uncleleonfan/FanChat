@@ -1,9 +1,10 @@
 package com.itheima.leon.qqdemo.factory;
 
+import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.ui.fragment.BaseFragment;
 import com.itheima.leon.qqdemo.ui.fragment.ContactFragment;
-import com.itheima.leon.qqdemo.ui.fragment.DynamicFragment;
 import com.itheima.leon.qqdemo.ui.fragment.ConversationFragment;
+import com.itheima.leon.qqdemo.ui.fragment.DynamicFragment;
 
 /**
  * 创建者:   Leon
@@ -30,21 +31,33 @@ public class FragmentFactory {
         return sFragmentFactory;
     }
 
-    public BaseFragment getMessageFragment() {
+    public BaseFragment getFragment(int id) {
+        switch (id) {
+            case R.id.conversations:
+                return getConversationFragment();
+            case R.id.contacts:
+                return getContactFragment();
+            case R.id.dynamic:
+                return getDynamicFragment();
+        }
+        return null;
+    }
+
+    private BaseFragment getConversationFragment() {
         if (mMessageFragment == null) {
             mMessageFragment = new ConversationFragment();
         }
         return mMessageFragment;
     }
 
-    public BaseFragment getDynamicFragment() {
+    private BaseFragment getDynamicFragment() {
         if (mDynamicFragment == null) {
             mDynamicFragment = new DynamicFragment();
         }
         return mDynamicFragment;
     }
 
-    public BaseFragment getContactFragment() {
+    private BaseFragment getContactFragment() {
         if (mContactFragment == null) {
             mContactFragment = new ContactFragment();
         }

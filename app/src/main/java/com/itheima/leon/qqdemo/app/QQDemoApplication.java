@@ -125,7 +125,7 @@ public class QQDemoApplication extends Application {
         }
 
         Intent chat = new Intent(this, ChatActivity.class);
-        chat.putExtra(Constant.ExtraKey.USER_NAME, emMessage.getUserName());
+        chat.putExtra(Constant.Extra.USER_NAME, emMessage.getUserName());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, chat, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

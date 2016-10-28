@@ -11,7 +11,7 @@ public class Constant {
         public static final int USER_ALREADY_EXIST = 202;
     }
 
-    public static class ExtraKey {
+    public static class Extra {
         public static final String USER_NAME = "user_name";
     }
 

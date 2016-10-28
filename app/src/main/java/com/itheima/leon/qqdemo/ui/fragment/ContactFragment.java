@@ -217,7 +217,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
 
         @Override
         public void onItemClick(int index, String name) {
-            startActivity(ChatActivity.class, Constant.ExtraKey.USER_NAME, name);
+            startActivity(ChatActivity.class, Constant.Extra.USER_NAME, name);
         }
 
         @Override

@@ -288,7 +288,6 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 reigister();//注册
-                hideSoftKeyboard();//隐藏软键盘
                 return true;
             }
             return false;
@@ -306,14 +305,12 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 RadioGroup, TabHost, FragmentTabHost, 自定义
 ## 第三方底部条 ##
 [BottomBar](https://github.com/roughike/BottomBar)
-
 [AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
 [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
 ## Fragment的切换 ##
 
 # 动态界面 #
 ![退出登录](img/logout.jpg)
-
 
 # 联系人界面 #
 ![联系人1](img/contact1.jpg)
