@@ -41,7 +41,7 @@
 1. [注册并创建应用](http://docs.easemob.com/im/000quickstart/10register)
 2. [下载SDK](http://www.easemob.com/download/im)
 3. [SDK的导入](http://docs.easemob.com/im/200androidclientintegration/10androidsdkimport)
-4. [SDK的基础功能](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
+4. [SDK的初始化](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
 
 
 ### .so文件夹 ###
