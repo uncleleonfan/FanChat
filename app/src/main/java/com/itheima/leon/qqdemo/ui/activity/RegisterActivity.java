@@ -63,7 +63,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView {
     }
 
     @Override
-    public void onRegisterSuccess(User user) {
+    public void onRegisterSuccess() {
         hideProgress();
         toast(getString(R.string.register_success));
         startActivity(LoginActivity.class);

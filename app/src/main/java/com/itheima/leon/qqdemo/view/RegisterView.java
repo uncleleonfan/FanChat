@@ -1,7 +1,5 @@
 package com.itheima.leon.qqdemo.view;
 
-import com.itheima.leon.qqdemo.model.User;
-
 /**
  * 创建者:   Leon
  * 创建时间:  2016/10/16 22:05
@@ -16,7 +14,7 @@ public interface RegisterView {
 
     void onResisterUserExist();
 
-    void onRegisterSuccess(User user);
+    void onRegisterSuccess();
 
     void onUserNameError();
 
