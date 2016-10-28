@@ -1,5 +1,5 @@
 # 项目简介 #
-本项目是即时通讯的示例项目，使用了MVP模式，集成了环信SDK和Bmob，展示了即时通讯基本的功能的实现，包括注册登录，退出登录，联系人列表，添加好友，删除好友，收发消息，消息提醒等功能。
+本项目是即时通讯的示例项目，使用了MVP模式，集成了环信SDK和Bmob后端云，展示了即时通讯基本的功能的实现，包括注册登录，退出登录，联系人列表，添加好友，删除好友，收发消息，消息提醒等功能。
 ## 使用的开源项目 ##
 * [BottomBar](https://github.com/roughike/BottomBar)
 * [EventBus](https://github.com/greenrobot/EventBus)
@@ -127,7 +127,22 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 
 # 准备好了么？ 开车啦！！！ #
 ## 包的创建 ##
+* adapter 存放适配器
+* app 存放常量类，Application类以及一些app层级的全局类
+* database 数据库相关类
+* event EventBus使用的事件类
+* factory 工厂类
+* model 数据模型
+* presenter MVP模型中的Presenter类
+* ui 存放activity和fragment
+* utils 工具类
+* view MVP模型中的View类
+* widget 自定义控件
+
 ## 基类的创建 ##
+* BaseActivity
+* BaseFragment
+
 ## Git初始化 ##
 
 # Splash界面 #
