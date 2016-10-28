@@ -5,15 +5,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hyphenate.EMContactListener;
 import com.hyphenate.chat.EMClient;
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.ContactListAdapter;
+import com.itheima.leon.qqdemo.adpater.EMContactListenerAdapter;
 import com.itheima.leon.qqdemo.app.Constant;
 import com.itheima.leon.qqdemo.model.ContactItem;
 import com.itheima.leon.qqdemo.presenter.ContactPresenter;
@@ -23,7 +22,6 @@ import com.itheima.leon.qqdemo.ui.activity.ChatActivity;
 import com.itheima.leon.qqdemo.view.ContactView;
 import com.itheima.leon.qqdemo.widget.SlideBar;
 
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +33,7 @@ import butterknife.BindView;
  */
 public class ContactFragment extends BaseFragment implements ContactView {
     public static final String TAG = "ContactFragment";
+    private static final int POSITION_NOT_FOUND = -1;
 
     @BindView(R.id.title)
     TextView mTitle;
@@ -80,7 +79,6 @@ public class ContactFragment extends BaseFragment implements ContactView {
 
     @Override
     public void onGetContactList(List<ContactItem> list) {
-        Log.d(TAG, "onGetContactList: " + list.size());
         mContactListAdapter = new ContactListAdapter(getContext(), list);
         mContactListAdapter.setOnItemClickListener(mOnItemClickListener);
         mRecyclerView.setAdapter(mContactListAdapter);
@@ -128,19 +126,11 @@ public class ContactFragment extends BaseFragment implements ContactView {
     };
 
     private void scrollToSection(String section) {
-//        int sectionPosition = getSectionPosition(section);
-//        Log.d(TAG, "scrollToSection: " + sectionPosition);
-//        mRecyclerView.scrollToPosition(sectionPosition);
-//        if (sectionPosition != -1) {
-//            mRecyclerView.smoothScrollToPosition(sectionPosition);
-//        }
-        //获取section在分区集合中索引
-        String[] sections = mContactListAdapter.getSections();
-        Log.d(TAG, "scrollToSection: sections size " + sections.length);
-        int sectionIndex = Arrays.binarySearch(sections, section);
-        //获取分区索引对应分区中第一个元素在列表中的位置
-        int position = mContactListAdapter.getPositionForSection(sectionIndex);
-        mRecyclerView.scrollToPosition(position);
+        int sectionPosition = getSectionPosition(section);
+        mRecyclerView.scrollToPosition(sectionPosition);
+        if (sectionPosition != POSITION_NOT_FOUND) {
+            mRecyclerView.smoothScrollToPosition(sectionPosition);
+        }
     }
 
 
@@ -151,7 +141,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
                 return i;
             }
         }
-        return -1;
+        return POSITION_NOT_FOUND;
     }
 
     private View.OnClickListener mOnAddFriendListener = new View.OnClickListener() {
@@ -161,56 +151,18 @@ public class ContactFragment extends BaseFragment implements ContactView {
         }
     };
 
-    private EMContactListener mEMContactListener = new EMContactListener() {
+    private EMContactListenerAdapter mEMContactListener = new EMContactListenerAdapter() {
 
-        /**
-         * 增加联系人的回调
-         * @param s
-         */
         @Override
         public void onContactAdded(String s) {
-            Log.d(TAG, "onContactAdded: " + s);
             mContactPresenter.refreshContactList();
         }
 
-        /**
-         * 被删除回调
-         * @param s
-         */
         @Override
         public void onContactDeleted(String s) {
             mContactPresenter.refreshContactList();
         }
 
-        /**
-         * 被邀请的回调
-         * @param s 好友名字
-         * @param s1 申请理由
-         */
-        @Override
-        public void onContactInvited(String s, String s1) {
-//            EMClient.getInstance().contactManager().acceptInvitation(username);
-//            EMClient.getInstance().contactManager().declineInvitation(username);
-        }
-
-        /**
-         * 我的请求被同意 好友的客户端调用了EMClient.getInstance().contactManager().acceptInvitation(username);
-         * @param s
-         */
-        @Override
-        public void onContactAgreed(String s) {
-            Log.d(TAG, "onContactAgreed: " + s);
-        }
-
-        /**
-         * 我的请求被拒绝 好友的客户端调用了EMClient.getInstance().contactManager().declineInvitation(username);
-         *
-         * @param s
-         */
-        @Override
-        public void onContactRefused(String s) {
-
-        }
     };
 
     private ContactListAdapter.OnItemClickListener mOnItemClickListener = new ContactListAdapter.OnItemClickListener() {

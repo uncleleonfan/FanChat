@@ -12,5 +12,6 @@
     <color name="qq_gray">#e8e8e8</color>
     <color name="qq_gray_dark">#9c9c9c</color>
     <color name="qq_section_text_color">#8c8c8c</color>
+    <color name="half_transparent">#50000000</color>
 
 </resources>

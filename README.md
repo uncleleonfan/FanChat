@@ -349,7 +349,7 @@ RadioGroup, TabHost, FragmentTabHost, 自定义
 http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 
 # 添加好友界面 #
-发送好友申请-->好友同意或者拒绝-->好友同意则写入数据库
+![添加好友](img/add_friend.jpg)
 
 ## GreenDAO ##
 [Github](https://github.com/greenrobot/greenDAO)
@@ -393,22 +393,20 @@ drawable文件夹：帧动画
 
 ## 接收一条消息 ##
 
-## 初始化聊天数据 ##
+## 初始化聊天记录 ##
 [官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
+
+## 加载更多聊天记录 ##
 
 # 会话界面 #
-
-![icon](img/消息界面.jpg)
+![icon](img/message.jpg)
 
 ## 会话界面的MVP实现 ##
-## ConversationAdapter的实现 ##
-## ConverstationItemView的实现 ##
-## 点击会话跳转到聊天界面 ##
-## 会话列表未读消息的更新 ##
-[官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
-## 聊天界面标记消息已读 ##
-## 底部导航条未读消息更新 ##
 
+## 未读消息的更新 ##
+[官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
+
+## 标记消息已读 ##
 
 # 消息通知 #
 ## 声音  ##
