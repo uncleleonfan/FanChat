@@ -4,6 +4,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hyphenate.chat.EMClient;
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.presenter.DynamicPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.DynamicPresenterImpl;
@@ -39,6 +40,8 @@ public class DynamicFragment extends BaseFragment implements DynamicView{
     protected void init() {
         super.init();
         mDynamicPresenter = new DynamicPresenterImpl(this);
+        String logout = String.format(getString(R.string.logout), EMClient.getInstance().getCurrentUser());
+        mLogout.setText(logout);
         mTitle.setText(getString(R.string.dynamic));
 
     }
