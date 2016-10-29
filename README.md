@@ -373,6 +373,9 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 3. 删除联系人
 
 # 聊天界面 #
+![聊天界面](img/chat1.jpg)
+![聊天界面](img/chat2.jpg)
+
 [通信过程及聊天记录保存](http://docs.easemob.com/im/000quickstart/25communicationandmessagestorage)
 ## 发送一条消息 ##
 
