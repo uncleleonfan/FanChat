@@ -57,15 +57,19 @@ public class LoginActivity extends BaseActivity implements LoginView{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login:
-                if (hasWriteExternalStoragePermission()) {
-                    login();
-                } else {
-                    applyPermission();
-                }
+                startLogin();
                 break;
             case R.id.new_user:
                 startActivity(RegisterActivity.class);
                 break;
+        }
+    }
+
+    private void startLogin() {
+        if (hasWriteExternalStoragePermission()) {
+            login();
+        } else {
+            applyPermission();
         }
     }
 
@@ -133,7 +137,7 @@ public class LoginActivity extends BaseActivity implements LoginView{
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                login();
+                startLogin();
                 return true;
             }
             return false;
