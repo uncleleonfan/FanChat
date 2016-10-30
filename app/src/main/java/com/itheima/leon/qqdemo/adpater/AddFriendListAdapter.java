@@ -2,7 +2,6 @@ package com.itheima.leon.qqdemo.adpater;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 
 import com.itheima.leon.qqdemo.model.AddFriendItem;
@@ -16,7 +15,6 @@ import java.util.List;
  * 描述：    TODO
  */
 public class AddFriendListAdapter extends RecyclerView.Adapter<AddFriendListAdapter.AddFriendItemViewHolder> {
-    public static final String TAG = "AddFriendListAdapter";
 
     private Context mContext;
     private List<AddFriendItem> mAddFriendItemList;
@@ -28,19 +26,16 @@ public class AddFriendListAdapter extends RecyclerView.Adapter<AddFriendListAdap
 
     @Override
     public AddFriendItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: ");
         return new AddFriendItemViewHolder(new AddFriendItemView(mContext));
     }
 
     @Override
     public void onBindViewHolder(AddFriendItemViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: ");
         holder.mAddFriendItemView.bindView(mAddFriendItemList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: ");
         if (mAddFriendItemList == null) {
             return 0;
         }

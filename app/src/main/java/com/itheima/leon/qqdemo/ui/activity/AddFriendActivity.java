@@ -11,12 +11,9 @@ import android.widget.TextView;
 
 import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.AddFriendListAdapter;
-import com.itheima.leon.qqdemo.model.AddFriendItem;
 import com.itheima.leon.qqdemo.presenter.AddFriendPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.AddFriendPresenterImpl;
 import com.itheima.leon.qqdemo.view.AddFriendView;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -52,16 +49,21 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
     protected void init() {
         super.init();
         mAddFriendPresenter = new AddFriendPresenterImpl(this);
+
         mTitle.setText(getString(R.string.add_friend));
         mUserName.setOnEditorActionListener(mOnEditorActionListener);
+
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAddFriendListAdapter = new AddFriendListAdapter(this, mAddFriendPresenter.getAddFriendList());
+        mRecyclerView.setAdapter(mAddFriendListAdapter);
     }
 
     private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                searchFriend(mUserName.getText().toString().trim());
+                searchFriend();
                 return true;
             }
             return false;
@@ -71,11 +73,12 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
 
     @OnClick(R.id.search)
     public void onClick() {
-        searchFriend(mUserName.getText().toString().trim());
-        hideKeyBoard();
+        searchFriend();
     }
 
-    private void searchFriend(String keyword) {
+    private void searchFriend() {
+        hideKeyBoard();
+        String keyword = mUserName.getText().toString().trim();
         mAddFriendPresenter.searchFriend(keyword);
     }
 
@@ -85,12 +88,11 @@ public class AddFriendActivity extends BaseActivity implements AddFriendView {
     }
 
     @Override
-    public void onSearchSuccess(List<AddFriendItem> list) {
+    public void onSearchSuccess() {
         hideProgress();
         mFriendNotFound.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
-        mAddFriendListAdapter = new AddFriendListAdapter(this, list);
-        mRecyclerView.setAdapter(mAddFriendListAdapter);
+        mAddFriendListAdapter.notifyDataSetChanged();
     }
 
     @Override

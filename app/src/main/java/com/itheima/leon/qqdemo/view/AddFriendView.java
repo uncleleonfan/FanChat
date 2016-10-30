@@ -14,7 +14,7 @@ public interface AddFriendView {
 
     void onStartSearch();
 
-    void onSearchSuccess(List<AddFriendItem> list);
+    void onSearchSuccess();
 
     void onSearchFailed();
 

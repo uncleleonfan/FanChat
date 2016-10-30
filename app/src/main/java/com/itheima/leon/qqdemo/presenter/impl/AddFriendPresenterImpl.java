@@ -32,9 +32,11 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
     public static final String TAG = "AddFriendPresenterImpl";
 
     private AddFriendView mAddFriendView;
+    private ArrayList<AddFriendItem> mAddFriendItems;
 
     public AddFriendPresenterImpl(AddFriendView addFriendView) {
         mAddFriendView = addFriendView;
+        mAddFriendItems = new ArrayList<AddFriendItem>();
         EventBus.getDefault().register(this);
     }
 
@@ -63,19 +65,18 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
 
     private void processResult(List<User> list, BmobException e) {
         if (e == null && list.size() > 0) {
-            final List<AddFriendItem> listItems = new ArrayList<AddFriendItem>();
             List<String> contacts = DatabaseManager.getInstance().queryAllContacts();
             for (int i = 0; i <list.size(); i++) {
                 AddFriendItem item = new AddFriendItem();
                 item.timestamp = list.get(i).getCreatedAt();
                 item.userName = list.get(i).getUsername();
                 item.isAdded = contacts.contains(item.userName);
-                listItems.add(item);
+                mAddFriendItems.add(item);
             }
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mAddFriendView.onSearchSuccess(listItems);
+                    mAddFriendView.onSearchSuccess();
                 }
             });
         } else {
@@ -114,6 +115,11 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public List<AddFriendItem> getAddFriendList() {
+        return mAddFriendItems;
     }
 
 }

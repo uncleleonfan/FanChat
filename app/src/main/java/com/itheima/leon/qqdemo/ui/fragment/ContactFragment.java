@@ -25,6 +25,7 @@ import com.itheima.leon.qqdemo.widget.SlideBar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 创建者:   Leon
@@ -70,7 +71,6 @@ public class ContactFragment extends BaseFragment implements ContactView {
     private void initView() {
         mTitle.setText(getString(R.string.contacts));
         mAdd.setVisibility(View.VISIBLE);
-        mAdd.setOnClickListener(mOnAddFriendListener);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
@@ -82,6 +82,11 @@ public class ContactFragment extends BaseFragment implements ContactView {
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
         mSlideBar.setOnSlidingBarChangeListener(mOnSlideBarChangeListener);
+    }
+
+    @OnClick(R.id.add)
+    public void onClick() {
+        startActivity(AddFriendActivity.class);
     }
 
     @Override
@@ -149,12 +154,6 @@ public class ContactFragment extends BaseFragment implements ContactView {
         return POSITION_NOT_FOUND;
     }
 
-    private View.OnClickListener mOnAddFriendListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            startActivity(AddFriendActivity.class);
-        }
-    };
 
     private EMContactListenerAdapter mEMContactListener = new EMContactListenerAdapter() {
 
