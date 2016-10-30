@@ -61,27 +61,32 @@ public class ContactFragment extends BaseFragment implements ContactView {
     @Override
     protected void init() {
         super.init();
-        initView();
         mContactPresenter = new ContactPresenterImpl(this);
-        mContactPresenter.getContactList();
+        initView();
         EMClient.getInstance().contactManager().setContactListener(mEMContactListener);
+        mContactPresenter.getContactsFromServer();
     }
 
     private void initView() {
         mTitle.setText(getString(R.string.contacts));
         mAdd.setVisibility(View.VISIBLE);
         mAdd.setOnClickListener(mOnAddFriendListener);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setHasFixedSize(true);
+        mContactListAdapter = new ContactListAdapter(getContext(), mContactPresenter.getContactList());
+        mContactListAdapter.setOnItemClickListener(mOnItemClickListener);
+        mRecyclerView.setAdapter(mContactListAdapter);
+
         mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+
         mSlideBar.setOnSlidingBarChangeListener(mOnSlideBarChangeListener);
     }
 
     @Override
-    public void onGetContactList(List<ContactItem> list) {
-        mContactListAdapter = new ContactListAdapter(getContext(), list);
-        mContactListAdapter.setOnItemClickListener(mOnItemClickListener);
-        mRecyclerView.setAdapter(mContactListAdapter);
+    public void onGetContactListSuccess() {
+        mContactListAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 

@@ -1,5 +1,9 @@
 package com.itheima.leon.qqdemo.presenter;
 
+import com.itheima.leon.qqdemo.model.ContactItem;
+
+import java.util.List;
+
 /**
  * 创建者:   Leon
  * 创建时间:  2016/10/18 15:33
@@ -7,7 +11,9 @@ package com.itheima.leon.qqdemo.presenter;
  */
 public interface ContactPresenter {
 
-    void getContactList();
+    void getContactsFromServer();
+
+    List<ContactItem> getContactList();
 
     void refreshContactList();
 

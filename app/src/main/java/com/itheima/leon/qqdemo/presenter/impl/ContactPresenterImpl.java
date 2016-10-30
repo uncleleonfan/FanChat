@@ -1,7 +1,5 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
-import android.util.Log;
-
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.itheima.leon.qqdemo.database.DatabaseManager;
@@ -27,22 +25,19 @@ public class ContactPresenterImpl implements ContactPresenter {
 
     public ContactPresenterImpl(ContactView contactView) {
         mContactView = contactView;
+        mContactItems = new ArrayList<ContactItem>();
     }
 
 
     @Override
-    public void getContactList() {
-        if (mContactItems != null) {
-            mContactView.onGetContactList(mContactItems);
-            return;
-        }
-        getContactItemFromServer();
+    public List<ContactItem> getContactList() {
+        return mContactItems;
     }
 
     @Override
     public void refreshContactList() {
-        mContactItems = null;
-        getContactList();
+        mContactItems.clear();
+        getContactsFromServer();
     }
 
     @Override
@@ -71,20 +66,25 @@ public class ContactPresenterImpl implements ContactPresenter {
         });
     }
 
-    private void getContactItemFromServer() {
-        Log.d(TAG, "getContactItemFromServer: ");
+    @Override
+    public void getContactsFromServer() {
+        if (mContactItems.size() > 0) {
+            mContactView.onGetContactListSuccess();
+            return;
+        }
         ThreadUtils.runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     startGetContactList();
-                    notifyGetContactList();
+                    notifyGetContactListSuccess();
                 } catch (HyphenateException e) {
                     e.printStackTrace();
                     notifyGetContactListFailed();
                 }
             }
         });
+
     }
 
     private void notifyGetContactListFailed() {
@@ -97,7 +97,6 @@ public class ContactPresenterImpl implements ContactPresenter {
     }
 
     private void startGetContactList() throws HyphenateException {
-        mContactItems = new ArrayList<ContactItem>();
         List<String> contacts = EMClient.getInstance().contactManager().getAllContactsFromServer();
         DatabaseManager.getInstance().deleteAllContacts();
         if (!contacts.isEmpty()) {
@@ -121,11 +120,11 @@ public class ContactPresenterImpl implements ContactPresenter {
         return i > 0 && (item.getFirstLetter() == mContactItems.get(i - 1).getFirstLetter());
     }
 
-    private void notifyGetContactList() {
+    private void notifyGetContactListSuccess() {
         ThreadUtils.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mContactView.onGetContactList(mContactItems);
+                mContactView.onGetContactListSuccess();
             }
         });
     }
