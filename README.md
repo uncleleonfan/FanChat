@@ -347,10 +347,14 @@ RadioGroup, TabHost, FragmentTabHost, 自定义
 ## CardView的使用 ##
 
 ## SwipeRefreshLayout的使用 ##
-
+	mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
+	mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
 
 ## 自定义控件SlideBar ##
+### 分类字符数组（供拷贝） ###
+    private static final String[] SECTIONS = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"
+            , "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 ### 绘制居中文本 ###
 http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 
