@@ -43,7 +43,7 @@ public class ContactItemView extends RelativeLayout {
         mUserName.setText(contactItem.userName);
         if (contactItem.showSection) {
             mSection.setVisibility(VISIBLE);
-            mSection.setText(String.valueOf(contactItem.getFirstLetter()));
+            mSection.setText(contactItem.getFirstLetterString());
         } else {
             mSection.setVisibility(GONE);
         }

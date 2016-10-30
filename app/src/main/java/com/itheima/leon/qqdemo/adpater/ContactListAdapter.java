@@ -2,7 +2,6 @@ package com.itheima.leon.qqdemo.adpater;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,8 +20,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     private Context mContext;
     private List<ContactItem> mContactItems;
-
-    private SparseIntArray mSectionFirstPositionBySectionIndex = new SparseIntArray();
     private OnItemClickListener mOnItemClickListener;
 
     public ContactListAdapter(Context context, List<ContactItem> items) {
