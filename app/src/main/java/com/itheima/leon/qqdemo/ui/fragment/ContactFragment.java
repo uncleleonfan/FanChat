@@ -135,15 +135,24 @@ public class ContactFragment extends BaseFragment implements ContactView {
         }
     };
 
+    /**
+     * RecyclerView滚动直到界面出现对应section的联系人
+     *
+     * @param section 首字符
+     */
     private void scrollToSection(String section) {
         int sectionPosition = getSectionPosition(section);
-        mRecyclerView.scrollToPosition(sectionPosition);
         if (sectionPosition != POSITION_NOT_FOUND) {
             mRecyclerView.smoothScrollToPosition(sectionPosition);
         }
     }
 
 
+    /**
+     *
+     * @param section 首字符
+     * @return 在联系人列表中首字符是section的第一个联系人在联系人列表中的位置
+     */
     private int getSectionPosition(String section) {
         List<ContactItem> contactItems = mContactListAdapter.getContactItems();
         for (int i = 0; i < contactItems.size(); i++) {

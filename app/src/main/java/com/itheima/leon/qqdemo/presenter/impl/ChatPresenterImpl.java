@@ -65,18 +65,19 @@ public class ChatPresenterImpl implements ChatPresenter {
             @Override
             public void run() {
                 EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
-                //获取此会话的所有消息
-                List<EMMessage> messages = conversation.getAllMessages();
-                mEMMessageList.addAll(messages);
+                if (conversation != null) {
+                    //获取此会话的所有消息
+                    List<EMMessage> messages = conversation.getAllMessages();
+                    mEMMessageList.addAll(messages);
+                    //指定会话消息未读数清零
+                    conversation.markAllMessagesAsRead();
+                }
                 ThreadUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mChatView.onDataLoadedFromLocal();
                     }
                 });
-
-                //指定会话消息未读数清零
-                conversation.markAllMessagesAsRead();
             }
         });
     }

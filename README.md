@@ -329,21 +329,14 @@ RadioGroup, TabHost, FragmentTabHost, 自定义
 ## RecyclerView的使用 ##
 [Creating Lists and Cards](https://developer.android.com/training/material/lists-cards.html#RecyclerView)
 
-## ContactListItem的创建 ##
-	public class ContactListItem {
-	
-	    public String firstLetter;
-	    public String userName;
-	    public String image;
-	}
-
-## ContactListItemView的创建 ##
 
 ## 联系人是否在同一个组 ##
 
     private boolean itemInSameGroup(int i, ContactItem item) {
         return i > 0 && (item.getFirstLetter() == mContactItems.get(i - 1).getFirstLetter());
     }
+
+
 ## CardView的使用 ##
 
 ## SwipeRefreshLayout的使用 ##
@@ -357,6 +350,50 @@ RadioGroup, TabHost, FragmentTabHost, 自定义
             , "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 ### 绘制居中文本 ###
 http://www.cnblogs.com/tianzhijiexian/p/4297664.html
+
+### 在ContactFragment里面监听SlideBar的事件 ###
+    private SlideBar.OnSlideBarChangeListener mOnSlideBarChangeListener = new SlideBar.OnSlideBarChangeListener() {
+        @Override
+        public void onSectionChange(int index, String section) {
+            mSection.setVisibility(View.VISIBLE);
+            mSection.setText(section);
+            scrollToSection(section);
+        }
+
+        @Override
+        public void onSlidingFinish() {
+            mSection.setVisibility(View.GONE);
+        }
+    };
+
+    /**
+     * RecyclerView滚动直到界面出现对应section的联系人
+     * 
+     * @param section 首字符
+     */
+    private void scrollToSection(String section) {
+        int sectionPosition = getSectionPosition(section);
+        if (sectionPosition != POSITION_NOT_FOUND) {
+            mRecyclerView.smoothScrollToPosition(sectionPosition);
+        }
+    }
+
+
+    /**
+     * 
+     * @param section 首字符
+     * @return 在联系人列表中首字符是section的第一个联系人在联系人列表中的位置
+     */
+    private int getSectionPosition(String section) {
+        List<ContactItem> contactItems = mContactListAdapter.getContactItems();
+        for (int i = 0; i < contactItems.size(); i++) {
+            if (section.equals(contactItems.get(i).getFirstLetterString())) {
+                return i;
+            }
+        }
+        return POSITION_NOT_FOUND;
+    }
+
 
 # 添加好友界面 #
 ![添加好友](img/add_friend.jpg)
