@@ -441,6 +441,7 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 ![添加好友](img/add_friend.jpg)
 
 ## 搜索用户 ##
+[查询数据](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html#查询数据)
 
     @Override
     public void searchFriend(final String keyword) {
@@ -473,6 +474,16 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 * [AppBrain](http://www.appbrain.com/stats/libraries/details/greendao/greendao)
 * [使用文档](http://greenrobot.org/greendao/documentation/)
 * [中文使用文档](http://www.jianshu.com/p/2f7f48563141)
+
+### 创建实体类 ###
+	@Entity
+	public class Contact {
+	
+	    @Id
+	    public Long id;
+	
+	    public String userName;
+	}
 
 ### 初始化 ###
     public void init(Context context) {
