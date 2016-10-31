@@ -9,7 +9,6 @@ import android.text.TextWatcher;
  * 描述：    TODO
  */
 public class TextWatcherAdapter implements TextWatcher {
-    public static final String TAG = "TextWatcherAdapter";
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

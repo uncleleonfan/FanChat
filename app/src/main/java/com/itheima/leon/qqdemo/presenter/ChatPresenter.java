@@ -15,9 +15,9 @@ public interface ChatPresenter {
 
     List<EMMessage> getMessages();
 
-    void loadDataFromLocal(String userName);
+    void loadMessages(String userName);
 
-    void loadMoreDataFromServer(String userName);
+    void loadMoreMessages(String userName);
 
     void makeMessageRead(String userName);
 }

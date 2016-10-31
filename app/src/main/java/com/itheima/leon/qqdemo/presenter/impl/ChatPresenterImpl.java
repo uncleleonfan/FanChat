@@ -1,7 +1,5 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
-import android.util.Log;
-
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
@@ -60,7 +58,7 @@ public class ChatPresenterImpl implements ChatPresenter {
     }
 
     @Override
-    public void loadDataFromLocal(final String userName) {
+    public void loadMessages(final String userName) {
         ThreadUtils.runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
@@ -75,7 +73,7 @@ public class ChatPresenterImpl implements ChatPresenter {
                 ThreadUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mChatView.onDataLoadedFromLocal();
+                        mChatView.onMessagesLoaded();
                     }
                 });
             }
@@ -83,7 +81,7 @@ public class ChatPresenterImpl implements ChatPresenter {
     }
 
     @Override
-    public void loadMoreDataFromServer(final String userName) {
+    public void loadMoreMessages(final String userName) {
         if (hasMoreData) {
             ThreadUtils.runOnBackgroundThread(new Runnable() {
                 @Override
@@ -93,13 +91,12 @@ public class ChatPresenterImpl implements ChatPresenter {
                     //SDK初始化加载的聊天记录为20条，到顶时需要去DB里获取更多
                     //获取startMsgId之前的pagesize条消息，此方法获取的messages SDK会自动存入到此会话中，APP中无需再次把获取到的messages添加到会话中
                     final List<EMMessage> messages = conversation.loadMoreMsgFromDB(firstMessage.getMsgId(), DEFAULT_PAGE_SIZE);
-                    Log.d(TAG, "loadMoreDataFromServer: " + messages.size());
                     hasMoreData = (messages.size() == DEFAULT_PAGE_SIZE);
                     mEMMessageList.addAll(0, messages);
                     ThreadUtils.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mChatView.onMoreDataLoadedFromLocal(messages.size());
+                            mChatView.onMoreMessagesLoaded(messages.size());
                         }
                     });
                 }
@@ -107,8 +104,6 @@ public class ChatPresenterImpl implements ChatPresenter {
         } else {
             mChatView.onNoMoreData();
         }
-
-
     }
 
     @Override

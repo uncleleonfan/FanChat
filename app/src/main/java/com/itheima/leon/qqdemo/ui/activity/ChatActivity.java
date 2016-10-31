@@ -3,7 +3,6 @@ package com.itheima.leon.qqdemo.ui.activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.itheima.leon.qqdemo.R;
-import com.itheima.leon.qqdemo.adpater.ChatAdapter;
+import com.itheima.leon.qqdemo.adpater.MessageListAdapter;
 import com.itheima.leon.qqdemo.adpater.EMMessageListenerAdapter;
 import com.itheima.leon.qqdemo.adpater.TextWatcherAdapter;
 import com.itheima.leon.qqdemo.app.Constant;
@@ -34,7 +33,7 @@ import butterknife.OnClick;
  * 创建时间:  2016/10/20 10:18
  * 描述：    TODO
  */
-public class ChatActivity extends BaseActivity implements ChatView{
+public class ChatActivity extends BaseActivity implements ChatView {
     public static final String TAG = "ChatActivity";
     @BindView(R.id.back)
     ImageView mBack;
@@ -50,7 +49,7 @@ public class ChatActivity extends BaseActivity implements ChatView{
     private ChatPresenter mChatPresenter;
     private String mUserName;
 
-    private ChatAdapter mChatAdapter;
+    private MessageListAdapter mMessageListAdapter;
 
     private LinearLayoutManager mLinearLayoutManager;
 
@@ -73,15 +72,15 @@ public class ChatActivity extends BaseActivity implements ChatView{
         initRecyclerView();
 
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListener);
-        mChatPresenter.loadDataFromLocal(mUserName);
+        mChatPresenter.loadMessages(mUserName);
 
     }
 
     private void initRecyclerView() {
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mChatAdapter = new ChatAdapter(this, mChatPresenter.getMessages());
-        mRecyclerView.setAdapter(mChatAdapter);
+        mMessageListAdapter = new MessageListAdapter(this, mChatPresenter.getMessages());
+        mRecyclerView.setAdapter(mMessageListAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
     }
 
@@ -117,11 +116,6 @@ public class ChatActivity extends BaseActivity implements ChatView{
     private TextWatcherAdapter mTextWatcher = new TextWatcherAdapter() {
         @Override
         public void afterTextChanged(Editable s) {
-/*            if (s.length() == 0) {
-                mSend.setEnabled(false);
-            } else {
-                mSend.setEnabled(true);
-            }*/
             mSend.setEnabled(s.length() != 0);
         }
     };
@@ -129,12 +123,11 @@ public class ChatActivity extends BaseActivity implements ChatView{
 
     @Override
     public void onStartSendMessage() {
-//        showProgress(getString(R.string.sending));
         updateList();
     }
 
     private void updateList() {
-        mChatAdapter.notifyDataSetChanged();
+        mMessageListAdapter.notifyDataSetChanged();
         smoothScrollToBottom();
     }
 
@@ -152,16 +145,16 @@ public class ChatActivity extends BaseActivity implements ChatView{
     }
 
     @Override
-    public void onDataLoadedFromLocal() {
+    public void onMessagesLoaded() {
         toast(getString(R.string.load_data_success));
-        mChatAdapter.notifyDataSetChanged();
+        mMessageListAdapter.notifyDataSetChanged();
         scrollToBottom();
     }
 
     @Override
-    public void onMoreDataLoadedFromLocal(int size) {
+    public void onMoreMessagesLoaded(int size) {
         toast(getString(R.string.load_more_data_success));
-        mChatAdapter.notifyDataSetChanged();
+        mMessageListAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(size);
     }
 
@@ -177,11 +170,9 @@ public class ChatActivity extends BaseActivity implements ChatView{
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    toast(getString(R.string.get_new_message));
                     final EMMessage emMessage = list.get(0);
-//            Log.d(TAG, "onMessageReceived: " + mUserName + " " + emMessage.getUserName() + emMessage.getBody().toString());
-                   mChatPresenter.makeMessageRead(mUserName);
-                    mChatAdapter.addNewMessage(emMessage);
+                    mChatPresenter.makeMessageRead(mUserName);
+                    mMessageListAdapter.addNewMessage(emMessage);
                     smoothScrollToBottom();
                 }
             });
@@ -189,11 +180,11 @@ public class ChatActivity extends BaseActivity implements ChatView{
     };
 
     private void smoothScrollToBottom() {
-        mRecyclerView.smoothScrollToPosition(mChatAdapter.getItemCount() - 1);
+        mRecyclerView.smoothScrollToPosition(mMessageListAdapter.getItemCount() - 1);
     }
 
     private void scrollToBottom() {
-        mRecyclerView.scrollToPosition(mChatAdapter.getItemCount() - 1);
+        mRecyclerView.scrollToPosition(mMessageListAdapter.getItemCount() - 1);
     }
 
     @Override
@@ -208,9 +199,8 @@ public class ChatActivity extends BaseActivity implements ChatView{
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 int firstVisibleItemPosition = mLinearLayoutManager.findFirstVisibleItemPosition();
-                Log.d(TAG, "onScrollStateChanged: " + firstVisibleItemPosition);
                 if (firstVisibleItemPosition == 0) {
-                    mChatPresenter.loadMoreDataFromServer(mUserName);
+                    mChatPresenter.loadMoreMessages(mUserName);
                 }
             }
         }

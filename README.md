@@ -556,16 +556,19 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 ![聊天界面](img/chat1.jpg)
 ![聊天界面](img/chat2.jpg)
 
-[通信过程及聊天记录保存](http://docs.easemob.com/im/000quickstart/25communicationandmessagestorage)
-## 发送一条消息 ##
+### 监听发送按钮的状态变化 ###
+    private TextWatcherAdapter mTextWatcher = new TextWatcherAdapter() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            mSend.setEnabled(s.length() != 0);
+        }
+    };
 
 ### 动画文件 ###
-anim文件夹：补间动画
-
-animator文件夹：属性动画
-
-drawable文件夹：帧动画
-
+* anim文件夹：存放补间动画
+* animator文件夹：存放属性动画
+* drawable文件夹：存放帧动画
+### 发送消息的进度动画 ###
 	<?xml version="1.0" encoding="utf-8"?>
 	<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
 	    <item android:drawable="@mipmap/loading1" android:duration="100"/>
@@ -578,14 +581,118 @@ drawable文件夹：帧动画
 	    <item android:drawable="@mipmap/loading8" android:duration="100"/>
 	</animation-list>
 
+
 ### .9文件制作 ###
 
+## 发送一条消息 ##
+
+### 返回消息的类型 ###
+    @Override
+    public int getItemViewType(int position) {
+        EMMessage message = mMessages.get(position);
+        return message.direct() == EMMessage.Direct.SEND ? ITEM_TYPE_SEND_MESSAGE : ITEM_TYPE_RECEIVE_MESSAGE;
+    }
+
+
+### 是否显示时间戳的判断 ###
+    /**
+     * 如果两个消息之间的时间太近，就不显示时间戳
+     */
+    private boolean shouldShowTimeStamp(int position) {
+        long currentItemTimestamp = mMessages.get(position).getMsgTime();
+        long preItemTimestamp = mMessages.get(position - 1).getMsgTime();
+        boolean closeEnough = DateUtils.isCloseEnough(currentItemTimestamp, preItemTimestamp);
+        return !closeEnough;
+    }
+
+### 更新消息的状态 ###
+    private void updateSendingStatus(EMMessage emMessage) {
+        switch (emMessage.status()) {
+            case INPROGRESS:
+                mSendMessageProgress.setVisibility(VISIBLE);
+                mSendMessageProgress.setImageResource(R.drawable.send_message_progress);
+                AnimationDrawable drawable = (AnimationDrawable) mSendMessageProgress.getDrawable();
+                drawable.start();
+                break;
+            case SUCCESS:
+                mSendMessageProgress.setVisibility(GONE);
+                break;
+            case FAIL:
+                mSendMessageProgress.setImageResource(R.mipmap.msg_error);
+                break;
+        }
+    }
+
 ## 接收一条消息 ##
+    private EMMessageListenerAdapter mEMMessageListener = new EMMessageListenerAdapter() {
+        @Override
+        public void onMessageReceived(final List<EMMessage> list) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final EMMessage emMessage = list.get(0);
+                    mChatPresenter.makeMessageRead(mUserName);
+                    mMessageListAdapter.addNewMessage(emMessage);
+                    smoothScrollToBottom();
+                }
+            });
+        }
+    };
 
 ## 初始化聊天记录 ##
 [官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
 
+[通信过程及聊天记录保存](http://docs.easemob.com/im/000quickstart/25communicationandmessagestorage)
+
+    @Override
+    public void loadMessages(final String userName) {
+        ThreadUtils.runOnBackgroundThread(new Runnable() {
+            @Override
+            public void run() {
+                EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
+                if (conversation != null) {
+                    //获取此会话的所有消息
+                    List<EMMessage> messages = conversation.getAllMessages();
+                    mEMMessageList.addAll(messages);
+                    //指定会话消息未读数清零
+                    conversation.markAllMessagesAsRead();
+                }
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mChatView.onMessagesLoaded();
+                    }
+                });
+            }
+        });
+    }
+
 ## 加载更多聊天记录 ##
+    @Override
+    public void loadMoreMessages(final String userName) {
+        if (hasMoreData) {
+            ThreadUtils.runOnBackgroundThread(new Runnable() {
+                @Override
+                public void run() {
+                    EMConversation conversation = EMClient.getInstance().chatManager().getConversation(userName);
+                    EMMessage firstMessage = mEMMessageList.get(0);
+                    //SDK初始化加载的聊天记录为20条，到顶时需要去DB里获取更多
+                    //获取startMsgId之前的pagesize条消息，此方法获取的messages SDK会自动存入到此会话中，APP中无需再次把获取到的messages添加到会话中
+                    final List<EMMessage> messages = conversation.loadMoreMsgFromDB(firstMessage.getMsgId(), DEFAULT_PAGE_SIZE);
+                    hasMoreData = (messages.size() == DEFAULT_PAGE_SIZE);
+                    mEMMessageList.addAll(0, messages);
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mChatView.onMoreMessagesLoaded(messages.size());
+                        }
+                    });
+                }
+            });
+        } else {
+            mChatView.onNoMoreData();
+        }
+    }
 
 # 会话界面 #
 ![icon](img/message.jpg)

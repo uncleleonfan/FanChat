@@ -16,8 +16,8 @@ import java.util.List;
  * 创建时间:  2016/10/20 12:42
  * 描述：    TODO
  */
-public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public static final String TAG = "ChatAdapter";
+public class MessageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final String TAG = "MessageListAdapter";
 
     private Context mContext;
 
@@ -26,7 +26,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM_TYPE_SEND_MESSAGE = 0;
     private static final int ITEM_TYPE_RECEIVE_MESSAGE = 1;
 
-    public ChatAdapter(Context context, List<EMMessage> messages) {
+    public MessageListAdapter(Context context, List<EMMessage> messages) {
         mContext = context;
         mMessages = messages;
     }
@@ -55,9 +55,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     /**
      * 如果两个消息之间的时间太近，就不显示时间戳
-     *
-     * @param position
-     * @return
      */
     private boolean shouldShowTimeStamp(int position) {
         long currentItemTimestamp = mMessages.get(position).getMsgTime();

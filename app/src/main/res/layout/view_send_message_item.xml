@@ -43,7 +43,6 @@
             android:layout_height="wrap_content"
             android:src="@drawable/send_message_progress"
             android:layout_centerVertical="true"
-            android:visibility="gone"
             android:layout_toLeftOf="@id/send_message"/>
     </RelativeLayout>
 
