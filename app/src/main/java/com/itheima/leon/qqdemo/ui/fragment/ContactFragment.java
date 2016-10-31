@@ -175,7 +175,6 @@ public class ContactFragment extends BaseFragment implements ContactView {
         public void onContactDeleted(String s) {
             mContactPresenter.refreshContactList();
         }
-
     };
 
     private ContactListAdapter.OnItemClickListener mOnItemClickListener = new ContactListAdapter.OnItemClickListener() {

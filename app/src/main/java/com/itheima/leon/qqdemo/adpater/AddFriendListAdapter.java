@@ -36,9 +36,6 @@ public class AddFriendListAdapter extends RecyclerView.Adapter<AddFriendListAdap
 
     @Override
     public int getItemCount() {
-        if (mAddFriendItemList == null) {
-            return 0;
-        }
         return mAddFriendItemList.size();
     }
 

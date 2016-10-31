@@ -185,7 +185,6 @@ public class ChatActivity extends BaseActivity implements ChatView{
                     smoothScrollToBottom();
                 }
             });
-
         }
     };
 

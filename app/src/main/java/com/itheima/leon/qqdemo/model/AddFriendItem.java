@@ -6,7 +6,6 @@ package com.itheima.leon.qqdemo.model;
  * 描述：    TODO
  */
 public class AddFriendItem {
-    public static final String TAG = "AddFriendItem";
 
     public String userName;
 

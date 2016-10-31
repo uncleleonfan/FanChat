@@ -1,7 +1,5 @@
 package com.itheima.leon.qqdemo.presenter.impl;
 
-import android.util.Log;
-
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.itheima.leon.qqdemo.database.DatabaseManager;
@@ -90,7 +88,6 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void addFriend(AddFriendEvent event) {
         try {
-            Log.d(TAG, "addFriend: " + event.getFriendName());
             EMClient.getInstance().contactManager().addContact(event.getFriendName(), event.getReason());
             ThreadUtils.runOnUiThread(new Runnable() {
                 @Override

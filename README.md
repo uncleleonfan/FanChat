@@ -440,20 +440,117 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 # 添加好友界面 #
 ![添加好友](img/add_friend.jpg)
 
-## GreenDAO ##
-[Github](https://github.com/greenrobot/greenDAO)
+## 搜索用户 ##
 
-[官网](http://greenrobot.org/greendao/)
+    @Override
+    public void searchFriend(final String keyword) {
+        mAddFriendView.onStartSearch();
+        //注:模糊查询只对付费用户开放，付费后可直接使用。
+        BmobQuery<User> query = new BmobQuery<User>();
+        query.addWhereContains("username", keyword).addWhereNotEqualTo("username", EMClient.getInstance().getCurrentUser());
+        query.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                processResult(list, e);
+            }
+        });
+    }
 
-[AppBrain](http://www.appbrain.com/stats/libraries/details/greendao/greendao)
+## greenDAO ##
+greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射, object/relational mapping, 将Java对象映射成数据库的表。
 
-[使用文档](http://greenrobot.org/greendao/documentation/)
+### 其他ORM框架 ###
+* [DBFlow](https://github.com/Raizlabs/DBFlow)
+* [Ormlite](http://ormlite.com/)
+* [Sugar](http://satyan.github.io/sugar/)
+* [ActiveAndroid](https://github.com/pardom/ActiveAndroid)
+* [Sprinkles](https://github.com/emilsjolander/sprinkles)
+* [Ollie](https://github.com/pardom/ollie/)
 
-[中文使用文档](http://www.jianshu.com/p/2f7f48563141)
+### 参考 ###
+* [Github](https://github.com/greenrobot/greenDAO)
+* [官网](http://greenrobot.org/greendao/)
+* [AppBrain](http://www.appbrain.com/stats/libraries/details/greendao/greendao)
+* [使用文档](http://greenrobot.org/greendao/documentation/)
+* [中文使用文档](http://www.jianshu.com/p/2f7f48563141)
 
-1. 保存联系人
-2. 查询联系人
-3. 删除联系人
+### 初始化 ###
+    public void init(Context context) {
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, Constant.Database.DATABASE_NAME, null);
+        SQLiteDatabase writableDatabase = devOpenHelper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(writableDatabase);
+        mDaoSession = daoMaster.newSession();
+    }
+
+### 保存联系人 ###
+    public void saveContact(String userName) {
+        Contact contact = new Contact();
+        contact.setUsername(userName);
+        mDaoSession.getContactDao().save(contact);
+    }
+
+### 查询联系人 ###
+    public List<String> queryAllContacts() {
+        List<Contact> list = mDaoSession.getContactDao().queryBuilder().list();
+        ArrayList<String> contacts = new ArrayList<String>();
+        for (int i = 0; i < list.size(); i++) {
+            String contact = list.get(i).getUsername();
+            contacts.add(contact);
+        }
+        return contacts;
+    }
+
+### 删除联系人 ###
+    public void deleteAllContacts() {
+        ContactDao contactDao = mDaoSession.getContactDao();
+        contactDao.deleteAll();
+    }
+
+
+## 发送好友请求 ##
+### AddFriendItemView里面处理点击事件 ###
+    @OnClick(R.id.add)
+    public void onClick() {
+        String friendName = mUserName.getText().toString().trim();
+        String addFriendReason = getContext().getString(R.string.add_friend_reason);
+        AddFriendEvent event = new AddFriendEvent(friendName, addFriendReason);
+        EventBus.getDefault().post(event);
+    }
+
+### AddFriendPresenterImpl实现发送好友请求  ###
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void addFriend(AddFriendEvent event) {
+        try {
+            EMClient.getInstance().contactManager().addContact(event.getFriendName(), event.getReason());
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAddFriendView.onAddFriendSuccess();
+                }
+            });
+        } catch (HyphenateException e) {
+            e.printStackTrace();
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mAddFriendView.onAddFriendFailed();
+                }
+            });
+        }
+
+### 在联系人列表中监听联系人变化 ###
+    private EMContactListenerAdapter mEMContactListener = new EMContactListenerAdapter() {
+
+        @Override
+        public void onContactAdded(String s) {
+            mContactPresenter.refreshContactList();
+        }
+
+        @Override
+        public void onContactDeleted(String s) {
+            mContactPresenter.refreshContactList();
+        }
+    };
 
 # 聊天界面 #
 ![聊天界面](img/chat1.jpg)
