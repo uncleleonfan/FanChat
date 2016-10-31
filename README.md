@@ -395,6 +395,48 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
     }
 
 
+## 联系人点击事件 ##
+    private ContactListAdapter.OnItemClickListener mOnItemClickListener = new ContactListAdapter.OnItemClickListener() {
+
+        /**
+         * 单击跳转到聊天界面
+         * @param name 点击item的联系人名字
+         */
+        @Override
+        public void onItemClick(String name) {
+            startActivity(ChatActivity.class, Constant.Extra.USER_NAME, name);
+        }
+
+        /**
+         * 长按删除好友
+         * @param name 点击item的联系人名字
+         */
+        @Override
+        public void onItemLongClick(final String name) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            String message = String.format(getString(R.string.delete_friend_message), name);
+            builder.setTitle(getString(R.string.delete_friend))
+                    .setMessage(message)
+                    .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            showProgress(getString(R.string.deleting_friend));
+                            mContactPresenter.deleteFriend(name);
+
+                        }
+                    });
+            builder.show();
+        }
+    };
+
+
 # 添加好友界面 #
 ![添加好友](img/add_friend.jpg)
 

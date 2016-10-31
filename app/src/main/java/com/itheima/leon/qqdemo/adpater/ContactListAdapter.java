@@ -34,14 +34,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ContactItemViewHolder holder, final int position) {
+    public void onBindViewHolder(ContactItemViewHolder holder, int position) {
         final ContactItem item = mContactItems.get(position);
         holder.mItemView.bindView(item);
         holder.mItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemClick(position, item.userName);
+                    mOnItemClickListener.onItemClick(item.userName);
                 }
             }
         });
@@ -49,7 +49,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             @Override
             public boolean onLongClick(View v) {
                 if (mOnItemClickListener != null) {
-                    mOnItemClickListener.onItemLongClick(position, item.userName);
+                    mOnItemClickListener.onItemLongClick(item.userName);
                     return true;
                 }
                 return false;
@@ -81,8 +81,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
 
     public interface OnItemClickListener {
-        void onItemClick(int index, String name);
-        void onItemLongClick(int index, String name);
+        void onItemClick(String name);
+        void onItemLongClick(String name);
     }
 
     public void setOnItemClickListener(OnItemClickListener l) {

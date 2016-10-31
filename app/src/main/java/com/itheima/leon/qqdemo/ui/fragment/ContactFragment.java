@@ -180,13 +180,21 @@ public class ContactFragment extends BaseFragment implements ContactView {
 
     private ContactListAdapter.OnItemClickListener mOnItemClickListener = new ContactListAdapter.OnItemClickListener() {
 
+        /**
+         * 单击跳转到聊天界面
+         * @param name 点击item的联系人名字
+         */
         @Override
-        public void onItemClick(int index, String name) {
+        public void onItemClick(String name) {
             startActivity(ChatActivity.class, Constant.Extra.USER_NAME, name);
         }
 
+        /**
+         * 长按删除好友
+         * @param name 点击item的联系人名字
+         */
         @Override
-        public void onItemLongClick(int index, final String name) {
+        public void onItemLongClick(final String name) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             String message = String.format(getString(R.string.delete_friend_message), name);
             builder.setTitle(getString(R.string.delete_friend))
