@@ -42,56 +42,53 @@ public class AddFriendPresenterImpl implements AddFriendPresenter {
 
     @Override
     public void searchFriend(final String keyword) {
-        Log.d(TAG, "searchFriend: " + keyword);
         mAddFriendView.onStartSearch();
+        //注:模糊查询只对付费用户开放，付费后可直接使用。
+        BmobQuery<User> query = new BmobQuery<User>();
+        query.addWhereContains("username", keyword).addWhereNotEqualTo("username", EMClient.getInstance().getCurrentUser());
+        query.findObjects(new FindListener<User>() {
+            @Override
+            public void done(List<User> list, BmobException e) {
+                processResult(list, e);
+            }
+        });
+    }
+
+
+    private void processResult(final List<User> list, final BmobException e) {
         ThreadUtils.runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
-                //search friend
-                //注:模糊查询只对付费用户开放，付费后可直接使用。
-                BmobQuery<User> query = new BmobQuery<User>();
-                query.addWhereContains("username", keyword).addWhereNotEqualTo("username", EMClient.getInstance().getCurrentUser());
-                query.findObjects(new FindListener<User>() {
-                    @Override
-                    public void done(List<User> list, BmobException e) {
-                        Log.d(TAG, "done: " + Thread.currentThread().getName());
-                        processResult(list, e);
+                if (e == null && list.size() > 0) {
+                    List<String> contacts = DatabaseManager.getInstance().queryAllContacts();
+                    for (int i = 0; i < list.size(); i++) {
+                        AddFriendItem item = new AddFriendItem();
+                        item.timestamp = list.get(i).getCreatedAt();
+                        item.userName = list.get(i).getUsername();
+                        item.isAdded = contacts.contains(item.userName);
+                        mAddFriendItems.add(item);
                     }
-                });
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAddFriendView.onSearchSuccess();
+                        }
+                    });
+                } else {
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mAddFriendView.onSearchFailed();
+                        }
+                    });
+                }
             }
         });
-
-    }
-
-    private void processResult(List<User> list, BmobException e) {
-        if (e == null && list.size() > 0) {
-            List<String> contacts = DatabaseManager.getInstance().queryAllContacts();
-            for (int i = 0; i <list.size(); i++) {
-                AddFriendItem item = new AddFriendItem();
-                item.timestamp = list.get(i).getCreatedAt();
-                item.userName = list.get(i).getUsername();
-                item.isAdded = contacts.contains(item.userName);
-                mAddFriendItems.add(item);
-            }
-            ThreadUtils.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAddFriendView.onSearchSuccess();
-                }
-            });
-        } else {
-            ThreadUtils.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mAddFriendView.onSearchFailed();
-                }
-            });
-        }
     }
 
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void addFriend(AddFriendEvent event){
+    public void addFriend(AddFriendEvent event) {
         try {
             Log.d(TAG, "addFriend: " + event.getFriendName());
             EMClient.getInstance().contactManager().addContact(event.getFriendName(), event.getReason());
