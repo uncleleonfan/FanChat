@@ -579,6 +579,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 * anim文件夹：存放补间动画
 * animator文件夹：存放属性动画
 * drawable文件夹：存放帧动画
+
 ### 发送消息的进度动画 ###
 	<?xml version="1.0" encoding="utf-8"?>
 	<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
@@ -594,6 +595,11 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 
 
 ### .9文件制作 ###
+[官方说明](https://developer.android.com/guide/topics/graphics/2d-graphics.html#nine-patch)
+
+![icon](img/ninepatch_raw.png)
+
+![icon](img/ninepatch_examples.png)
 
 ## 发送一条消息 ##
 
