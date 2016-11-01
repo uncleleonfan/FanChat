@@ -568,6 +568,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 ![聊天界面](img/chat2.jpg)
 
 ### 监听发送按钮的状态变化 ###
+    mEdit.addTextChangedListener(mTextWatcher);
     private TextWatcherAdapter mTextWatcher = new TextWatcherAdapter() {
         @Override
         public void afterTextChanged(Editable s) {
@@ -714,17 +715,168 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 # 会话界面 #
 ![icon](img/message.jpg)
 
-## 会话界面的MVP实现 ##
+## MVP实现 ##
+* ConversationView
+* ConversationPresenter
 
-## 未读消息的更新 ##
+## 加载所有会话 ##
+    @Override
+    public void loadAllConversations() {
+        ThreadUtils.runOnBackgroundThread(new Runnable() {
+            @Override
+            public void run() {
+                Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+                mEMConversations.addAll(conversations.values());
+                Collections.sort(mEMConversations, new Comparator<EMConversation>() {
+                    @Override
+                    public int compare(EMConversation o1, EMConversation o2) {
+                        return (int) (o2.getLastMessage().getMsgTime() - o1.getLastMessage().getMsgTime());
+                    }
+                });
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mConversationView.onAllConversationsLoaded();
+                    }
+                });
+            }
+        });
+    }
+
+## 未读消息计数更新 ##
 [官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
+### 会话列表中未读消息的更新 ###
+    private EMMessageListenerAdapter mEMMessageListenerAdapter = new EMMessageListenerAdapter() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toast(getString(R.string.receive_new_message));
+                    mConversationPresenter.loadAllConversations();
+                }
+            });
+        }
+    };
+### BottomBar bardge的更新 ###
+    private EMMessageListenerAdapter mEMMessageListenerAdapter = new EMMessageListenerAdapter() {
+
+        //该回调在子线程中调用
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            updateUnreadCount();
+        }
+    };
+
+    private void updateUnreadCount() {
+        ThreadUtils.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                BottomBarTab bottomBar = mBottomBar.getTabWithId(R.id.conversations);
+                int count = EMClient.getInstance().chatManager().getUnreadMsgsCount();
+                bottomBar.setBadgeCount(count);
+            }
+        });
+    }
 
 ## 标记消息已读 ##
+### 加载聊天数据时标记已读 ###
+	//指定会话消息未读数清零
+	conversation.markAllMessagesAsRead();
+### 在聊天界面收到新消息时将消息标记已读 ###
+
+### 聊天界面返回时更新未读badge ###
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateUnreadCount();
+    }
 
 # 消息通知 #
+## 通知 ##
+### 判断app是否在前台 ###
+    public boolean isForeground() {
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+        if (runningAppProcesses == null) {
+            return false;
+        }
+        for (ActivityManager.RunningAppProcessInfo info :runningAppProcesses) {
+            if (info.processName.equals(getPackageName()) && info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+### 如果app在后台则弹出Notification ###
+    private void showNotification(EMMessage emMessage) {
+        String contentText = "";
+        if (emMessage.getBody() instanceof EMTextMessageBody) {
+            contentText = ((EMTextMessageBody) emMessage.getBody()).getMessage();
+        }
+
+        Intent chat = new Intent(this, ChatActivity.class);
+        chat.putExtra(Constant.Extra.USER_NAME, emMessage.getUserName());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, chat, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new Notification.Builder(this)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.avatar1))
+                .setSmallIcon(R.mipmap.ic_contact_selected_2)
+                .setContentTitle(getString(R.string.receive_new_message))
+                .setContentText(contentText)
+                .setPriority(Notification.PRIORITY_MAX)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .build();
+        notificationManager.notify(1, notification);
+    }
+
+
 ## 声音  ##
 
-## 通知 ##
+### 初始化SoundPool ###
+    private void initSoundPool() {
+        mSoundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        mDuanSound = mSoundPool.load(this, R.raw.duan, 1);
+        mYuluSound = mSoundPool.load(this, R.raw.yulu, 1);
+    }
+
+### 播放音效 ###
+    private EMMessageListenerAdapter mEMMessageListenerAdapter = new EMMessageListenerAdapter() {
+
+        @Override
+        public void onMessageReceived(List<EMMessage> list) {
+            if (isForeground()) {
+                mSoundPool.play(mDuanSound, 1, 1, 0, 0, 1);
+            } else {
+                mSoundPool.play(mYuluSound, 1, 1, 0, 0, 1);
+                showNotification(list.get(0));
+            }
+        }
+    };
 
 # 多设备登录 #
 [官方文档](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
+
+    private EMConnectionListener mEMConnectionListener = new EMConnectionListener() {
+        @Override
+        public void onConnected() {
+
+        }
+
+        @Override
+        public void onDisconnected(int i) {
+            if (i == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                ThreadUtils.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(LoginActivity.class);
+                        toast(getString(R.string.user_login_another_device));
+                    }
+                });
+            }
+        }
+    };

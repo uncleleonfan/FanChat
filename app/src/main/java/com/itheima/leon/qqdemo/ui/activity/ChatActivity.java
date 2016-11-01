@@ -171,9 +171,11 @@ public class ChatActivity extends BaseActivity implements ChatView {
                 @Override
                 public void run() {
                     final EMMessage emMessage = list.get(0);
-                    mChatPresenter.makeMessageRead(mUserName);
-                    mMessageListAdapter.addNewMessage(emMessage);
-                    smoothScrollToBottom();
+                    if (emMessage.getUserName().equals(mUserName)) {
+                        mChatPresenter.makeMessageRead(mUserName);
+                        mMessageListAdapter.addNewMessage(emMessage);
+                        smoothScrollToBottom();
+                    }
                 }
             });
         }

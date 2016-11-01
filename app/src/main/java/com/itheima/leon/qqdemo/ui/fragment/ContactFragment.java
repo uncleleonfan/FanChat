@@ -86,7 +86,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
 
     @OnClick(R.id.add)
     public void onClick() {
-        startActivity(AddFriendActivity.class);
+        startActivity(AddFriendActivity.class, false);
     }
 
     @Override

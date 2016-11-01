@@ -56,13 +56,7 @@ public class ConversationItemView extends RelativeLayout {
 
     public void bindView(final EMConversation emConversation) {
         mUserName.setText(emConversation.getUserName());
-        EMMessage emMessage = emConversation.getLastMessage();
-        if (emMessage.getBody() instanceof EMTextMessageBody) {
-            mLastMessage.setText(((EMTextMessageBody) emMessage.getBody()).getMessage());
-        } else {
-            mLastMessage.setText(getContext().getString(R.string.no_text_message));
-        }
-        mTimestamp.setText(DateUtils.getTimestampString(new Date(emMessage.getMsgTime())));
+        updateLastMessage(emConversation);
         updateUnreadCount(emConversation);
         mConversationItemContainer.setOnClickListener(new OnClickListener() {
             @Override
@@ -74,12 +68,19 @@ public class ConversationItemView extends RelativeLayout {
         });
     }
 
+    private void updateLastMessage(EMConversation emConversation) {
+        EMMessage emMessage = emConversation.getLastMessage();
+        if (emMessage.getBody() instanceof EMTextMessageBody) {
+            mLastMessage.setText(((EMTextMessageBody) emMessage.getBody()).getMessage());
+        } else {
+            mLastMessage.setText(getContext().getString(R.string.no_text_message));
+        }
+        mTimestamp.setText(DateUtils.getTimestampString(new Date(emMessage.getMsgTime())));
+    }
+
     private void updateUnreadCount(EMConversation emConversation) {
         int unreadMsgCount = emConversation.getUnreadMsgCount();
-        if (unreadMsgCount > 99) {
-            mUnreadCount.setVisibility(VISIBLE);
-            mUnreadCount.setText(getContext().getString(R.string.max_unread_count));
-        } else if (unreadMsgCount > 0) {
+        if (unreadMsgCount > 0) {
             mUnreadCount.setVisibility(VISIBLE);
             mUnreadCount.setText(String.valueOf(unreadMsgCount));
         } else {

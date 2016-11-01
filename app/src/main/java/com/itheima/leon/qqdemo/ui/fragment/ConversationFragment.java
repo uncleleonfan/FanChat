@@ -50,6 +50,7 @@ public class ConversationFragment extends BaseFragment implements ConversationVi
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mConversationAdapter = new ConversationAdapter(getContext(), mConversationPresenter.getConversations());
         mRecyclerView.setAdapter(mConversationAdapter);
+
         mConversationPresenter.loadAllConversations();
         EMClient.getInstance().chatManager().addMessageListener(mEMMessageListenerAdapter);
 
@@ -75,7 +76,7 @@ public class ConversationFragment extends BaseFragment implements ConversationVi
                 @Override
                 public void run() {
                     toast(getString(R.string.receive_new_message));
-                    mConversationAdapter.notifyDataSetChanged();
+                    mConversationPresenter.loadAllConversations();
                 }
             });
         }

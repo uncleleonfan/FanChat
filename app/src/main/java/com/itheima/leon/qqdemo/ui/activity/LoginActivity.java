@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity implements LoginView{
     public void onLoginSuccess() {
         hideProgress();
         toast(getString(R.string.login_success));
-        startActivity(MainActivity.class, true);
+        startActivity(MainActivity.class);
     }
 
     @Override

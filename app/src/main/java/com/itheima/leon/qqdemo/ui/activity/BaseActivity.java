@@ -39,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract int getLayoutRes();
 
     protected void startActivity(Class activity) {
-        startActivity(activity, false);
+        startActivity(activity, true);
     }
 
     protected void startActivity(Class activity, boolean finish) {

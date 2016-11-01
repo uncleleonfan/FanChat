@@ -35,6 +35,7 @@ public class ConversationPresenterImpl implements ConversationPresenter{
             @Override
             public void run() {
                 Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+                mEMConversations.clear();
                 mEMConversations.addAll(conversations.values());
                 Collections.sort(mEMConversations, new Comparator<EMConversation>() {
                     @Override

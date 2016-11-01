@@ -1,6 +1,5 @@
 package com.itheima.leon.qqdemo.ui.activity;
 
-import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -98,9 +97,7 @@ public class MainActivity extends BaseActivity {
                 ThreadUtils.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        startActivity(LoginActivity.class);
                         toast(getString(R.string.user_login_another_device));
                     }
                 });

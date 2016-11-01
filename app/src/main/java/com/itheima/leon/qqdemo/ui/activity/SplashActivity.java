@@ -34,13 +34,13 @@ public class SplashActivity extends BaseActivity implements SplashView {
         postDelay(new Runnable() {
             @Override
             public void run() {
-                startActivity(LoginActivity.class, true);
+                startActivity(LoginActivity.class);
             }
         }, DELAY);
     }
 
     @Override
     public void onLoggedIn() {
-        startActivity(MainActivity.class, true);
+        startActivity(MainActivity.class);
     }
 }
