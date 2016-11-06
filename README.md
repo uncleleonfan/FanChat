@@ -156,7 +156,7 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 * SplashPresenter
 
 # 登录界面 #
-![登录界面](img/login.jpg)
+![登录界面1](img/login1.png)
 
 ## 功能需求 ##
 1. 有两种情况都可以发起登录操作，一是点击登录按钮，而是点击虚拟键盘上的Action键。
@@ -199,6 +199,8 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 
 
 ## Android6.0动态权限管理 ##
+![登录界面2](img/login2.png)
+
 [介绍](http://www.jianshu.com/p/a37f4827079a)
 
 举个栗子：高德地图 百度地图等
@@ -237,7 +239,8 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 
 # 注册界面 #
 
-![注册界面](img/register.jpg)
+![注册界面1](img/register1.png)
+![注册界面2](img/register2.png)
 
 ## 功能需求 ##
 1. 用户名的长度必须是3-20位，首字母必须为英文字符，其他字符则除了英文外还可以是数字或者下划线。
@@ -305,21 +308,21 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 [Bmob错误码](http://docs.bmob.cn/data/Android/g_errorcode/doc/index.html)
 
 # 主界面 #
-![主界面](img/main.jpg)
+![主界面](img/main.png)
 
 ## 底部导航条 ##
 RadioGroup, TabHost, FragmentTabHost, 自定义
 ## 第三方底部条 ##
-[BottomBar](https://github.com/roughike/BottomBar)
-[AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
-[BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
+* [BottomBar](https://github.com/roughike/BottomBar)
+* [AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
+* [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
 ## Fragment的切换 ##
 
 # 动态界面 #
-![退出登录](img/logout.jpg)
+![退出登录](img/logout.png)
 
 # 联系人界面 #
-![联系人1](img/contact1.jpg)
+![联系人1](img/contact1.png)
 ![联系人2](img/contact2.jpg)
 
 # MVP实现 #
@@ -438,7 +441,7 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 
 
 # 添加好友界面 #
-![添加好友](img/add_friend.jpg)
+![添加好友](img/add_friend.png)
 
 ## 搜索用户 ##
 [查询数据](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html#查询数据)
@@ -564,8 +567,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
     };
 
 # 聊天界面 #
-![聊天界面](img/chat1.jpg)
-![聊天界面](img/chat2.jpg)
+![聊天界面](img/chat.png)
 
 ### 监听发送按钮的状态变化 ###
     mEdit.addTextChangedListener(mTextWatcher);
@@ -713,7 +715,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
     }
 
 # 会话界面 #
-![icon](img/message.jpg)
+![icon](img/main.png)
 
 ## MVP实现 ##
 * ConversationView
