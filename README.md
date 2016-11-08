@@ -379,6 +379,7 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 * [BottomBar](https://github.com/roughike/BottomBar)
 * [AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
 * [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
+
 ## Fragment的切换 ##
     private OnTabSelectListener mOnTabSelectListener = new OnTabSelectListener() {
         @Override
