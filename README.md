@@ -442,7 +442,7 @@ RecyclerView提供这些内置管理器：
 ![首字符相同](img/multi_contacts.png)
 
 当多个联系人的首字符相同时，只有第一个ContactListItemView显示首字符，后续首字符相同的ContactListItemView均不显示首字符。
-在ContactListItem中声明一个变量布尔型变量showFirstLetter来标记是否显示首字符。该变量在创建ContactListItem时赋值。
+在ContactListItem中声明一个布尔型变量showFirstLetter来标记是否显示首字符。该变量在创建ContactListItem时赋值。
 
     /**
      * 获取联系人列表数据
