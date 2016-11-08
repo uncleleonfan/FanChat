@@ -143,8 +143,6 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 * BaseActivity
 * BaseFragment
 
-## Git初始化 ##
-
 # Splash界面 #
 ![Splash界面](img/splash.png)
 ## 功能需求 ##
@@ -155,12 +153,27 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 * SplashView
 * SplashPresenter
 
+## 判断是否登录环信 ##
+    @Override
+    public void checkLoginStatus() {
+        if (EMClient.getInstance().isLoggedInBefore() && EMClient.getInstance().isConnected()) {
+            mSplashView.onLoggedIn();
+        } else {
+            mSplashView.onNotLogin();
+        }
+    }
+
 # 登录界面 #
 ![登录界面1](img/login1.png)
 
 ## 功能需求 ##
-1. 有两种情况都可以发起登录操作，一是点击登录按钮，而是点击虚拟键盘上的Action键。
+1. 点击登录按钮或者点击虚拟键盘上的Action键都能发起登录操作
 2. 点击新用户，跳转到注册界面。
+
+	
+## MVP实现 ##
+* LoginView
+* LoginPresenter
 
 ## IME Options##
 **注意配置EditText的imeOptions属性时，需要配合inputType才能起作用。**
@@ -171,13 +184,27 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 	android:imeOptions="actionPrevious"//上一个
 	android:imeOptions="actionSearch"//搜索
 	android:imeOptions="actionSend"//发送
-	
-## MVP实现 ##
-* LoginView
-* LoginPresenter
+
+## 监听软键盘Action事件，发起登录 ##
+    private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
+
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                startLogin();
+                return true;
+            }
+            return false;
+        }
+    };
 
 ## EMCallBack的适配器 ##
+EMCallBack是环信的一个请求回调接口，包括请求成功的回调onSuccess,请求失败的回调onError和请求进度回调onProgress,
+但在实际使用过程中，通常只使用到请求成功和失败的回调，请求进度回调通常留在那里成了一个空方法，对于一个有
+代码洁癖的搬砖师来说，这是很难受的。所以我们可以创建一个适配器类实现这个接口，使用时用适配器类来替换EMCallBack
+接口，这样只需要覆写我们想覆写的方法就可以了。
 
+	//EMCallBack接口的适配器
 	public class EMCallBackAdapter implements EMCallBack{
 	
 	    @Override
@@ -196,14 +223,46 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 	    }
 	}
 
+	//EMCallBack适配器的使用
+    private EMCallBackAdapter mEMCallBack = new EMCallBackAdapter() {
+
+        @Override
+        public void onSuccess() {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLoginView.onLoginSuccess();
+                }
+            });
+        }
+
+        @Override
+        public void onError(int i, String s) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mLoginView.onLoginFailed();
+                }
+            });
+        }
+    };
+
 
 
 ## Android6.0动态权限管理 ##
 ![登录界面2](img/login2.png)
 
-[介绍](http://www.jianshu.com/p/a37f4827079a)
+Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能动态的去获取。当应用的targetSdkVersion小于23时，
+会默认采用以前的权限管理机制，当targetSdkVersion大于等于23时并且运行在Andorid6.0系统上，它才会采用这套新的权限管理机制。
 
-举个栗子：高德地图 百度地图等
+### 参考 ###
+* [适配Android6.0动态权限管理](http://www.jianshu.com/p/a37f4827079a)
+* [Android6.0权限管理的解析与实战](http://www.jianshu.com/p/a1edba708761)
+
+### 动态获取写磁盘权限 ###
+环信SDK内部维护了一个数据库来存储聊天记录等数据，需要读写磁盘的权限，所以我们在用户登录之前要申请该权限。
+类似的，很多同学在集成百度地图或者高德地图时常常不能正常定位，往往是忽略了在Android6.0上需要获取位置的权限。
+
 
     /**
      * 是否有写磁盘权限
@@ -247,24 +306,27 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 2. 密码必须是3-20位的数字。
 3. 密码和确认密码一致
 
-## 正则表达式 ##
-[正则表达式-元字符](http://www.runoob.com/regexp/regexp-metachar.html)
-
-
-	private static final String USER_NAME_REGEX = "^[a-zA-Z]\\w{2,19}$";
-    private static final String PASSWORD_REGEX = "^[0-9]{3,20}$";
-
-* \w 匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'。
-
-
 ## MVP实现 ##
 * RegisterView
 * RegisterPresenter
 
+## 正则表达式 ##
+[正则表达式-元字符](http://www.runoob.com/regexp/regexp-metachar.html)
+
+
+	private static final String USER_NAME_REGEX = "^[a-zA-Z]\\w{2,19}$";//用户名的正则表达式
+    private static final String PASSWORD_REGEX = "^[0-9]{3,20}$";//密码的正则表达式
+
+
+* ^ 匹配输入字符串的开始位置
+* [a-zA-Z] 	字符范围。匹配指定范围内的任意字符。
+* \w 匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'。
+* $ 匹配输入字符串的结束位置
+
 
 ## 注册流程 ##
 1. 实际项目中，注册会将用户名和密码注册到APP的服务器，然后APP的服务器再通过REST API方式注册到环信服务器。
-2. 由于本项目没有APP服务器，会将用户数据注册到第三方云数据库Bmob，注册成功后，在客户端发送请求注册到环信服务器。
+2. 由于本项目没有APP服务器，会将用户数据注册到第三方云数据库Bmob，注册成功后，再在客户端发送请求注册到环信服务器。
 
 ![注册流程](img/register_logic.png)
 
@@ -282,6 +344,7 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 4. 初始化SDk
 
 ## 隐藏软键盘 ##
+在点击注册按钮发起注册流程后，我们需要隐藏掉软键盘并且弹出进度条。
 
 	protected void hideSoftKeyboard() {
         if (mInputMethodManager == null) {
@@ -290,57 +353,135 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
         mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
-## 软键盘Action处理 ##
-
-    private TextView.OnEditorActionListener mOnEditorActionListener = new TextView.OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if (actionId == EditorInfo.IME_ACTION_GO) {
-                reigister();//注册
-                return true;
-            }
-            return false;
-        }
-    };
-
 
 ## 用户名已注册的处理 ##
+当我们注册一个用户名到Bmob云数据库后，使用相同的用户名再次注册，Bmob会返回错误码202，信息为username '%s' already taken。
+所以我们应该处理该错误，通知用户换一个用户名注册。
+
 [Bmob错误码](http://docs.bmob.cn/data/Android/g_errorcode/doc/index.html)
+
+    private void notifyRegisterFailed(BmobException e) {
+        if (e.getErrorCode() == Constant.ErrorCode.USER_ALREADY_EXIST) {
+            mRegisterView.onResisterUserExist();
+        } else {
+            mRegisterView.onRegisterError();
+        }
+    }
 
 # 主界面 #
 ![主界面](img/main.png)
 
 ## 底部导航条 ##
-RadioGroup, TabHost, FragmentTabHost, 自定义
-## 第三方底部条 ##
+主界面底部是一个Tab导航条，实现的方法可以有很多种，我们可以使用RadioGroup或者FragmentTabHost, 或者我们可以自定义一个控件，
+为了不重复造轮子，本Demo使用了第三方导航条BottomBar。BottomBar的使用请参考其Github地址。
+
+## 第三方导航条 ##
 * [BottomBar](https://github.com/roughike/BottomBar)
 * [AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
 * [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
 ## Fragment的切换 ##
+    private OnTabSelectListener mOnTabSelectListener = new OnTabSelectListener() {
+        @Override
+        public void onTabSelected(@IdRes int tabId) {
+            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, FragmentFactory.getInstance().getFragment(tabId)).commit();
+        }
+    };
 
 # 动态界面 #
 ![退出登录](img/logout.png)
+
+动态界面目前只实现了退出登录功能。
+
+    @Override
+    public void logout() {
+        mDynamicView.onStartLogout();
+        EMClient.getInstance().logout(true, mEMCallBackAdapter);
+    }
+
 
 # 联系人界面 #
 ![联系人1](img/contact1.png)
 ![联系人2](img/contact2.jpg)
 
-# MVP实现 #
+## MVP实现 ##
 * ContactView
 * ContactPresenter
 
-## RecyclerView的使用 ##
-[Creating Lists and Cards](https://developer.android.com/training/material/lists-cards.html#RecyclerView)
+## 使用RecyclerView实现联系人列表 ##
+RecyclerView类似ListView, 但比ListView更高级更灵活。使用RecyclerView必须指定一个适配器和一个布局管理器，
+经常有同学忘记设置布局管理器，结果导致RecyclerView什么也没有显示。适配器通常继承自RecyclerView.Adapter。
 
+RecyclerView提供这些内置管理器：
 
-## 联系人是否在同一个组 ##
+* LinearLayoutManager 线性布局管理器 （类似ListView效果）
+* GridLayoutManager 网格布局管理器 （类似GridView效果）
+* StaggeredGridLayoutManager 分散网格布局管理器（瀑布流效果）
 
-    private boolean itemInSameGroup(int i, ContactItem item) {
-        return i > 0 && (item.getFirstLetter() == mContactItems.get(i - 1).getFirstLetter());
+如果要自定义一个布局管理器，请继承自RecyclerView.LayoutManager。另外，RecyclerView在默认情况下启用增添与删除item的动画，
+如果要定义这些动画，请继承RecyclerView.ItemAnimator并使用RecyclerView.setItemAnimator()。
+
+### 初始化 ###
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));//设置布局管理器
+        mRecyclerView.setHasFixedSize(true);//设置true如果列表内容不会影响RecyclerView的大小
+        mContactListAdapter = new ContactListAdapter(getContext(), mContactPresenter.getContactList());
+        mContactListAdapter.setOnItemClickListener(mOnItemClickListener);
+        mRecyclerView.setAdapter(mContactListAdapter);
+    }
+
+### ContactListAdapter的实现  ###
+
+#### ContactListItemView ####
+![联系人列表项](img/contact_list_item.png)
+
+运用模块化的思想，将联系人的列表项抽取成一个独立的自定义组合式控件ContactListItemView。ContactListItemView只需传入一个
+与之对应的数据模型ContactListItem即可完成渲染。
+
+#### 联系人是否在同一个组 ####
+![首字符相同](img/multi_contacts.png)
+
+当多个联系人的首字符相同时，只有第一个ContactListItemView显示首字符，后续首字符相同的ContactListItemView均不显示首字符。
+在ContactListItem中声明一个变量布尔型变量showFirstLetter来标记是否显示首字符。该变量在创建ContactListItem时赋值。
+
+    /**
+     * 获取联系人列表数据
+     * @throws HyphenateException
+     */
+	private void startGetContactList() throws HyphenateException {
+        List<String> contacts = EMClient.getInstance().contactManager().getAllContactsFromServer();
+        DatabaseManager.getInstance().deleteAllContacts();
+        if (!contacts.isEmpty()) {
+            for (int i = 0; i < contacts.size(); i++) {
+                ContactListItem item = new ContactListItem();
+                item.userName = contacts.get(i);
+                if (itemInSameGroup(i, item)) {
+                    item.showFirstLetter = false;
+                }
+                mContactListItems.add(item);
+                saveContactToDatabase(item.userName);
+            }
+        }
+    }
+
+	/**
+     * 当前联系人跟上个联系人比较，如果首字符相同则返回true
+     * @param i 当前联系人下标
+     * @param item 当前联系人数据模型
+     * @return true 表示当前联系人和上一联系人在同一组
+     */
+    private boolean itemInSameGroup(int i, ContactListItem item) {
+        return i > 0 && (item.getFirstLetter() == mContactListItems.get(i - 1).getFirstLetter());
     }
 
 
-## CardView的使用 ##
+#### CardView的使用 ####
+
+
+### 参考 ###
+* [Creating Lists and Cards](https://developer.android.com/training/material/lists-cards.html#RecyclerView)
+* [Android RecyclerView 使用完全解析 体验艺术般的控件](http://blog.csdn.net/lmj623565791/article/details/45059587)
+
 
 ## SwipeRefreshLayout的使用 ##
 	mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);

@@ -3,7 +3,7 @@ package com.itheima.leon.qqdemo.presenter.impl;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.itheima.leon.qqdemo.database.DatabaseManager;
-import com.itheima.leon.qqdemo.model.ContactItem;
+import com.itheima.leon.qqdemo.model.ContactListItem;
 import com.itheima.leon.qqdemo.presenter.ContactPresenter;
 import com.itheima.leon.qqdemo.utils.ThreadUtils;
 import com.itheima.leon.qqdemo.view.ContactView;
@@ -21,22 +21,22 @@ public class ContactPresenterImpl implements ContactPresenter {
 
     private ContactView mContactView;
 
-    private List<ContactItem> mContactItems;
+    private List<ContactListItem> mContactListItems;
 
     public ContactPresenterImpl(ContactView contactView) {
         mContactView = contactView;
-        mContactItems = new ArrayList<ContactItem>();
+        mContactListItems = new ArrayList<ContactListItem>();
     }
 
 
     @Override
-    public List<ContactItem> getContactList() {
-        return mContactItems;
+    public List<ContactListItem> getContactList() {
+        return mContactListItems;
     }
 
     @Override
     public void refreshContactList() {
-        mContactItems.clear();
+        mContactListItems.clear();
         getContactsFromServer();
     }
 
@@ -68,7 +68,7 @@ public class ContactPresenterImpl implements ContactPresenter {
 
     @Override
     public void getContactsFromServer() {
-        if (mContactItems.size() > 0) {
+        if (mContactListItems.size() > 0) {
             mContactView.onGetContactListSuccess();
             return;
         }
@@ -96,17 +96,21 @@ public class ContactPresenterImpl implements ContactPresenter {
         });
     }
 
+    /**
+     * 获取联系人列表数据
+     * @throws HyphenateException
+     */
     private void startGetContactList() throws HyphenateException {
         List<String> contacts = EMClient.getInstance().contactManager().getAllContactsFromServer();
         DatabaseManager.getInstance().deleteAllContacts();
         if (!contacts.isEmpty()) {
             for (int i = 0; i < contacts.size(); i++) {
-                ContactItem item = new ContactItem();
+                ContactListItem item = new ContactListItem();
                 item.userName = contacts.get(i);
                 if (itemInSameGroup(i, item)) {
-                    item.showSection = false;
+                    item.showFirstLetter = false;
                 }
-                mContactItems.add(item);
+                mContactListItems.add(item);
                 saveContactToDatabase(item.userName);
             }
         }
@@ -116,8 +120,14 @@ public class ContactPresenterImpl implements ContactPresenter {
         DatabaseManager.getInstance().saveContact(userName);
     }
 
-    private boolean itemInSameGroup(int i, ContactItem item) {
-        return i > 0 && (item.getFirstLetter() == mContactItems.get(i - 1).getFirstLetter());
+    /**
+     * 当前联系人跟上个联系人比较，如果首字符相同则返回true
+     * @param i 当前联系人下标
+     * @param item 当前联系人数据模型
+     * @return true 表示当前联系人和上一联系人在同一组
+     */
+    private boolean itemInSameGroup(int i, ContactListItem item) {
+        return i > 0 && (item.getFirstLetter() == mContactListItems.get(i - 1).getFirstLetter());
     }
 
     private void notifyGetContactListSuccess() {

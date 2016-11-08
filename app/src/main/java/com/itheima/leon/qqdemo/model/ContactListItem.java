@@ -7,14 +7,14 @@ import com.itheima.leon.qqdemo.R;
  * 创建时间:  2016/10/18 12:10
  * 描述：    TODO
  */
-public class ContactItem {
-    public static final String TAG = "ContactItem";
+public class ContactListItem {
+    public static final String TAG = "ContactListItem";
 
     public int avatar = R.mipmap.avatar6;
 
     public String userName;
 
-    public boolean showSection = true;
+    public boolean showFirstLetter = true;
 
     public char getFirstLetter() {
         return userName.charAt(0);

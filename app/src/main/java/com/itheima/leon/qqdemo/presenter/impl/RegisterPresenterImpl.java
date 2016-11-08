@@ -42,7 +42,6 @@ public class RegisterPresenterImpl implements RegisterPresenter {
         } else {
             mRegisterView.onUserNameError();
         }
-
     }
 
     private void startRegister(final String userName, final String pwd) {

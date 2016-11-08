@@ -1,6 +1,6 @@
 package com.itheima.leon.qqdemo.presenter;
 
-import com.itheima.leon.qqdemo.model.ContactItem;
+import com.itheima.leon.qqdemo.model.ContactListItem;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface ContactPresenter {
 
     void getContactsFromServer();
 
-    List<ContactItem> getContactList();
+    List<ContactListItem> getContactList();
 
     void refreshContactList();
 

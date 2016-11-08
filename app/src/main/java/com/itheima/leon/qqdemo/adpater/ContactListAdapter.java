@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.itheima.leon.qqdemo.model.ContactItem;
-import com.itheima.leon.qqdemo.widget.ContactItemView;
+import com.itheima.leon.qqdemo.model.ContactListItem;
+import com.itheima.leon.qqdemo.widget.ContactListItemView;
 
 import java.util.List;
 
@@ -19,23 +19,23 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public static final String TAG = "ContactListAdapter";
 
     private Context mContext;
-    private List<ContactItem> mContactItems;
+    private List<ContactListItem> mContactListItems;
     private OnItemClickListener mOnItemClickListener;
 
-    public ContactListAdapter(Context context, List<ContactItem> items) {
+    public ContactListAdapter(Context context, List<ContactListItem> items) {
         mContext = context;
-        mContactItems = items;
+        mContactListItems = items;
     }
 
     @Override
     public ContactItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ContactItemView itemView = new ContactItemView(mContext);
+        ContactListItemView itemView = new ContactListItemView(mContext);
         return new ContactItemViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(ContactItemViewHolder holder, int position) {
-        final ContactItem item = mContactItems.get(position);
+        final ContactListItem item = mContactListItems.get(position);
         holder.mItemView.bindView(item);
         holder.mItemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,24 +59,24 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public int getItemCount() {
-        if (mContactItems == null) {
+        if (mContactListItems == null) {
             return 0;
         }
-        return mContactItems.size();
+        return mContactListItems.size();
     }
 
     public class ContactItemViewHolder extends RecyclerView.ViewHolder {
 
-        public ContactItemView mItemView;
+        public ContactListItemView mItemView;
 
-        public ContactItemViewHolder(ContactItemView itemView) {
+        public ContactItemViewHolder(ContactListItemView itemView) {
             super(itemView);
             mItemView = itemView;
         }
     }
 
-    public List<ContactItem> getContactItems() {
-        return mContactItems;
+    public List<ContactListItem> getContactListItems() {
+        return mContactListItems;
     }
 
 

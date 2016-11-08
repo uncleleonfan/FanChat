@@ -14,7 +14,7 @@ import com.itheima.leon.qqdemo.R;
 import com.itheima.leon.qqdemo.adpater.ContactListAdapter;
 import com.itheima.leon.qqdemo.adpater.EMContactListenerAdapter;
 import com.itheima.leon.qqdemo.app.Constant;
-import com.itheima.leon.qqdemo.model.ContactItem;
+import com.itheima.leon.qqdemo.model.ContactListItem;
 import com.itheima.leon.qqdemo.presenter.ContactPresenter;
 import com.itheima.leon.qqdemo.presenter.impl.ContactPresenterImpl;
 import com.itheima.leon.qqdemo.ui.activity.AddFriendActivity;
@@ -72,16 +72,20 @@ public class ContactFragment extends BaseFragment implements ContactView {
         mTitle.setText(getString(R.string.contacts));
         mAdd.setVisibility(View.VISIBLE);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setHasFixedSize(true);
-        mContactListAdapter = new ContactListAdapter(getContext(), mContactPresenter.getContactList());
-        mContactListAdapter.setOnItemClickListener(mOnItemClickListener);
-        mRecyclerView.setAdapter(mContactListAdapter);
+        initRecyclerView();
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
         mSlideBar.setOnSlidingBarChangeListener(mOnSlideBarChangeListener);
+    }
+
+    private void initRecyclerView() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setHasFixedSize(true);
+        mContactListAdapter = new ContactListAdapter(getContext(), mContactPresenter.getContactList());
+        mContactListAdapter.setOnItemClickListener(mOnItemClickListener);
+        mRecyclerView.setAdapter(mContactListAdapter);
     }
 
     @OnClick(R.id.add)
@@ -154,9 +158,9 @@ public class ContactFragment extends BaseFragment implements ContactView {
      * @return 在联系人列表中首字符是section的第一个联系人在联系人列表中的位置
      */
     private int getSectionPosition(String section) {
-        List<ContactItem> contactItems = mContactListAdapter.getContactItems();
-        for (int i = 0; i < contactItems.size(); i++) {
-            if (section.equals(contactItems.get(i).getFirstLetterString())) {
+        List<ContactListItem> contactListItems = mContactListAdapter.getContactListItems();
+        for (int i = 0; i < contactListItems.size(); i++) {
+            if (section.equals(contactListItems.get(i).getFirstLetterString())) {
                 return i;
             }
         }
