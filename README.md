@@ -1,5 +1,5 @@
 # 项目简介 #
-本项目是即时通讯的示例项目，使用了MVP模式，集成了环信SDK和Bmob后端云，展示了即时通讯基本的功能的实现，包括注册登录，退出登录，联系人列表，添加好友，删除好友，收发消息，消息提醒等功能。
+本项目是即时通讯的示例项目，使用了MVP模式，集成了环信SDK和Bmob后端云，展示了即时通讯基本功能的实现，包括注册登录，退出登录，联系人列表，添加好友，删除好友，收发消息，消息提醒等功能。
 ## 使用的开源项目 ##
 * [BottomBar](https://github.com/roughike/BottomBar)
 * [EventBus](https://github.com/greenrobot/EventBus)
@@ -353,6 +353,49 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
         mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
+## 注册用户到Bmob ##
+[Bmob用户管理](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html#用户管理)
+
+    private void registerBmob(final String userName, final String pwd) {
+        User user = new User(userName, pwd);
+        user.signUp(new SaveListener<User>() {
+            @Override
+            public void done(User user, BmobException e) {
+                if (e == null) {
+                    registerEaseMob(userName, pwd);
+                } else {
+                    notifyRegisterFailed(e);
+                }
+            }
+        });
+    }
+
+## 注册到环信 ##
+
+    private void registerEaseMob(final String userName, final String pwd) {
+        ThreadUtils.runOnBackgroundThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EMClient.getInstance().createAccount(userName, pwd);
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRegisterView.onRegisterSuccess();
+                        }
+                    });
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                    ThreadUtils.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRegisterView.onRegisterError();
+                        }
+                    });
+                }
+            }
+        });
+    }
 
 ## 用户名已注册的处理 ##
 当我们注册一个用户名到Bmob云数据库后，使用相同的用户名再次注册，Bmob会返回错误码202，信息为username '%s' already taken。
@@ -477,6 +520,16 @@ RecyclerView提供这些内置管理器：
 
 
 #### CardView的使用 ####
+![Cards Example](img/cards_examples.png)
+
+CardView继承自FrameLayout, 是Material Design里面的卡片设计，带有圆角和阴影效果。CardView效果非常好看，但也不能滥用，
+比如：
+
+![Cards Right Way](img/cards_right_way.png)
+
+更多的使用规范，请参考Material Design的设计规范[Material Design Cards](https://material.google.com/components/cards.html)。
+
+这里我们给ContactListItemView的布局里面包了一层CardView，实际上是不可取的做法，这里只是为了展示CardView的使用姿势，实际项目中请大家遵循Material Design的设计规范。
 
 
 ### 参考 ###
