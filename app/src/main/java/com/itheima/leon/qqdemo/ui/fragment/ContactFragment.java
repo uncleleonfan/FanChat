@@ -198,28 +198,32 @@ public class ContactFragment extends BaseFragment implements ContactView {
          */
         @Override
         public void onItemLongClick(final String name) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            String message = String.format(getString(R.string.delete_friend_message), name);
-            builder.setTitle(getString(R.string.delete_friend))
-                    .setMessage(message)
-                    .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            showProgress(getString(R.string.deleting_friend));
-                            mContactPresenter.deleteFriend(name);
-
-                        }
-                    });
-            builder.show();
+            showDeleteFriendDialog(name);
         }
     };
+
+    private void showDeleteFriendDialog(final String name) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        String message = String.format(getString(R.string.delete_friend_message), name);
+        builder.setTitle(getString(R.string.delete_friend))
+                .setMessage(message)
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        showProgress(getString(R.string.deleting_friend));
+                        mContactPresenter.deleteFriend(name);
+
+                    }
+                });
+        builder.show();
+    }
 
     @Override
     public void onDestroy() {

@@ -13,7 +13,7 @@
 * 模块化思想的运用
 
 # 即时通讯 IM(Instant Messaging)#
->允许两人或多人使用网路即时的传递文字讯息、档案、语音与视频交流。
+>允许两人或多人使用网络即时的传递文字讯息、档案、语音与视频交流。
 
 ## 相关产品 ##
 * 鼻祖 ICQ
@@ -113,17 +113,18 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 ![架构](img/architecture.png)
 
 ## 参考 ##
-[android architecture](https://github.com/googlesamples/android-architecture)
 
-[MVC,MVP和MVVM模式如何选择](http://www.jianshu.com/p/6a86f7fdc0cb)
+* [MVC,MVP和MVVM模式如何选择](http://www.jianshu.com/p/6a86f7fdc0cb)
 
-[Understanding MVC, MVP and MVVM Design Patterns](http://www.dotnettricks.com/learn/designpatterns/understanding-mvc-mvp-and-mvvm-design-patterns)
+* [教你认清MVC，MVP和MVVM](http://zjutkz.net/2016/04/13/%E9%80%89%E6%8B%A9%E6%81%90%E6%83%A7%E7%97%87%E7%9A%84%E7%A6%8F%E9%9F%B3%EF%BC%81%E6%95%99%E4%BD%A0%E8%AE%A4%E6%B8%85MVC%EF%BC%8CMVP%E5%92%8CMVVM/)
 
-[教你认清MVC，MVP和MVVM](http://zjutkz.net/2016/04/13/%E9%80%89%E6%8B%A9%E6%81%90%E6%83%A7%E7%97%87%E7%9A%84%E7%A6%8F%E9%9F%B3%EF%BC%81%E6%95%99%E4%BD%A0%E8%AE%A4%E6%B8%85MVC%EF%BC%8CMVP%E5%92%8CMVVM/)
+* [android architecture](https://github.com/googlesamples/android-architecture)
 
-[Android Data Binding](https://github.com/LyndonChin/MasteringAndroidDataBinding)
+* [Understanding MVC, MVP and MVVM Design Patterns](http://www.dotnettricks.com/learn/designpatterns/understanding-mvc-mvp-and-mvvm-design-patterns)
 
-[Clean Architecture](http://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/)
+* [Android Data Binding](https://github.com/LyndonChin/MasteringAndroidDataBinding)
+
+* [Clean Architecture](http://fernandocejas.com/2014/09/03/architecting-android-the-clean-way/)
 
 # 准备好了么？ 开车啦！！！ #
 ## 包的创建 ##
@@ -336,7 +337,7 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 * [Parse](https://parse.com/)(2017年1月28日关闭)
 
 ## Bmob集成 ##
-[开发文档](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html)
+[Bmob开发文档](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html)
 
 1. 注册创建应用
 2. 下载SDK
@@ -434,6 +435,10 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 
 # 动态界面 #
 ![退出登录](img/logout.png)
+
+## MVP实现 ##
+* DynamicView
+* DynamicPresenter
 
 动态界面目前只实现了退出登录功能。
 
@@ -538,62 +543,62 @@ CardView继承自FrameLayout, 是Material Design里面的卡片设计，带有�
 
 
 ## SwipeRefreshLayout的使用 ##
+	//设置SwipeRefreshLayout的颜色
 	mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
+	//设置SwipeRefreshLayout的监听器
 	mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
 
 ## 自定义控件SlideBar ##
-### 分类字符数组（供拷贝） ###
+### 分类字符数组 ###
     private static final String[] SECTIONS = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"
             , "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 ### 绘制居中文本 ###
-http://www.cnblogs.com/tianzhijiexian/p/4297664.html
+[FontMetrics](http://www.cnblogs.com/tianzhijiexian/p/4297664.html)
+
+![Draw Text Center](img/draw_text_center.png)
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        mTextSize = h * 1.0f / SECTIONS.length;//计算分配给字符的高度
+        Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
+        float mTextHeight = fontMetrics.descent - fontMetrics.ascent;//获取绘制字符的实际高度
+        mTextBaseline = mTextSize / 2 + mTextHeight/2 - fontMetrics.descent;//计算字符居中时的baseline
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        float x = getWidth() * 1.0f / 2;
+        float baseline = mTextBaseline;
+        for(int i = 0; i < SECTIONS.length; i++) {
+            canvas.drawText(SECTIONS[i], x, baseline, mPaint);
+            baseline += mTextSize;
+        }
+    }
 
 ### 在ContactFragment里面监听SlideBar的事件 ###
+
+当用户在SlideBar上ACTION_DOWN和ACTION_MOVE时，如果用户触摸到的首字符发生变化，则会回调监听器onSectionChange,
+当ACTION_UP时回调onSlidingFinish()。
+
     private SlideBar.OnSlideBarChangeListener mOnSlideBarChangeListener = new SlideBar.OnSlideBarChangeListener() {
         @Override
         public void onSectionChange(int index, String section) {
-            mSection.setVisibility(View.VISIBLE);
+            mSection.setVisibility(View.VISIBLE);//显示中间绿色背景的首字符
             mSection.setText(section);
-            scrollToSection(section);
+            scrollToSection(section);//滚动RecyclerView到用户滑到的首字符
         }
 
         @Override
         public void onSlidingFinish() {
-            mSection.setVisibility(View.GONE);
+            mSection.setVisibility(View.GONE);//隐藏中间绿色背景的首字符
         }
     };
 
-    /**
-     * RecyclerView滚动直到界面出现对应section的联系人
-     * 
-     * @param section 首字符
-     */
-    private void scrollToSection(String section) {
-        int sectionPosition = getSectionPosition(section);
-        if (sectionPosition != POSITION_NOT_FOUND) {
-            mRecyclerView.smoothScrollToPosition(sectionPosition);
-        }
-    }
-
-
-    /**
-     * 
-     * @param section 首字符
-     * @return 在联系人列表中首字符是section的第一个联系人在联系人列表中的位置
-     */
-    private int getSectionPosition(String section) {
-        List<ContactItem> contactItems = mContactListAdapter.getContactItems();
-        for (int i = 0; i < contactItems.size(); i++) {
-            if (section.equals(contactItems.get(i).getFirstLetterString())) {
-                return i;
-            }
-        }
-        return POSITION_NOT_FOUND;
-    }
-
 
 ## 联系人点击事件 ##
+当单击联系人时跳转到聊天界面，当长按联系人时弹出Dialog询问用户是否删除好友。
+
     private ContactListAdapter.OnItemClickListener mOnItemClickListener = new ContactListAdapter.OnItemClickListener() {
 
         /**
@@ -611,35 +616,19 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
          */
         @Override
         public void onItemLongClick(final String name) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            String message = String.format(getString(R.string.delete_friend_message), name);
-            builder.setTitle(getString(R.string.delete_friend))
-                    .setMessage(message)
-                    .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            showProgress(getString(R.string.deleting_friend));
-                            mContactPresenter.deleteFriend(name);
-
-                        }
-                    });
-            builder.show();
+            showDeleteFriendDialog(name);
         }
     };
-
 
 # 添加好友界面 #
 ![添加好友](img/add_friend.png)
 
+## MVP实现 ##
+* AddFriendView
+* AddFriendPresenter
+
 ## 搜索用户 ##
-[查询数据](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html#查询数据)
+[Bmob查询数据](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html#查询数据)
 
     @Override
     public void searchFriend(final String keyword) {
@@ -657,7 +646,7 @@ http://www.cnblogs.com/tianzhijiexian/p/4297664.html
 
 ## greenDAO ##
 greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射, object/relational mapping, 将Java对象映射成数据库的表。
-
+我们需要存储联系人数据到数据库，在添加好友界面，需要判断搜索出来的用户是否已经是联系人，如果已经是好友，则应显示“已添加”。
 ### 其他ORM框架 ###
 * [DBFlow](https://github.com/Raizlabs/DBFlow)
 * [Ormlite](http://ormlite.com/)
@@ -668,10 +657,10 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 
 ### 参考 ###
 * [Github](https://github.com/greenrobot/greenDAO)
-* [官网](http://greenrobot.org/greendao/)
+* [greeDao官网](http://greenrobot.org/greendao/)
+* [greeDao使用文档](http://greenrobot.org/greendao/documentation/)
+* [greeDao中文使用文档](http://www.jianshu.com/p/2f7f48563141)
 * [AppBrain](http://www.appbrain.com/stats/libraries/details/greendao/greendao)
-* [使用文档](http://greenrobot.org/greendao/documentation/)
-* [中文使用文档](http://www.jianshu.com/p/2f7f48563141)
 
 ### 创建实体类 ###
 	@Entity
@@ -709,7 +698,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
         return contacts;
     }
 
-### 删除联系人 ###
+### 删除所有联系人 ###
     public void deleteAllContacts() {
         ContactDao contactDao = mDaoSession.getContactDao();
         contactDao.deleteAll();
@@ -717,12 +706,12 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 
 
 ## 发送好友请求 ##
-### AddFriendItemView里面处理点击事件 ###
+### AddFriendItemView里面处理添加好友的点击事件 ###
     @OnClick(R.id.add)
     public void onClick() {
         String friendName = mUserName.getText().toString().trim();
         String addFriendReason = getContext().getString(R.string.add_friend_reason);
-        AddFriendEvent event = new AddFriendEvent(friendName, addFriendReason);
+        AddFriendEvent event = new AddFriendEvent(friendName, addFriendReason);//通过EventBus发布添加好友事件
         EventBus.getDefault().post(event);
     }
 
@@ -748,6 +737,8 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
         }
 
 ### 在联系人列表中监听联系人变化 ###
+当新增好友或者被好友删除时刷新联系人列表。
+
     private EMContactListenerAdapter mEMContactListener = new EMContactListenerAdapter() {
 
         @Override
@@ -763,6 +754,12 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 
 # 聊天界面 #
 ![聊天界面](img/chat.png)
+
+## MVP实现 ##
+* ChatView
+* ChatPresenter
+
+## UI ##
 
 ### 监听发送按钮的状态变化 ###
     mEdit.addTextChangedListener(mTextWatcher);
@@ -802,6 +799,8 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 ## 发送一条消息 ##
 
 ### 返回消息的类型 ###
+根据是发送的消息还是接受的消息，来创建不同的item。
+
     @Override
     public int getItemViewType(int position) {
         EMMessage message = mMessages.get(position);
@@ -821,6 +820,8 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
     }
 
 ### 更新消息的状态 ###
+处理三种消息状态，正在发送中INPROGRESS，发送成功SUCCESS，发送失败FAIL。
+
     private void updateSendingStatus(EMMessage emMessage) {
         switch (emMessage.status()) {
             case INPROGRESS:
@@ -839,6 +840,8 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
     }
 
 ## 接收一条消息 ##
+监听消息的接收，当收到一条消息后，通知MessageListAdapter进行刷新，并且滚动RecyclerView到底部。
+
     private EMMessageListenerAdapter mEMMessageListener = new EMMessageListenerAdapter() {
         @Override
         public void onMessageReceived(final List<EMMessage> list) {
@@ -855,7 +858,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
     };
 
 ## 初始化聊天记录 ##
-[官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
+[环信官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
 
 [通信过程及聊天记录保存](http://docs.easemob.com/im/000quickstart/25communicationandmessagestorage)
 
@@ -917,6 +920,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 * ConversationPresenter
 
 ## 加载所有会话 ##
+
     @Override
     public void loadAllConversations() {
         ThreadUtils.runOnBackgroundThread(new Runnable() {
@@ -924,6 +928,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
             public void run() {
                 Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
                 mEMConversations.addAll(conversations.values());
+				//根据最后一条消息的时间进行排序
                 Collections.sort(mEMConversations, new Comparator<EMConversation>() {
                     @Override
                     public int compare(EMConversation o1, EMConversation o2) {
@@ -941,7 +946,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
     }
 
 ## 未读消息计数更新 ##
-[官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
+[环信官方文档](http://docs.easemob.com/im/200androidclientintegration/50singlechat)
 ### 会话列表中未读消息的更新 ###
     private EMMessageListenerAdapter mEMMessageListenerAdapter = new EMMessageListenerAdapter() {
 
@@ -951,12 +956,13 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
                 @Override
                 public void run() {
                     toast(getString(R.string.receive_new_message));
+					//当收到一个新消息时，重新加载会话列表。
                     mConversationPresenter.loadAllConversations();
                 }
             });
         }
     };
-### BottomBar bardge的更新 ###
+### BottomBar badge的更新 ###
     private EMMessageListenerAdapter mEMMessageListenerAdapter = new EMMessageListenerAdapter() {
 
         //该回调在子线程中调用
@@ -982,6 +988,23 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
 	//指定会话消息未读数清零
 	conversation.markAllMessagesAsRead();
 ### 在聊天界面收到新消息时将消息标记已读 ###
+    private EMMessageListenerAdapter mEMMessageListener = new EMMessageListenerAdapter() {
+        @Override
+        public void onMessageReceived(final List<EMMessage> list) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final EMMessage emMessage = list.get(0);
+                    if (emMessage.getUserName().equals(mUserName)) {
+						//标记消息已读
+                        mChatPresenter.makeMessageRead(mUserName);
+                        mMessageListAdapter.addNewMessage(emMessage);
+                        smoothScrollToBottom();
+                    }
+                }
+            });
+        }
+    };
 
 ### 聊天界面返回时更新未读badge ###
     @Override
@@ -1056,7 +1079,7 @@ greenDAO是Android SQLite数据库ORM框架的一种。ORM即对象关系映射,
     };
 
 # 多设备登录 #
-[官方文档](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
+[环信官方文档](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
 
     private EMConnectionListener mEMConnectionListener = new EMConnectionListener() {
         @Override
