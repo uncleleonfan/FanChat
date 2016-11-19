@@ -48,7 +48,7 @@ public class ConversationFragment extends BaseFragment implements ConversationVi
         mTitle.setText(getString(R.string.messages));
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mConversationAdapter = new ConversationAdapter(getContext(), mConversationPresenter.getConversations());
+        mConversationAdapter =  new ConversationAdapter(getContext(), mConversationPresenter.getConversations());
         mRecyclerView.setAdapter(mConversationAdapter);
 
         mConversationPresenter.loadAllConversations();

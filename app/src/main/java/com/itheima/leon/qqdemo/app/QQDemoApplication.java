@@ -27,6 +27,8 @@ import java.util.List;
 
 import cn.bmob.v3.Bmob;
 
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+
 /**
  * 创建者:   Leon
  * 创建时间:  2016/10/16 9:51
@@ -148,7 +150,7 @@ public class QQDemoApplication extends Application {
             return false;
         }
         for (ActivityManager.RunningAppProcessInfo info :runningAppProcesses) {
-            if (info.processName.equals(getPackageName()) && info.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+            if (info.processName.equals(getPackageName()) && info.importance == IMPORTANCE_FOREGROUND) {
                 return true;
             }
         }
