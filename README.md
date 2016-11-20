@@ -1,3 +1,7 @@
+# GitHub地址 #
+* [泛聊](https://github.com/uncleleonfan/FanChat)
+* [其他IM开源项目](https://www.imgeek.org/code/)
+
 # 项目简介 #
 本项目是即时通讯的示例项目，使用了MVP模式，集成了环信SDK和Bmob后端云，展示了即时通讯基本功能的实现，包括注册登录，退出登录，联系人列表，添加好友，删除好友，收发消息，消息提醒等功能。
 ## 使用的开源项目 ##
