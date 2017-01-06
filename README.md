@@ -41,6 +41,9 @@
 
 ![环信业务逻辑](img/easemob_business.png)
 
+## 环信原理 ##
+环信基于XMPP协议，XMPP基于Socket, 通过Socket保持长连接。
+
 ## 环信集成 ##
 1. [注册并创建应用](http://docs.easemob.com/im/000quickstart/10register)
 2. [下载SDK](http://www.easemob.com/download/im)
