@@ -9,6 +9,8 @@ import com.itheima.leon.qqdemo.utils.ThreadUtils;
 import com.itheima.leon.qqdemo.view.ContactView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -102,6 +104,12 @@ public class ContactPresenterImpl implements ContactPresenter {
      */
     private void startGetContactList() throws HyphenateException {
         List<String> contacts = EMClient.getInstance().contactManager().getAllContactsFromServer();
+        Collections.sort(contacts, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.charAt(0) - o2.charAt(0);//ascending order
+            }
+        });
         DatabaseManager.getInstance().deleteAllContacts();
         if (!contacts.isEmpty()) {
             for (int i = 0; i < contacts.size(); i++) {
