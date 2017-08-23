@@ -55,14 +55,14 @@ public class ConversationItemView extends RelativeLayout {
     }
 
     public void bindView(final EMConversation emConversation) {
-        mUserName.setText(emConversation.getUserName());
+        mUserName.setText(emConversation.conversationId());
         updateLastMessage(emConversation);
         updateUnreadCount(emConversation);
         mConversationItemContainer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ChatActivity.class);
-                intent.putExtra(Constant.Extra.USER_NAME, emConversation.getUserName());
+                intent.putExtra(Constant.Extra.USER_NAME, emConversation.conversationId());
                 getContext().startActivity(intent);
             }
         });

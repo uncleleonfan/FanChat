@@ -134,7 +134,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
     @Override
     public void onSendMessageSuccess() {
         hideProgress();
-        toast(getString(R.string.send_success));
+//        toast(getString(R.string.send_success));
         updateList();
     }
 
@@ -146,14 +146,14 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     public void onMessagesLoaded() {
-        toast(getString(R.string.load_data_success));
+//        toast(getString(R.string.load_data_success));
         mMessageListAdapter.notifyDataSetChanged();
         scrollToBottom();
     }
 
     @Override
     public void onMoreMessagesLoaded(int size) {
-        toast(getString(R.string.load_more_data_success));
+//        toast(getString(R.string.load_more_data_success));
         mMessageListAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(size);
     }

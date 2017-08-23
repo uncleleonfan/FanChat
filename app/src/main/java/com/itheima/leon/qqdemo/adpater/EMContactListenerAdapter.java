@@ -25,12 +25,13 @@ public class EMContactListenerAdapter implements EMContactListener {
     }
 
     @Override
-    public void onContactAgreed(String s) {
+    public void onFriendRequestAccepted(String s) {
 
     }
 
     @Override
-    public void onContactRefused(String s) {
+    public void onFriendRequestDeclined(String s) {
 
     }
+
 }

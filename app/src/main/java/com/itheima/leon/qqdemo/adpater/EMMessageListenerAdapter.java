@@ -23,14 +23,20 @@ public class EMMessageListenerAdapter implements EMMessageListener {
     }
 
     @Override
-    public void onMessageReadAckReceived(List<EMMessage> list) {
+    public void onMessageRead(List<EMMessage> list) {
 
     }
 
     @Override
-    public void onMessageDeliveryAckReceived(List<EMMessage> list) {
+    public void onMessageDelivered(List<EMMessage> list) {
 
     }
+
+    @Override
+    public void onMessageRecalled(List<EMMessage> list) {
+
+    }
+
 
     @Override
     public void onMessageChanged(EMMessage emMessage, Object o) {

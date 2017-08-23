@@ -58,7 +58,7 @@ public class ConversationFragment extends BaseFragment implements ConversationVi
 
     @Override
     public void onAllConversationsLoaded() {
-        toast(getString(R.string.load_conversations_success));
+//        toast(getString(R.string.load_conversations_success));
         mConversationAdapter.notifyDataSetChanged();
     }
 
