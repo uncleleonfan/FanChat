@@ -74,6 +74,7 @@ public class ContactFragment extends BaseFragment implements ContactView {
 
         initRecyclerView();
 
+        mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.qq_blue, R.color.qq_red);
         mSwipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
 
