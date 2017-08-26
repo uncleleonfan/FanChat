@@ -77,6 +77,7 @@ public class ConversationFragment extends BaseFragment implements ConversationVi
                 public void run() {
                     toast(getString(R.string.receive_new_message));
                     mConversationPresenter.loadAllConversations();
+                    mRecyclerView.scrollToPosition(0);
                 }
             });
         }
