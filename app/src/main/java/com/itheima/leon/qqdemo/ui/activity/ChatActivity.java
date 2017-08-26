@@ -160,7 +160,7 @@ public class ChatActivity extends BaseActivity implements ChatView {
 
     @Override
     public void onNoMoreData() {
-        toast(getString(R.string.no_more_data));
+//        toast(getString(R.string.no_more_data));
     }
 
 

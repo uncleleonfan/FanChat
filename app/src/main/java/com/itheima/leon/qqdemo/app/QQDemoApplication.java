@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
@@ -128,7 +129,10 @@ public class QQDemoApplication extends Application {
 
         Intent chat = new Intent(this, ChatActivity.class);
         chat.putExtra(Constant.Extra.USER_NAME, emMessage.getUserName());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, chat, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = TaskStackBuilder.create(this)
+                .addParentStack(ChatActivity.class)
+                .addNextIntent(chat)
+                .getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification = new Notification.Builder(this)
