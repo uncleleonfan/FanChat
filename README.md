@@ -173,8 +173,21 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 ## 功能需求 ##
 1. 点击登录按钮或者点击虚拟键盘上的Action键都能发起登录操作
 2. 点击新用户，跳转到注册界面。
-
+3. 用户名的长度必须是3-20位，首字母必须为英文字符，其他字符则除了英文外还可以是数字或者下划线。
+4. 密码必须是3-20位的数字。
 	
+## 正则表达式 ##
+[正则表达式-元字符](http://www.runoob.com/regexp/regexp-metachar.html)
+
+	private static final String USER_NAME_REGEX = "^[a-zA-Z]\\w{2,19}$";//用户名的正则表达式
+    private static final String PASSWORD_REGEX = "^[0-9]{3,20}$";//密码的正则表达式
+
+
+* ^ 匹配输入字符串的开始位置
+* [a-zA-Z] 	字符范围。匹配指定范围内的任意字符。
+* \w 匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'。
+* $ 匹配输入字符串的结束位置
+
 ## MVP实现 ##
 * LoginView
 * LoginPresenter
@@ -201,6 +214,17 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
             return false;
         }
     };
+
+## 隐藏软键盘 ##
+在点击登陆按钮发起注册流程后，我们需要隐藏掉软键盘并且弹出进度条。
+
+	protected void hideSoftKeyboard() {
+        if (mInputMethodManager == null) {
+            mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        }
+        mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+    }
+
 
 ## EMCallBack的适配器 ##
 EMCallBack是环信的一个请求回调接口，包括请求成功的回调onSuccess,请求失败的回调onError和请求进度回调onProgress,
@@ -314,20 +338,6 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 * RegisterView
 * RegisterPresenter
 
-## 正则表达式 ##
-[正则表达式-元字符](http://www.runoob.com/regexp/regexp-metachar.html)
-
-
-	private static final String USER_NAME_REGEX = "^[a-zA-Z]\\w{2,19}$";//用户名的正则表达式
-    private static final String PASSWORD_REGEX = "^[0-9]{3,20}$";//密码的正则表达式
-
-
-* ^ 匹配输入字符串的开始位置
-* [a-zA-Z] 	字符范围。匹配指定范围内的任意字符。
-* \w 匹配包括下划线的任何单词字符。等价于'[A-Za-z0-9_]'。
-* $ 匹配输入字符串的结束位置
-
-
 ## 注册流程 ##
 1. 实际项目中，注册会将用户名和密码注册到APP的服务器，然后APP的服务器再通过REST API方式注册到环信服务器。
 2. 由于本项目没有APP服务器，会将用户数据注册到第三方云数据库Bmob，注册成功后，再在客户端发送请求注册到环信服务器。
@@ -347,15 +357,6 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 3. 导入SDK
 4. 初始化SDk
 
-## 隐藏软键盘 ##
-在点击注册按钮发起注册流程后，我们需要隐藏掉软键盘并且弹出进度条。
-
-	protected void hideSoftKeyboard() {
-        if (mInputMethodManager == null) {
-            mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        }
-        mInputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-    }
 
 ## 注册用户到Bmob ##
 [Bmob用户管理](http://docs.bmob.cn/data/Android/b_developdoc/doc/index.html#用户管理)

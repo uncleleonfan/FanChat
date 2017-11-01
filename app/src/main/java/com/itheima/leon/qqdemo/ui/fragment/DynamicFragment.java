@@ -6,10 +6,9 @@ import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
 import com.itheima.leon.qqdemo.R;
-import com.itheima.leon.qqdemo.presenter.DynamicPresenter;
-import com.itheima.leon.qqdemo.presenter.impl.DynamicPresenterImpl;
+import com.itheima.leon.qqdemo.adpater.EMCallBackAdapter;
 import com.itheima.leon.qqdemo.ui.activity.LoginActivity;
-import com.itheima.leon.qqdemo.view.DynamicView;
+import com.itheima.leon.qqdemo.utils.ThreadUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,7 +18,7 @@ import butterknife.OnClick;
  * 创建时间:  2016/10/17 22:39
  * 描述：    TODO
  */
-public class DynamicFragment extends BaseFragment implements DynamicView{
+public class DynamicFragment extends BaseFragment{
     public static final String TAG = "DynamicFragment";
 
     @BindView(R.id.title)
@@ -29,8 +28,6 @@ public class DynamicFragment extends BaseFragment implements DynamicView{
     @BindView(R.id.back)
     ImageView mBack;
 
-    private DynamicPresenter mDynamicPresenter;
-
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_dynamic;
@@ -39,7 +36,6 @@ public class DynamicFragment extends BaseFragment implements DynamicView{
     @Override
     protected void init() {
         super.init();
-        mDynamicPresenter = new DynamicPresenterImpl(this);
         String logout = String.format(getString(R.string.logout), EMClient.getInstance().getCurrentUser());
         mLogout.setText(logout);
         mTitle.setText(getString(R.string.dynamic));
@@ -48,24 +44,34 @@ public class DynamicFragment extends BaseFragment implements DynamicView{
 
     @OnClick(R.id.logout)
     public void onClick() {
-        mDynamicPresenter.logout();
-    }
-
-    @Override
-    public void onStartLogout() {
         showProgress(getString(R.string.logouting));
+        EMClient.getInstance().logout(true, mEMCallBackAdapter);
     }
 
-    @Override
-    public void onLogoutSuccess() {
-        hideProgress();
-        toast(getString(R.string.logout_success));
-        startActivity(LoginActivity.class, true);
-    }
 
-    @Override
-    public void onLogoutFailed() {
-        hideProgress();
-        toast(getString(R.string.logout_failed));
-    }
+    private EMCallBackAdapter mEMCallBackAdapter = new EMCallBackAdapter() {
+
+        @Override
+        public void onSuccess() {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgress();
+                    toast(getString(R.string.logout_success));
+                    startActivity(LoginActivity.class, true);
+                }
+            });
+        }
+
+        @Override
+        public void onError(int i, String s) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgress();
+                    toast(getString(R.string.logout_failed));
+                }
+            });
+        }
+    };
 }
