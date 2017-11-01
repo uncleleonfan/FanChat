@@ -428,6 +428,13 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 * [AHBottomNavigation](https://github.com/aurelhubert/ahbottomnavigation)
 * [BottomNavigation](https://github.com/Ashok-Varma/BottomNavigation)
 
+## BottomBar集成 ##
+
+    compile ('com.roughike:bottom-bar:2.3.1'){
+        exclude module: 'design'
+    }
+
+
 ## Fragment的切换 ##
     private OnTabSelectListener mOnTabSelectListener = new OnTabSelectListener() {
         @Override
@@ -440,18 +447,38 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 # 动态界面 #
 ![退出登录](img/logout.png)
 
-## MVP实现 ##
-* DynamicView
-* DynamicPresenter
-
-动态界面目前只实现了退出登录功能。
-
-    @Override
-    public void logout() {
-        mDynamicView.onStartLogout();
+    @OnClick(R.id.logout)
+    public void onClick() {
+        showProgress(getString(R.string.logouting));
         EMClient.getInstance().logout(true, mEMCallBackAdapter);
     }
 
+
+    private EMCallBackAdapter mEMCallBackAdapter = new EMCallBackAdapter() {
+
+        @Override
+        public void onSuccess() {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgress();
+                    toast(getString(R.string.logout_success));
+                    startActivity(LoginActivity.class, true);
+                }
+            });
+        }
+
+        @Override
+        public void onError(int i, String s) {
+            ThreadUtils.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    hideProgress();
+                    toast(getString(R.string.logout_failed));
+                }
+            });
+        }
+    };
 
 # 联系人界面 #
 ![联系人1](img/contact1.png)
@@ -462,6 +489,8 @@ Andrioid6.0对权限进行了分组，涉及到用户敏感信息的权限只能
 * ContactPresenter
 
 ## 使用RecyclerView实现联系人列表 ##
+    compile 'com.android.support:recyclerview-v7:26.1.0'   
+
 RecyclerView类似ListView, 但比ListView更高级更灵活。使用RecyclerView必须指定一个适配器和一个布局管理器，
 经常有同学忘记设置布局管理器，结果导致RecyclerView什么也没有显示。适配器通常继承自RecyclerView.Adapter。
 
@@ -529,6 +558,7 @@ RecyclerView提供这些内置管理器：
 
 
 #### CardView的使用 ####
+    compile 'com.android.support:cardview-v7:26.1.0'
 ![Cards Example](img/cards_examples.png)
 
 CardView继承自FrameLayout, 是Material Design里面的卡片设计，带有圆角和阴影效果。CardView效果非常好看，但也不能滥用，
