@@ -44,30 +44,6 @@
 ## 环信原理 ##
 环信基于XMPP协议，XMPP基于Socket, 通过Socket保持长连接。
 
-## 环信集成 ##
-1. [注册并创建应用](http://docs.easemob.com/im/000quickstart/10register)
-2. [下载SDK](http://www.easemob.com/download/im)
-3. [SDK的导入](http://docs.easemob.com/im/200androidclientintegration/10androidsdkimport)
-4. [SDK的初始化](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
-
-
-### .so文件夹 ###
-1. 放在jniLibs
-2. 也可以放在libs目录下，不过需要在模块下的配置文件中配置
-	
-		android {
-			sourceSets {
-		        main {
-		            jniLibs.srcDirs = ['libs']
-		        }
-		    }
-		}
-
-### 巨坑 ###
-运行出错：Didn't find class "com.hyphenate.chat.adapter.EMACallSession"，原因是hyphenatechat_3.2.0.jar包内没有该类。
-
-解决办法:导入Demo源码中EaseUI库里面的hyphenatechat_3.2.0.jar替换。
-
 
 # 软件架构 #
 
@@ -160,6 +136,26 @@ MVVM主要应用于WPF, Silverlight, Caliburn, nRoute等。
 ## MVP实现 ##
 * SplashView
 * SplashPresenter
+
+
+## 环信集成 ##
+1. [注册并创建应用](http://docs.easemob.com/im/000quickstart/10register)
+2. [下载SDK](http://www.easemob.com/download/im)
+3. [SDK的导入](http://docs.easemob.com/im/200androidclientintegration/10androidsdkimport)
+4. [SDK的初始化](http://docs.easemob.com/im/200androidclientintegration/30androidsdkbasics)
+
+
+### .so文件夹 ###
+1. 放在jniLibs
+2. 也可以放在libs目录下，不过需要在模块下的配置文件中配置
+	
+		android {
+			sourceSets {
+		        main {
+		            jniLibs.srcDirs = ['libs']
+		        }
+		    }
+		}
 
 ## 判断是否登录环信 ##
     @Override
